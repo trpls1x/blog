@@ -3,9 +3,9 @@
         <v-container>
             <v-row class="justify-center align-center">
                 <v-col class="col-sm-7 col-lg-5">
-                    <v-form class="d-flex flex-column align-stretch justify-stretch">
+                    <v-form class="d-flex flex-column align-stretch">
                         <v-img src="../assets/logo.svg" alt="logo"></v-img>
-                        <router-view/>
+                        <router-view/>  
                     </v-form>
                 </v-col>
             </v-row>

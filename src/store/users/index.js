@@ -1,9 +1,11 @@
 import axios from "axios";
+const apiUrl = process.env.VUE_APP_API_URL
+const apiPrefix = process.env.VUE_APP_API_PREFIX
 
 export default {
     actions: {
         async fetchUsers({commit}) {
-            const response = await axios.get('https://nodejs-test-api-blog.herokuapp.com/api/v1/users', {
+            const response = await axios.get(apiUrl + apiPrefix + '/users', {
                 params: {
                     limit: ''
                 }
@@ -11,7 +13,7 @@ export default {
             commit('updateUsers', response.data.data)
         },
         async getUserByID({commit}, userID) {
-            const response = await axios.get('https://nodejs-test-api-blog.herokuapp.com/api/v1/users/' + userID);
+            const response = await axios.get(apiUrl + apiPrefix + '/users/' + userID);
             commit('updateUserByID',response.data)
         }
     },
