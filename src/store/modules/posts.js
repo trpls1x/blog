@@ -4,12 +4,8 @@ const apiPrefix = process.env.VUE_APP_API_PREFIX
 
 export default {
     actions: {
-        async fetchPosts({commit}) {
-            const response = await axios.get(apiUrl + apiPrefix + '/posts', {
-                params: {
-                    limit: null
-                }
-            })
+        async fetchPosts({commit}, payload) {
+            const response = await axios.get(apiUrl + apiPrefix + '/posts', {params: payload})
             commit('updatePosts', response.data.data)
         },
         async getPostByID({commit, dispatch}, postID) {
@@ -17,15 +13,6 @@ export default {
             commit('updatePostByID', response.data);
             dispatch('getUserByID', response.data.postedBy)
         },
-        async getPostsByUserID({commit}, userID) {
-            const response = await axios.get(apiUrl + apiPrefix + '/posts', {
-                params: {
-                    postedBy: userID,
-                    limit: 0
-                }
-            })
-            commit('updatePostsByUserID', response.data.data)
-        }
     },
     mutations: {
         updatePosts(state, posts) {
@@ -34,14 +21,10 @@ export default {
         updatePostByID(state, post) {
             state.postByID = post
         },
-        updatePostsByUserID(state, posts) {
-            state.postsByUserID = posts
-        }
     },
     state: {
         posts: [],
-        postByID: {},
-        postsByUserID: []
+        postByID: {}
     },
     getters: {
         posts(state) {
@@ -49,9 +32,6 @@ export default {
         },
         postByID(state) {
             return state.postByID
-        },
-        postsByUserID(state) {
-            return state.postsByUserID
         }
     }
 }

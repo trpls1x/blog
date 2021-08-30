@@ -18,7 +18,7 @@
             </v-col>
         </v-row>
         <v-row class="user-posts d-flex flex-column align-stretch">
-            <Post v-for="post in postsByUserID" :key="post._id" :post="post"/>
+            <Post v-for="post in posts" :key="post._id" :post="post"/>
         </v-row>
     </v-container>
 </template>
@@ -36,16 +36,16 @@ export default {
     },
     data: () => ({
     }),
-    computed: mapGetters(['userByID', 'postsByUserID']),
+    computed: mapGetters(['userByID', 'posts']),
     methods: {
-        ...mapActions(['getUserByID', 'getPostsByUserID']),
+        ...mapActions(['getUserByID', 'fetchPosts']),
         pushPostID(id) {
             this.$router.push({ name: 'post', params: { postID: id } }).catch(() => {});
         }
     },
     async mounted() {
         await this.getUserByID(this.$route.params.id);
-        await this.getPostsByUserID(this.$route.params.id);
+        await this.fetchPosts({postedBy: this.$route.params.id});
     }
 }
 </script>
@@ -58,6 +58,9 @@ export default {
         padding: 20px 30px;
         border-radius: 15px;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
+    }
+    h1 {
+        padding-left: 15px;
     }
     .avatar img {
         width: 100%;
@@ -74,5 +77,8 @@ export default {
     }
     table tr td:first-child {
         white-space: nowrap;
+    }
+    table tr td {
+        word-break: break-word;
     }
 </style>

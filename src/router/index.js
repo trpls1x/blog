@@ -4,18 +4,21 @@ import Card from '@/components/Card'
 import Login from '@/views/V-Login'
 import Register from '@/views/V-Register'
 import MainPage from '@/components/MainPage'
-import Feed from '@/views/V-Feed'
-import UserProfile from '@/views/V-UserProfile'
+import Posts from '@/views/V-Posts'
+import Users from '@/views/V-Users'
 import Post from '@/views/V-Post'
+import UserProfile from '@/views/V-UserProfile'
 
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', component: MainPage, children: [{path: '', name: 'main', component: Feed}] },
+    { path: '/', redirect: '/posts'},
     { path: '/login', component: Card, children: [{ path: '', name: 'login', component: Login }] },
     { path: '/register', component: Card, children: [{path: '', name: 'register', component: Register}] },
+    { path: '/posts', component: MainPage, children: [{path: '', name: 'posts', component: Posts}] },
+    { path: '/posts/:id', component: MainPage, children: [{path: '', name: 'post', component: Post}] },
+    { path: '/users', component: MainPage, children: [{path: '', name: 'users', component: Users}] },
     { path: '/users/:id', component: MainPage, children: [{path: '', name: 'user', component: UserProfile}] },
-    { path: '/posts/:id', component: MainPage, children: [{path: '', name: 'post', component: Post}] }
 ]
 
 export default new VueRouter({

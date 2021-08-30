@@ -1,13 +1,24 @@
 <template>
     <v-app>
         <header>
-            <v-container>
-                <v-row>
-                    <v-col class="col-4"><router-link :to="'/'"><v-img src="../assets/logo.svg" alt="logo"/></router-link></v-col>
-                    <v-col class="col-8 d-flex justify-end align-center links">
-                        <router-link :to="'/login'">Sing in</router-link><router-link :to="'/register'">Sing up</router-link>
-                    </v-col>
-                </v-row>
+            <v-container class="d-flex align-center justify-space-between">
+                <router-link :to="'/'"><v-img src="../assets/logo.svg" alt="logo"/></router-link>
+                <div class="d-flex justify-end align-center links">
+                    <!-- <router-link :to="'/login'">Sing in</router-link><router-link :to="'/register'">Sing up</router-link> -->
+                </div>
+                <div class="profile">
+                    <v-avatar><Avatar/></v-avatar>
+                    <span>Username</span>
+                    <v-menu offset-y>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on">mdi-menu-down</v-icon>
+                        </template>
+                        <v-list>
+                            <v-list-item><v-list-item-title>Profile</v-list-item-title></v-list-item>
+                            <v-list-item><v-list-item-title>Log out</v-list-item-title></v-list-item>
+                        </v-list>
+                    </v-menu>
+                </div>
             </v-container>
         </header>
         
@@ -16,10 +27,13 @@
 </template>
 
 <script>
-
+import Avatar from '@/components/Avatar'
 
 export default {
     name: "main-page",
+    components: {
+        Avatar
+    }
 }
 </script>
 
@@ -43,7 +57,6 @@ export default {
         box-shadow: 0 0 1pt 2pt #39BEA1;
         border-top-left-radius: 25px;
         border-bottom-right-radius: 25px;
-
         transition: .2s ease-in-out
     }
     .links a:first-of-type:hover {
@@ -54,5 +67,8 @@ export default {
     .v-image {
         width: 50%;
         align-self: center;
+    }
+    .profile span {
+        margin-left: 15px;
     }
 </style>
