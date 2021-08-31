@@ -12,7 +12,6 @@ import { mapActions, mapGetters } from 'vuex'
 import axios from 'axios'
 import Loader from '@/components/Loader'
 
-
 export default {
   name: 'App',
   components: {
@@ -25,7 +24,7 @@ export default {
   async created() {
     if(localStorage.getItem('token')) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-      await this.getAccountData()
+      await this.getAccountData();
     }
   }
 };

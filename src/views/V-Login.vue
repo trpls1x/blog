@@ -52,8 +52,8 @@ export default ({
     mixins: [validationMixin],
     name: "login",
     data: () => ({
-        email: '',
-        password: '',
+        email: 'denchikarabik@gmail.com',
+        password: 'deniska3',
         showPassword: false,
         dialog: false
     }),

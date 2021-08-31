@@ -6,7 +6,13 @@ export default {
     actions: {
         async fetchPosts({commit}, payload) {
             try {
-                const response = await axios.get(apiUrl + apiPrefix + '/posts', {params: payload});
+                
+                const response = await axios.get(apiUrl + apiPrefix + '/posts', {
+                    params: {
+                        ...payload,
+                        limit: 0,
+                    }
+                });
                 commit('updatePosts', response.data.data);
             } catch(e) {
                 console.log(e);
