@@ -2,7 +2,7 @@
     <v-container>
         <div class="post">
             <v-row>
-                <v-col class="col-2 avatar">
+                <v-col class="col-2 col-lg-2 avatar">
                     <Avatar :avatar="userByID.avatar"/>
                 </v-col>
                 <v-col class="col-10">
@@ -14,20 +14,29 @@
             <v-row class="post-image">
                 <v-col class="col-12" >
                     <v-img 
-                        src="@/assets/post.jpg"
+                        src="@/assets/post1.jpg"
                         :aspect-ratio="fullPic ? 1 : 16/9"
                         @click="fullPic = !fullPic"
                     ></v-img>
                 </v-col>
             </v-row>
             <v-row>
-                <h3>{{postByID.description}}</h3>
-                <p>{{postByID.fullText}}</p>
+                <v-col class="col-11">
+                    <h3>{{ postByID.description }}</h3>
+                    <p>{{ postByID.fullText }}</p>
+                </v-col>
+                <v-col class="col-1 d-flex flex-column justify-center align-center">
+                    <v-icon x-large>mdi-heart-outline</v-icon>
+                    <span>{{ postByID.likes.length }}</span>
+                </v-col>
             </v-row>
         </div>
 
         <div class="comments">
-            <Comment v-for="comment in comments" :key="comment._id" :comment="comment"/>
+            <v-row>
+                <v-col class="col-12"><h2>Comment section: {{ comments.length }}</h2></v-col>
+                <Comment v-for="comment in comments" :key="comment._id" :comment="comment"/>
+            </v-row>
         </div>
     </v-container>
 </template>
@@ -76,5 +85,6 @@ export default {
     }
     .post-image {
         padding: 0;
+        margin-top: 0;
     }
 </style>

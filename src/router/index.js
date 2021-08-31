@@ -8,6 +8,7 @@ import Posts from '@/views/V-Posts'
 import Users from '@/views/V-Users'
 import Post from '@/views/V-Post'
 import UserProfile from '@/views/V-UserProfile'
+import NotFound from '@/views/V-NotFound'
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,7 @@ const routes = [
     { path: '/posts/:id', component: MainPage, children: [{path: '', name: 'post', component: Post}] },
     { path: '/users', component: MainPage, children: [{path: '', name: 'users', component: Users}] },
     { path: '/users/:id', component: MainPage, children: [{path: '', name: 'user', component: UserProfile}] },
+    { path: '*', component: Card, children: [{path: '', name: 'not-found', component: NotFound}] }
 ]
 
 export default new VueRouter({

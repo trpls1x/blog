@@ -14,13 +14,13 @@
             </v-row>
             <v-row class="post-image">
                 <v-col class="col-12">
-                    <v-img :aspect-ratio="16/9" src="@/assets/post.jpg"></v-img>
+                    <v-img :aspect-ratio="16/7" src="@/assets/post1.jpg"></v-img>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col class="col-6 d-flex justify-start">
                     <span class="mr-3"><v-icon>mdi-heart-outline</v-icon> {{post.likes.length}} </span>
-                    <span><v-icon>mdi-chat-outline</v-icon>{{dataComments.length}}</span>
+                    <span><v-icon>mdi-chat-outline</v-icon> {{dataComments.length}}</span>
                 </v-col>
                 <v-col class="col-6 d-flex justify-end">{{date}}</v-col>
             </v-row>
@@ -59,8 +59,12 @@ export default {
     },
     async mounted () {
         this.date = timeDifference(this.post.dateCreated);
-        await this.getUserByID(this.post.postedBy);
-        this.author = this.userByID;
+        try { 
+            await this.getUserByID(this.post.postedBy) 
+            this.author = this.userByID;
+        } catch(e) {
+            console.log(e);
+        }
         await this.getComments(this.post._id);
         this.dataComments = this.comments
     }

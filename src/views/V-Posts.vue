@@ -2,7 +2,8 @@
     <v-container>
         <v-row>
             <v-col class="posts col-9">
-                <Post v-for="post in posts" :key="post._id" :post="post"/>
+                <CreatePost v-if="isAuthenticated" />
+                <Post v-for="post in posts" :key="post._id" :post="post" />
             </v-col>
             <v-col class="nav col-3">
                 <Navigation />
@@ -14,15 +15,17 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Post from '@/components/Post'
+import CreatePost from '@/components/CreatePost'
 import Navigation from '@/components/Navigation'
 
 export default {
     name: "feed",
     components: {
         Post,
+        CreatePost,
         Navigation
     },
-    computed: mapGetters(['posts']),
+    computed: mapGetters(['posts', 'isAuthenticated']),
     methods: {
         ...mapActions(['fetchPosts'])
     },

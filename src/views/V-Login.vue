@@ -1,5 +1,6 @@
 <template>
     <div>
+        <span></span>
         <v-text-field 
             v-model="email"
             @blur="$v.email.$touch()"
@@ -22,17 +23,28 @@
             label="Password" 
             required
         ></v-text-field>
-        <v-row>
-            <v-col class="col-12 col-md-5"><v-btn elevation="5" @click="submit">Sing in</v-btn></v-col>
+        <v-row class="navigation">
+            <v-col class="col-12 col-md-5">
+                <v-btn elevation="5" @click="submit">Sing in</v-btn>
+            </v-col>
             <v-col class="col-md-7 d-flex justify-md-end align-center"><span class="vertical-center">or <a href="../register">Create an account</a></span></v-col>
         </v-row>
         <div class="d-flex justify-space-between"></div>
+        <v-dialog v-model="dialog" max-width="400"> 
+            <v-card class="d-flex flex-column align-stretch">
+                <v-card-title class="text-h5 align-self-center">
+                    Wrong email or password
+                </v-card-title>
+                <v-card-actions>
+                <v-btn text @click="dialog = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
+import { mapActions, mapGetters } from 'vuex';
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength } from 'vuelidate/lib/validators'
 
@@ -42,13 +54,15 @@ export default ({
     data: () => ({
         email: '',
         password: '',
-        showPassword: false
+        showPassword: false,
+        dialog: false
     }),
     validations: {
         email: { required, email },
         password: { required, minLength: minLength(6) },
     },
     computed: {
+        ...mapGetters(['isAuthenticated']),
         emailErrors () {
             const errors = [];
             if (!this.$v.email.$dirty) return errors;
@@ -65,13 +79,21 @@ export default ({
         },
     },
     methods: {
-        ...mapActions(['postUser']),
-        submit() {
+        ...mapActions(['postAuth']),
+        async submit() {
             this.$v.$touch()
-            if(this.$v.$invalid) {
-                console.log('error')
-            } else { 
-                this.$router.push({path:'/'})
+            if(!this.$v.$invalid) {
+                await this.postAuth({
+                    email: this.email,
+                    password: this.password
+                })
+                if(this.isAuthenticated) {
+                    this.$router.push({path:'/'})
+                } else {
+                    this.dialog = true;
+                    this.email = this.password = '';
+                    this.$v.$touch()
+                }
             }
         }
     }
@@ -80,7 +102,6 @@ export default ({
 
 <style scoped>
     .v-btn {
-        margin: 12px 0;
         width: 100%;
         background: #39BEA1 !important; 
         color: #f7f7f7 !important;
@@ -88,7 +109,13 @@ export default ({
         border-bottom-right-radius: 15px;
         font-weight: bold;
     }
+    .navigation {
+        margin-top: 10px;
+    }
     .v-application a {
         color:#39BEA1
+    }
+    .v-card {
+        padding: 10px;
     }
 </style>

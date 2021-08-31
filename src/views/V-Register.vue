@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength, alpha } from 'vuelidate/lib/validators'
 
@@ -124,11 +125,21 @@ export default ({
         }
     },
     methods: {
-        submit() {
+        ...mapActions(['postUser']),
+        async submit() {
             this.$v.$touch()
             if(this.$v.$invalid) {
                 console.log('error')
             } else { 
+                await this.postUser({
+                    email: this.email,
+                    password: this.password,
+                    name: this.name,
+                    extra_details: this.extra_details,
+                    skills: this.skills,
+                    profession: this.profession,
+                    details: this.details,
+                })
                 this.$router.push({path:'/'})
             }
         },

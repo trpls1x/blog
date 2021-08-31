@@ -5,8 +5,12 @@ const apiPrefix = process.env.VUE_APP_API_PREFIX
 export default ({
     actions: {
         async getComments({commit}, postID) {
-            const response = await axios.get(apiUrl + apiPrefix + '/comments/post/' + postID)
-            commit('updateComments', response.data)
+            try {
+                const response = await axios.get(apiUrl + apiPrefix + '/comments/post/' + postID)
+                commit('updateComments', response.data)
+            } catch(e) {
+                console.log(e);
+            }
         }
     },
     mutations: {
@@ -18,8 +22,6 @@ export default ({
         comments: []
     },
     getters: {
-        comments(state) {
-            return state.comments
-        }
+        comments: state => state.comments
     }
 })

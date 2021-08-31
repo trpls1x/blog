@@ -9,7 +9,7 @@ const timeDifference = (postDate) => {
     } else if (difference < Math.pow(60,2)*24){
         return Math.floor(difference / Math.pow(60,2)) + ' hour' + ending(difference / Math.pow(60,2)) + ' ago';
     } else {
-        return Math.floor(difference / (Math.pow(60,2)*24)) + ' day' + ending(Math.pow(60,2)*24) + ' ago';
+        return Math.floor(difference / (Math.pow(60,2)*24)) + ' day' + ending(difference / (Math.pow(60,2)*24)) + ' ago';
     }
 }
 

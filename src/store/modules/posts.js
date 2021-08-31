@@ -5,14 +5,29 @@ const apiPrefix = process.env.VUE_APP_API_PREFIX
 export default {
     actions: {
         async fetchPosts({commit}, payload) {
-            const response = await axios.get(apiUrl + apiPrefix + '/posts', {params: payload})
-            commit('updatePosts', response.data.data)
+            try {
+                const response = await axios.get(apiUrl + apiPrefix + '/posts', {params: payload});
+                commit('updatePosts', response.data.data);
+            } catch(e) {
+                console.log(e);
+            }
         },
         async getPostByID({commit, dispatch}, postID) {
-            const response = await axios.get(apiUrl + apiPrefix + '/posts/' + postID);
-            commit('updatePostByID', response.data);
-            dispatch('getUserByID', response.data.postedBy)
+            try {
+                const response = await axios.get(apiUrl + apiPrefix + '/posts/' + postID);
+                commit('updatePostByID', response.data);
+                dispatch('getUserByID', response.data.postedBy);
+            } catch(e) {
+                console.log(e);
+            }
         },
+        async createPost(ctx, payload) {
+            try {
+                axios.post(apiUrl + apiPrefix + '/posts', payload)
+            } catch (e) {
+                console.log(e);
+            }
+        }
     },
     mutations: {
         updatePosts(state, posts) {
@@ -27,11 +42,7 @@ export default {
         postByID: {}
     },
     getters: {
-        posts(state) {
-            return state.posts
-        },
-        postByID(state) {
-            return state.postByID
-        }
+        posts: state => state.posts,
+        postByID: state => state.postByID
     }
 }

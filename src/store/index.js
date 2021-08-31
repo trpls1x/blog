@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import auth from '@/store/modules/auth.js'
-import users from '@/store/modules/users.js'
-import posts from '@/store/modules/posts.js'
-import comments from '@/store/modules/comments.js'
+import loading from '@/store/modules/loading'
+import auth from '@/store/modules/auth'
+import users from '@/store/modules/users'
+import posts from '@/store/modules/posts'
+import comments from '@/store/modules/comments'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
         auth,
         users,
         posts,
-        comments
+        comments,
+        loading
     }
 })

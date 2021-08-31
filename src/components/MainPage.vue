@@ -3,21 +3,21 @@
         <header>
             <v-container class="d-flex align-center justify-space-between">
                 <router-link :to="'/'"><v-img src="../assets/logo.svg" alt="logo"/></router-link>
-                <div class="d-flex justify-end align-center links">
-                    <!-- <router-link :to="'/login'">Sing in</router-link><router-link :to="'/register'">Sing up</router-link> -->
-                </div>
-                <div class="profile">
+                <div v-if="isAuthenticated" class="profile">
                     <v-avatar><Avatar/></v-avatar>
-                    <span>Username</span>
+                    <span>{{accountData.name}}</span>
                     <v-menu offset-y>
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-menu-down</v-icon>
                         </template>
                         <v-list>
-                            <v-list-item><v-list-item-title>Profile</v-list-item-title></v-list-item>
-                            <v-list-item><v-list-item-title>Log out</v-list-item-title></v-list-item>
+                            <router-link @click="pushUserID(accountData._id)" :to="'/users/' + accountData._id"><v-list-item><v-list-item-title>Profile</v-list-item-title></v-list-item></router-link>
+                            <v-list-item @click="logout"><v-list-item-title>Logout</v-list-item-title></v-list-item>
                         </v-list>
                     </v-menu>
+                </div>
+                <div v-else class="d-flex justify-end align-center links">
+                    <router-link :to="'/login'">Sing in</router-link><router-link :to="'/register'">Sing up</router-link>
                 </div>
             </v-container>
         </header>
@@ -27,12 +27,20 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import Avatar from '@/components/Avatar'
 
 export default {
     name: "main-page",
     components: {
         Avatar
+    },
+    computed: mapGetters(['accountData', 'isAuthenticated']),
+    methods: {
+        ...mapActions(['logout']),
+        pushUserID(id) {
+            this.$router.push({ name: 'user', params: { userID: id } }).catch(() => {});
+        },
     }
 }
 </script>

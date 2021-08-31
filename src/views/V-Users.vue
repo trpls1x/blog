@@ -37,8 +37,4 @@ export default {
         color: #000;
         text-decoration: none;
     }
-    .nav {
-        position: sticky;
-        top: 12px
-    }
 </style>

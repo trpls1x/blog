@@ -3,6 +3,7 @@
         <v-row class="user-info">
             <v-col class="col-4 avatar">
                 <Avatar :avatar="userByID.avatar"/>
+                <v-btn v-if="userByID._id == accountData._id" @click="updateAvatar">Update avatar</v-btn>
             </v-col>
             <v-col class="col-8">
                 <h1>{{userByID.name}}</h1>
@@ -17,8 +18,10 @@
                 </table>
             </v-col>
         </v-row>
-        <v-row class="user-posts d-flex flex-column align-stretch">
-            <Post v-for="post in posts" :key="post._id" :post="post"/>
+        <v-row class="user-posts">
+            <v-col class="col-12">
+                <Post v-for="post in posts" :key="post._id" :post="post"/>
+            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -36,11 +39,14 @@ export default {
     },
     data: () => ({
     }),
-    computed: mapGetters(['userByID', 'posts']),
+    computed: mapGetters(['userByID', 'posts', 'accountData']),
     methods: {
         ...mapActions(['getUserByID', 'fetchPosts']),
         pushPostID(id) {
             this.$router.push({ name: 'post', params: { postID: id } }).catch(() => {});
+        },
+        updateAvatar() {
+            console.log('hihi');
         }
     },
     async mounted() {
@@ -80,5 +86,8 @@ export default {
     }
     table tr td {
         word-break: break-word;
+    }
+    .user-posts .col-12 {
+        padding: 0;
     }
 </style>

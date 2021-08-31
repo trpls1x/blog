@@ -1,8 +1,22 @@
 <template>
-    <v-progress-circular
-      :size="70"
-      :width="7"
-      color="green"
-      indeterminate
-    ></v-progress-circular>
+  <div class="wrap d-flex justify-center align-center">
+    <RingLoader :color="'#F7F7F7'"/>
+  </div>
 </template>
+
+<script>
+import { RingLoader } from 'vue-spinners-css'
+export default {
+  components: {
+    RingLoader
+  }
+}
+</script>
+
+<style scoped>
+  .wrap {
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+  }
+</style>
