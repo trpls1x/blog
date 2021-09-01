@@ -1,22 +1,19 @@
-import axios from "axios";
-const apiUrl = process.env.VUE_APP_API_URL
-const apiPrefix = process.env.VUE_APP_API_PREFIX
+import axiosApiInstance from "@/services/axiosApiInstance";
 
 export default {
     actions: {
-        async postAuth({commit}, payload) {
+        async userAuthorization({ commit }, payload) {
             try { 
-                const response = await axios.post(apiUrl + apiPrefix + '/auth', payload);
-                commit('updateToken', response.data.token);
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+                const response = await axiosApiInstance.post('/auth', payload);
+                commit('updateToken', response.token);
             } catch(e) {
                 console.log(e);
             }
         },
         async getAccountData({commit}) {
             try {
-                const response = await axios.get(apiUrl + apiPrefix + '/auth/user');
-                commit('updateAccountData', response.data);
+                const response = await axiosApiInstance.get('/auth/user');
+                commit('updateAccountData', response);
             } catch(e) {
                 console.log(e);
             }
@@ -24,7 +21,6 @@ export default {
         logout({commit}) {
             localStorage.removeItem('token')
             commit('updateToken', '');
-            delete axios.defaults.headers.common['Authorization']
         }
     },
     mutations: {
