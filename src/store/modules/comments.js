@@ -1,16 +1,10 @@
-import axios from "axios"
-const apiUrl = process.env.VUE_APP_API_URL
-const apiPrefix = process.env.VUE_APP_API_PREFIX
+import api from "@/services/axiosApi";
 
 export default ({
     actions: {
         async getComments({commit}, postID) {
-            try {
-                const response = await axios.get(apiUrl + apiPrefix + '/comments/post/' + postID)
-                commit('updateComments', response.data)
-            } catch(e) {
-                console.log(e);
-            }
+            const response = await api.get('/comments/post/' + postID)
+            commit('updateComments', response)
         }
     },
     mutations: {

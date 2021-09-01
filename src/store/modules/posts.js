@@ -1,38 +1,23 @@
-import axios from "axios"
-const apiUrl = process.env.VUE_APP_API_URL
-const apiPrefix = process.env.VUE_APP_API_PREFIX
+import api from "@/services/axiosApi";
 
 export default {
     actions: {
         async fetchPosts({commit}, payload) {
-            try {
-                
-                const response = await axios.get(apiUrl + apiPrefix + '/posts', {
-                    params: {
-                        ...payload,
-                        limit: 0,
-                    }
-                });
-                commit('updatePosts', response.data.data);
-            } catch(e) {
-                console.log(e);
-            }
+            const response = await api.get('/posts', {
+                params: {
+                    ...payload,
+                    limit: 0,
+                }
+            });
+            commit('updatePosts', response.data);
         },
-        async getPostByID({commit, dispatch}, postID) {
-            try {
-                const response = await axios.get(apiUrl + apiPrefix + '/posts/' + postID);
-                commit('updatePostByID', response.data);
-                dispatch('getUserByID', response.data.postedBy);
-            } catch(e) {
-                console.log(e);
-            }
+        async getPostByID({commit}, postID) {
+            const response = await api.get('/posts/' + postID);
+            commit('updatePostByID', response);
+            // dispatch('getUserByID', response.postedBy);
         },
         async createPost(ctx, payload) {
-            try {
-                axios.post(apiUrl + apiPrefix + '/posts', payload)
-            } catch (e) {
-                console.log(e);
-            }
+            api.post('/posts', payload)
         }
     },
     mutations: {

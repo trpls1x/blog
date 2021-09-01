@@ -4,7 +4,7 @@
             <v-row>
                 <v-col class="col-1">
                     <v-avatar>
-                        <Avatar/>
+                        <Picture :image="author.avatar" :type="'avatar'"/>
                     </v-avatar>
                 </v-col>
                 <v-col class="col-11 head">
@@ -14,7 +14,7 @@
             </v-row>
             <v-row class="post-image">
                 <v-col class="col-12">
-                    <v-img :aspect-ratio="16/7" src="@/assets/post1.jpg"></v-img>
+                    <Picture :image="post.image" :ratio="16/7" :type="'post'"/>
                 </v-col>
             </v-row>
             <v-row>
@@ -31,7 +31,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import timeDifference from '@/services/timeDifference.service.js'
-import Avatar from '@/components/Avatar'
+import Picture from '@/components/Picture'
 
 export default {
     props: {
@@ -41,7 +41,7 @@ export default {
         }
     },
     components: {
-        Avatar
+        Picture
     },
     data: () => ({
         date: null,
@@ -57,14 +57,10 @@ export default {
             this.$router.push({ name: 'post', params: { postID: id } }).catch(() => {});
         },
     },
-    async mounted () {
+    async mounted() {
         this.date = timeDifference(this.post.dateCreated);
-        try { 
-            await this.getUserByID(this.post.postedBy) 
-            this.author = this.userByID;
-        } catch(e) {
-            console.log(e);
-        }
+        await this.getUserByID(this.post.postedBy) 
+        this.author = this.userByID;
         await this.getComments(this.post._id);
         this.dataComments = this.comments
     }

@@ -14,9 +14,4 @@ export default {
 </script>
 
 <style scoped>
-  .wrap {
-    width: 100vw;
-    height: 100vh;
-    background: #000;
-  }
 </style>

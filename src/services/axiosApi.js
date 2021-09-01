@@ -3,35 +3,27 @@ import axios from "axios"
 // import router from "@/router"
 
 const defaultUrl = process.env.VUE_APP_API_URL;
-const prefiks = process.env.VUE_APP_API_PREFIX;
+const prefix = process.env.VUE_APP_API_PREFIX;
 
-const axiosApiInstance = axios.create({
-  baseURL: `${defaultUrl}${prefiks}`,
+const api = axios.create({
+  baseURL: `${defaultUrl}${prefix}`,
   headers: {
     'Accept': 'application/json'
   }
 })
-// создаешь 1 раз инстанс и импортишь
-// дальше будет типа axiosApiInstance.post('/users/', payload)
-// под капотом и весь дефолт юрл и токен
 
-// Request interceptor for API calls
-axiosApiInstance.interceptors.request.use(/** succes */(config) => {
+api.interceptors.request.use((config) => {
   if (localStorage.token) {
     config.headers['Authorization'] = `Bearer ${localStorage.token}`;
   }
-
   return config;
 },
-/** podliva */(error) => {
+(error) => {
     Promise.reject(error)
 })
 
-// было для запросов интерсептор, теперь для ответов,
-// вот кстати фишка, тебе нахуй не нужен весь ответ, а только Дата из ответа
 
-// Response interceptor for API calls
-axiosApiInstance.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response.data, 
   (error) => {
 
@@ -65,4 +57,4 @@ axiosApiInstance.interceptors.response.use(
     return Promise.reject(error);
 })
 
-export default axiosApiInstance;
+export default api;

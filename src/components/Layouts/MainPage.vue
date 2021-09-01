@@ -2,9 +2,9 @@
     <v-app>
         <header>
             <v-container class="d-flex align-center justify-space-between">
-                <router-link :to="'/'"><v-img src="../assets/logo.svg" alt="logo"/></router-link>
+                <router-link :to="'/'"><v-img src="@/assets/logo.svg" alt="logo"/></router-link>
                 <div v-if="isAuthenticated" class="profile">
-                    <v-avatar><Avatar/></v-avatar>
+                    <v-avatar><Picture :image="accountData.avatar" :type="'avatar'"/></v-avatar>
                     <span>{{accountData.name}}</span>
                     <v-menu offset-y>
                         <template v-slot:activator="{ on, attrs }">
@@ -28,12 +28,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Avatar from '@/components/Avatar'
+import Picture from '@/components/Picture'
 
 export default {
     name: "main-page",
     components: {
-        Avatar
+        Picture
     },
     computed: mapGetters(['accountData', 'isAuthenticated']),
     methods: {

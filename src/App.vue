@@ -1,29 +1,21 @@
 <template>
   <v-app>
     <v-main>
-      <Loader v-if="isLoading"/>
-      <router-view v-else/>
+      <router-view/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import axios from 'axios'
-import Loader from '@/components/Loader'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
-  components: {
-    Loader
-  },
-  computed: mapGetters(['isLoading']),
   methods: {
     ...mapActions(['getAccountData'])
   },
   async created() {
     if(localStorage.getItem('token')) {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
       await this.getAccountData();
     }
   }
@@ -32,6 +24,6 @@ export default {
 
 <style scoped>
   #app {
-      background: #39BEA1;
+    background: #39BEA1;
   }
 </style>

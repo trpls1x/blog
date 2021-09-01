@@ -1,26 +1,20 @@
-import axiosApiInstance from "@/services/axiosApiInstance";
+import api from "@/services/axiosApi";
 
 export default {
     actions: {
-        async userAuthorization({ commit }, payload) {
-            try { 
-                const response = await axiosApiInstance.post('/auth', payload);
-                commit('updateToken', response.token);
-            } catch(e) {
-                console.log(e);
-            }
+        async userAuthorization({commit, dispatch}, payload) {
+            const response = await api.post('/auth', payload);
+            commit('updateToken', response.token);
+            dispatch('getAccountData')
         },
         async getAccountData({commit}) {
-            try {
-                const response = await axiosApiInstance.get('/auth/user');
-                commit('updateAccountData', response);
-            } catch(e) {
-                console.log(e);
-            }
+            const response = await api.get('/auth/user');
+            commit('updateAccountData', response);
         },
         logout({commit}) {
             localStorage.removeItem('token')
             commit('updateToken', '');
+            commit('updateAccountData', null);
         }
     },
     mutations: {

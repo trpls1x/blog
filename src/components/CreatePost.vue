@@ -109,7 +109,7 @@ export default {
     .row {
         padding: 0 20px;
     }
-    .v-input {
+    .v-text-field.v-text-field--enclosed {
         margin-bottom: 5px;
     }
 </style>

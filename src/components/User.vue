@@ -1,9 +1,9 @@
 <template>
-    <router-link :to="'../users/' + user._id" @click.native="pushUserID(user._id)">
+    <router-link :to="'/users/' + user._id" @click="pushUserID(user._id)">
         <div class="user d-flex">
             <v-col class="col-2 avatar d-flex justify-center align-center">
                 <v-avatar>
-                    <Avatar :avatar="user.avatar"/>
+                    <Picture :image="user.avatar" :type="'avatar'"/>
                 </v-avatar>
             </v-col>
             <v-col>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Avatar from '@/components/Avatar'
+import Picture from '@/components/Picture'
 
 export default {
     props: {
@@ -25,7 +25,7 @@ export default {
         }
     },
     components: {
-        Avatar
+        Picture
     },
     methods: {
         pushUserID(id) {

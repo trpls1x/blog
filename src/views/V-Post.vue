@@ -3,7 +3,7 @@
         <div class="post">
             <v-row>
                 <v-col class="col-2 col-lg-2 avatar">
-                    <Avatar :avatar="userByID.avatar"/>
+                    <Picture :image="userByID.avatar" :ratio="1" :type="'avatar'"/>
                 </v-col>
                 <v-col class="col-10">
                     <h2>{{ userByID.name }}</h2>
@@ -13,11 +13,11 @@
             </v-row>
             <v-row class="post-image">
                 <v-col class="col-12" >
-                    <v-img 
-                        src="@/assets/post1.jpg"
-                        :aspect-ratio="fullPic ? 1 : 16/9"
-                        @click="fullPic = !fullPic"
-                    ></v-img>
+                    <Picture
+                        :image="postByID.image"
+                        :ratio="16/9"
+                        :type="'full-post'"
+                    />
                 </v-col>
             </v-row>
             <v-row>
@@ -44,12 +44,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import timeDifference from '@/services/timeDifference.service.js'
-import Avatar from '@/components/Avatar'
+import Picture from '@/components/Picture'
 import Comment from '@/components/Comment'
 
 export default {
     components: {
-        Avatar,
+        Picture,
         Comment
     },
     data: () => ({
@@ -58,10 +58,11 @@ export default {
     }),
     computed: mapGetters(['postByID', 'userByID', 'comments']),
     methods: {
-        ...mapActions(['getPostByID', 'getComments'])
+        ...mapActions(['getPostByID', 'getUserByID', 'getComments'])
     },
     async mounted() {
         await this.getPostByID(this.$route.params.id);
+        await this.getUserByID(this.postByID.postedBy);
         await this.getComments(this.postByID._id);
         this.date = timeDifference(this.postByID.dateCreated); 
     }

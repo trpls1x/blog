@@ -1,7 +1,7 @@
 <template>
     <v-col class="col-12 comment">
         <v-row>
-            <v-col class="col-2 avatar"><Avatar :avatar="userByID.avatar"/></v-col>
+            <v-col class="col-2 avatar"><Picture :image="userByID.avatar" :type="'avatar'"/></v-col>
             <v-col class="col-9 d-flex flex-column justify-space-between">
                 <div>
                     <h3>{{ userByID.name }}</h3>
@@ -20,7 +20,7 @@
 <script>
 import { mapActions, mapGetters} from 'vuex'
 import timeDifference from '@/services/timeDifference.service.js'
-import Avatar from '@/components/Avatar'
+import Picture from '@/components/Picture'
 
 export default {
     props: {
@@ -29,7 +29,7 @@ export default {
         }
     },
     components: {
-        Avatar
+        Picture
     },
     data: () => ({
         date: null

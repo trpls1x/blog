@@ -71,10 +71,12 @@
             hide-details="auto" 
             outlined
         ></v-text-field>
-        <div class="d-flex justify-space-between">
-            <v-btn class="submit col-md-8" @click="submit">Continue</v-btn>
-            <v-btn class="clear col-md-3" @click="clear">Clear</v-btn>
-        </div>
+        <v-row class="d-flex justify-space-between">
+            <v-col class="col-12 col-md-8"><v-btn class="submit" @click="submit">Continue</v-btn></v-col>
+            <v-col class="col-12 col-md-3"><v-btn class="clear" @click="clear">Clear</v-btn></v-col>
+            
+            
+        </v-row>
     </div>
 </template>
 
@@ -163,6 +165,7 @@ export default ({
     } 
     .v-btn {
         margin: 6px 0;
+        width: 100%;
         border-top-left-radius: 15px;
         border-bottom-right-radius: 15px;
         font-weight: bold;

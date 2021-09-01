@@ -2,18 +2,20 @@
     <v-container>
         <v-row class="user-info">
             <v-col class="col-4 avatar">
-                <Avatar :avatar="userByID.avatar"/>
-                <v-btn v-if="userByID._id == accountData._id" @click="updateAvatar">Update avatar</v-btn>
+                <Picture :image="userByID.avatar" :type="'avatar'"/>
+                <div v-if="isAuthenticated && userByID._id == accountData._id" >
+                    <UpdateProfile :user="accountData"/>
+                </div>
             </v-col>
             <v-col class="col-8">
                 <h1>{{userByID.name}}</h1>
                 <table>
                     <tbody>
-                        <tr><td>E-mail:</td><td>{{userByID.email  || 'Not specified'}}</td></tr>
-                        <tr><td>Extra details:</td><td>{{userByID.extra_details || 'Not specified'}}</td></tr>
-                        <tr><td>Skills:</td><td>{{userByID.skills || 'Not specified'}}</td></tr>
-                        <tr><td>Profession:</td><td>{{userByID.profession || 'Not specified'}}</td></tr>
-                        <tr><td>Details:</td><td>{{userByID.details || 'Not specified'}}</td></tr>
+                        <tr><td>E-mail:</td><td>{{userByID.email}}</td></tr>
+                        <tr><td>Extra details:</td><td>{{userByID.extra_details || placeholder}}</td></tr>
+                        <tr><td>Skills:</td><td>{{userByID.skills || placeholder}}</td></tr>
+                        <tr><td>Profession:</td><td>{{userByID.profession || placeholder}}</td></tr>
+                        <tr><td>Details:</td><td>{{userByID.details || placeholder}}</td></tr>
                     </tbody>
                 </table>
             </v-col>
@@ -27,31 +29,29 @@
 </template>
 
 <script>
-import { mapActions ,mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Post from '@/components/Post'
-import Avatar from '@/components/Avatar'
+import Picture from '@/components/Picture'
+import UpdateProfile from '@/components/UpdateProfile'
 
 export default {
     name: "user",
     components: {
         Post,
-        Avatar
+        Picture,
+        UpdateProfile
     },
     data: () => ({
+        placeholder: 'Not specified'
     }),
-    computed: mapGetters(['userByID', 'posts', 'accountData']),
+    computed: mapGetters(['userByID', 'posts', 'isAuthenticated', 'accountData']),
     methods: {
-        ...mapActions(['getUserByID', 'fetchPosts']),
-        pushPostID(id) {
-            this.$router.push({ name: 'post', params: { postID: id } }).catch(() => {});
-        },
-        updateAvatar() {
-            console.log('hihi');
-        }
+        ...mapActions(['getUserByID', 'fetchPosts'])
     },
     async mounted() {
         await this.getUserByID(this.$route.params.id);
         await this.fetchPosts({postedBy: this.$route.params.id});
+        // console.log(this.posts);
     }
 }
 </script>

@@ -4,7 +4,7 @@
             <v-row class="justify-center align-center">
                 <v-col class="col-sm-7 col-lg-5">
                     <v-form class="d-flex flex-column align-stretch">
-                        <router-link :to="'/'" class="link align-self-center"><v-img src="../assets/logo.svg" alt="logo"></v-img></router-link>
+                        <router-link :to="'/'" class="link align-self-center"><v-img src="@/assets/logo.svg" alt="logo"></v-img></router-link>
                         <router-view/>  
                     </v-form>
                 </v-col>
@@ -22,7 +22,7 @@
 
 <style scoped>
     .row {
-        height: 100vh;
+        min-height: 100vh;
     }  
     .link {
         width: 50%;

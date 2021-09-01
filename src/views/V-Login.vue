@@ -52,8 +52,8 @@ export default ({
     mixins: [validationMixin],
     name: "login",
     data: () => ({
-        email: 'denchikarabik@gmail.com',
-        password: 'deniska3',
+        email: '',
+        password: '',
         showPassword: false,
         dialog: false
     }),
@@ -79,11 +79,11 @@ export default ({
         },
     },
     methods: {
-        ...mapActions(['postAuth']),
+        ...mapActions(['userAuthorization']),
         async submit() {
             this.$v.$touch()
             if(!this.$v.$invalid) {
-                await this.postAuth({
+                await this.userAuthorization({
                     email: this.email,
                     password: this.password
                 })
