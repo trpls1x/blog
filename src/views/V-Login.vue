@@ -82,14 +82,15 @@ export default ({
         ...mapActions(['userAuthorization']),
         async submit() {
             this.$v.$touch()
+            console.log('hui');
             if(!this.$v.$invalid) {
-                await this.userAuthorization({
-                    email: this.email,
-                    password: this.password
-                })
-                if(this.isAuthenticated) {
+                try {
+                    await this.userAuthorization({
+                        email: this.email,
+                        password: this.password
+                    })
                     this.$router.push({path:'/'})
-                } else {
+                } catch {
                     this.dialog = true;
                     this.email = this.password = '';
                     this.$v.$touch()

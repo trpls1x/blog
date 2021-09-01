@@ -1,7 +1,7 @@
 <template>
     <v-dialog max-width="600">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn color="#39BEA1" dark v-bind="attrs" v-on="on">Edit profile</v-btn>
+            <v-btn class="activator" color="#39BEA1" dark v-bind="attrs" v-on="on">Edit profile</v-btn>
         </template>
         <template v-slot:default="dialog">
             <v-card>
@@ -55,7 +55,7 @@
                 
                 <v-card-actions class="justify-end">
                     <v-btn color="#39BEA1" text @click="updateUser(); dialog.value = false">Edit</v-btn>
-                    <v-btn text @click="dialog.value = false">Close</v-btn>
+                    <v-btn text @click="dialog.value = false">Cancel</v-btn>
                 </v-card-actions>
             </v-card>
         </template>
@@ -80,15 +80,16 @@ export default {
         placeholder: 'Not specified'
     }),
     methods: {
-        ...mapActions(['editUser']),
-        updateUser() {
-            this.editUser({
+        ...mapActions(['editUser', 'getUserByID']),
+        async updateUser() {
+            await this.editUser({
                 name: this.name,
                 extra_details: this.extra_details,
                 skills: this.skills,
                 profession: this.profession,
                 details: this.details,
             })
+            this.getUserByID(this.user._id)
         }
     },
     mounted() {
@@ -103,7 +104,7 @@ export default {
 </script>
 
 <style scoped>
-    .modal {
+    .activator {
         width: 100%;
     }
     table {

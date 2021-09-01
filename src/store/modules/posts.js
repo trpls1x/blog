@@ -17,7 +17,7 @@ export default {
             // dispatch('getUserByID', response.postedBy);
         },
         async createPost(ctx, payload) {
-            api.post('/posts', payload)
+            await api.post('/posts', payload)
         }
     },
     mutations: {

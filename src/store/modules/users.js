@@ -14,10 +14,10 @@ export default {
             try {
                 const response = await api.get('/users/' + userID);
                 commit('updateUserByID',response)
-                console.log(response);
             } catch {
                 commit('updateUserByID', {
-                    name: 'DELETED'
+                    name: 'DELETED',
+                    id: 'deleted',
                 })
             }
         },
@@ -28,8 +28,12 @@ export default {
                 password: user.password
             })
         },
-        editUser({getters}, payload) {
-            api.patch('/users/' + getters.accountData._id, payload);
+        async editUser({getters}, payload) {
+            await api.patch('/users/' + getters.accountData._id, payload);
+        },
+        async deleteUser({dispatch, getters}) {
+            await api.delete('/users/'+ getters.accountData._id)
+            dispatch('logout')
         }
     },
     mutations: {

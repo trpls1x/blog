@@ -3,7 +3,7 @@ export default ({
     mutations: {
         updatePostsStatus(state) {
             state.postsLoaded = !state.postsLoaded
-            console.log(state.postsLoaded, 'p');
+            // console.log(state.postsLoaded, 'p');
         },
         updateUsersStatus(state) {
             state.usersLoaded = !state.usersLoaded

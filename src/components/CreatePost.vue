@@ -1,7 +1,7 @@
 <template>
     <div class="post">
         <v-row>
-            <v-col class="col-12">
+            <v-col class="col-12" v-if="full">
                 <v-text-field 
                     v-model="title"
                     @blur="$v.title.$touch()"
@@ -31,7 +31,11 @@
                     solo 
                     counter="400"
                 ></v-textarea>
-                <v-btn @click="submit">Create post</v-btn>
+                <v-btn class="mr-3" color="#39BEA1" dark @click="submit">Create post</v-btn>
+                <v-btn @click="full = false">Hide</v-btn>
+            </v-col>
+            <v-col class="col-12" v-else>
+                <v-btn color="#39BEA1" dark @click="full = true">Create post</v-btn>
             </v-col>
         </v-row>
     </div>
@@ -47,7 +51,8 @@ export default {
     data: () => ({
         title: null,
         description: null,
-        fullText: null
+        fullText: null,
+        full: false
     }),
     validations: {
         title: { required, maxLength: maxLength(50), minLength: minLength(5) },
@@ -89,11 +94,11 @@ export default {
                     description: this.description,
                     fullText: this.fullText
                 })
+                this.title = this.description = this.fullText = ''
                 this.fetchPosts()
             }
         }
     }
-    
 }
 </script>
 

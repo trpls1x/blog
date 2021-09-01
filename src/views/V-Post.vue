@@ -3,10 +3,10 @@
         <div class="post">
             <v-row>
                 <v-col class="col-2 col-lg-2 avatar">
-                    <Picture :image="userByID.avatar" :ratio="1" :type="'avatar'"/>
+                    <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                 </v-col>
                 <v-col class="col-10">
-                    <h2>{{ userByID.name }}</h2>
+                    <h2>{{ author.name }}</h2>
                     <h1>{{ postByID.title }}</h1>
                     <p>{{ date }}</p>
                 </v-col>
@@ -53,8 +53,8 @@ export default {
         Comment
     },
     data: () => ({
-        fullPic: false,
-        date: ''
+        author: {},
+        date: '',
     }),
     computed: mapGetters(['postByID', 'userByID', 'comments']),
     methods: {
@@ -63,6 +63,7 @@ export default {
     async mounted() {
         await this.getPostByID(this.$route.params.id);
         await this.getUserByID(this.postByID.postedBy);
+        this.author = this.userByID;
         await this.getComments(this.postByID._id);
         this.date = timeDifference(this.postByID.dateCreated); 
     }

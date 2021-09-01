@@ -1,10 +1,10 @@
 <template>
     <v-col class="col-12 comment">
         <v-row>
-            <v-col class="col-2 avatar"><Picture :image="userByID.avatar" :type="'avatar'"/></v-col>
+            <v-col class="col-2 avatar"><Picture :image="author.avatar" :type="'avatar'"/></v-col>
             <v-col class="col-9 d-flex flex-column justify-space-between">
                 <div>
-                    <h3>{{ userByID.name }}</h3>
+                    <h3>{{ author.name }}</h3>
                     <p>{{ comment.text }}</p>
                 </div>
                 <span>{{ date }}</span>
@@ -32,7 +32,8 @@ export default {
         Picture
     },
     data: () => ({
-        date: null
+        date: null,
+        author: {}
     }),
     computed: mapGetters(['userByID']),
     methods: {
@@ -41,6 +42,7 @@ export default {
     async mounted() {
         this.date = timeDifference(this.comment.dateCreated);
         await this.getUserByID(this.comment.commentedBy)
+        this.author = this.userByID
     }
 }
 </script>

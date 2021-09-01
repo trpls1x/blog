@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="'../posts/' + post._id" @click.native="pushPostID(post._id)">
+    <router-link :to="'../posts/' + post._id" @click="pushPostID(post._id)">
         <div class="post">
             <v-row>
                 <v-col class="col-1">
@@ -59,7 +59,7 @@ export default {
     },
     async mounted() {
         this.date = timeDifference(this.post.dateCreated);
-        await this.getUserByID(this.post.postedBy) 
+        await this.getUserByID(this.post.postedBy);
         this.author = this.userByID;
         await this.getComments(this.post._id);
         this.dataComments = this.comments

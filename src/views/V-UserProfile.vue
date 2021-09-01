@@ -1,10 +1,10 @@
 <template>
-    <v-container>
+    <v-container v-if="fetched">
         <v-row class="user-info">
             <v-col class="col-4 avatar">
                 <Picture :image="userByID.avatar" :type="'avatar'"/>
                 <div v-if="isAuthenticated && userByID._id == accountData._id" >
-                    <UpdateProfile :user="accountData"/>
+                    <ProfileButtons  :user="accountData"/>
                 </div>
             </v-col>
             <v-col class="col-8">
@@ -32,17 +32,18 @@
 import { mapActions, mapGetters } from 'vuex'
 import Post from '@/components/Post'
 import Picture from '@/components/Picture'
-import UpdateProfile from '@/components/UpdateProfile'
+import ProfileButtons from '@/components/ProfileComponents/ProfileButtons'
 
 export default {
     name: "user",
     components: {
         Post,
         Picture,
-        UpdateProfile
+        ProfileButtons
     },
     data: () => ({
-        placeholder: 'Not specified'
+        placeholder: 'Not specified',
+        fetched: false
     }),
     computed: mapGetters(['userByID', 'posts', 'isAuthenticated', 'accountData']),
     methods: {
@@ -51,7 +52,7 @@ export default {
     async mounted() {
         await this.getUserByID(this.$route.params.id);
         await this.fetchPosts({postedBy: this.$route.params.id});
-        // console.log(this.posts);
+        this.fetched = true
     }
 }
 </script>
