@@ -82,7 +82,6 @@ export default ({
         ...mapActions(['userAuthorization']),
         async submit() {
             this.$v.$touch()
-            console.log('hui');
             if(!this.$v.$invalid) {
                 try {
                     await this.userAuthorization({

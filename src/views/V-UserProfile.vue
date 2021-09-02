@@ -2,9 +2,9 @@
     <v-container v-if="fetched">
         <v-row class="user-info">
             <v-col class="col-4 avatar">
-                <Picture :image="userByID.avatar" :type="'avatar'"/>
+                <Picture :image="userByID.avatar" :ratio="1" :type="'avatar'"/>
                 <div v-if="isAuthenticated && userByID._id == accountData._id" >
-                    <ProfileButtons  :user="accountData"/>
+                    <ProfileButtons :user="accountData"/>
                 </div>
             </v-col>
             <v-col class="col-8">
@@ -49,9 +49,12 @@ export default {
     methods: {
         ...mapActions(['getUserByID', 'fetchPosts'])
     },
-    async mounted() {
+    async created() {
         await this.getUserByID(this.$route.params.id);
-        await this.fetchPosts({postedBy: this.$route.params.id});
+        await this.fetchPosts({ 
+            postedBy: this.$route.params.id,
+            limit: 0
+        });
         this.fetched = true
     }
 }

@@ -3,10 +3,14 @@
         <div class="post">
             <v-row>
                 <v-col class="col-2 col-lg-2 avatar">
-                    <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
+                    <router-link :to="'/users/' + author._id" @click="pushUserID">
+                        <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
+                    </router-link>
                 </v-col>
                 <v-col class="col-10">
-                    <h2>{{ author.name }}</h2>
+                    <router-link :to="'/users/' + author._id" @click="pushUserID">
+                        <h2>{{ author.name }}</h2>
+                    </router-link>
                     <h1>{{ postByID.title }}</h1>
                     <p>{{ date }}</p>
                 </v-col>
@@ -27,7 +31,7 @@
                 </v-col>
                 <v-col class="col-1 d-flex flex-column justify-center align-center">
                     <v-icon x-large>mdi-heart-outline</v-icon>
-                    <span>{{ postByID.likes.length }}</span>
+                    <span>{{ postByID.likes && postByID.likes.length }}</span>
                 </v-col>
             </v-row>
         </div>
@@ -58,7 +62,10 @@ export default {
     }),
     computed: mapGetters(['postByID', 'userByID', 'comments']),
     methods: {
-        ...mapActions(['getPostByID', 'getUserByID', 'getComments'])
+        ...mapActions(['getPostByID', 'getUserByID', 'getComments']),
+        pushUserID() {
+            this.$router.push({ name: 'user', params: { userID: this.author._id } }).catch(() => {});
+        },
     },
     async mounted() {
         await this.getPostByID(this.$route.params.id);
@@ -71,6 +78,10 @@ export default {
 </script>
 
 <style scoped>
+    a {
+        text-decoration: none;
+        color: rgba(0, 0, 0, 0.87);;
+    }
     .post, .comments {
         background: #f7f7f7;
         padding: 20px 0;

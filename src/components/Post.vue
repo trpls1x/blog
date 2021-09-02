@@ -4,7 +4,7 @@
             <v-row>
                 <v-col class="col-1">
                     <v-avatar>
-                        <Picture :image="author.avatar" :type="'avatar'"/>
+                        <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                     </v-avatar>
                 </v-col>
                 <v-col class="col-11 head">
@@ -20,7 +20,7 @@
             <v-row>
                 <v-col class="col-6 d-flex justify-start">
                     <span class="mr-3"><v-icon>mdi-heart-outline</v-icon> {{post.likes.length}} </span>
-                    <span><v-icon>mdi-chat-outline</v-icon> {{dataComments.length}}</span>
+                    <span><v-icon>mdi-chat-outline</v-icon> {{commentsLength}}</span>
                 </v-col>
                 <v-col class="col-6 d-flex justify-end">{{date}}</v-col>
             </v-row>
@@ -48,7 +48,7 @@ export default {
         author: {
             name: ''
         },
-        dataComments: []
+        commentsLength: 0
     }),
     computed: mapGetters(['userByID', 'comments']),
     methods: {
@@ -62,7 +62,7 @@ export default {
         await this.getUserByID(this.post.postedBy);
         this.author = this.userByID;
         await this.getComments(this.post._id);
-        this.dataComments = this.comments
+        this.commentsLength = this.comments.length
     }
 }
 </script>

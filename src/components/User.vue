@@ -1,8 +1,8 @@
 <template>
-    <router-link :to="'/users/' + user._id" @click="pushUserID(user._id)">
+    <router-link :to="'/users/' + user._id" @click="pushUserID">
         <div class="user d-flex">
             <v-col class="col-2 avatar d-flex justify-center align-center">
-                <v-avatar>
+                <v-avatar size="70">
                     <Picture :image="user.avatar" :type="'avatar'"/>
                 </v-avatar>
             </v-col>
@@ -28,8 +28,8 @@ export default {
         Picture
     },
     methods: {
-        pushUserID(id) {
-            this.$router.push({ name: 'user', params: { userID: id } }).catch(() => {});
+        pushUserID() {
+            this.$router.push({ name: 'user', params: { userID: this.user._id } }).catch(() => {});
         },
     }
 }

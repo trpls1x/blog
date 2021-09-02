@@ -1,5 +1,13 @@
 <template>
-    <div class="button-group">
+    <div class="button-group d-flex flex-column align-end">
+        <v-btn 
+            class="image-input" 
+            elevation="5"
+            icon
+            @click="triggerFileInput"
+        ><v-icon>mdi-camera</v-icon></v-btn>
+        <input type="file" accept="image/*" ref="imageInput" @change="uploadPhoto" hidden>
+        
         <UpdateProfile :user="user"/>
         
         <v-dialog max-width="400">
@@ -34,10 +42,19 @@ export default {
         UpdateProfile
     },
     methods: {
-        ...mapActions(['deleteUser']),
+        ...mapActions(['deleteUser', 'editUserPhoto', 'getUserByID']),
         async deleteProfile() {
             await this.deleteUser();
             this.$router.push({path: '/'})
+        },
+        triggerFileInput() {
+            this.$refs.imageInput.click()
+        },
+        async uploadPhoto(event) {
+            let formData = new FormData()
+            formData.append("avatar", event.target.files[0])
+            await this.editUserPhoto(formData)
+            this.getUserByID(this.user._id)
         }
     }
 }
@@ -47,10 +64,16 @@ export default {
     .text {
         width: 100%;
         padding: 15px;
-        font-size: 1.2rem;
     }
     .button-group, .activator {
+        position: relative;
         width: 100%;
         margin-top: 10px;
+    }
+    .image-input {
+        background: #F7F7F7;
+        position: absolute;
+        top: -55px;
+        margin: 5px;
     }
 </style>

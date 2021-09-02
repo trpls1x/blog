@@ -2,12 +2,14 @@ import api from "@/services/axiosApi";
 
 export default {
     actions: {
-        async fetchUsers({commit}) {
+        async fetchUsers({commit, getters}, payload) {
             const response = await api.get('/users', {
                 params: {
-                    limit: 0
+                    limit: getters.usersPagination.limit,
+                    ...payload,
                 }
             });
+            commit('updateTotalUsers', response.pagination.total)
             commit('updateUsers', response.data)
         },
         async getUserByID({commit}, userID) {
@@ -31,10 +33,18 @@ export default {
         async editUser({getters}, payload) {
             await api.patch('/users/' + getters.accountData._id, payload);
         },
+        async editUserPhoto({getters}, photo) {
+            await api.put('/users/upload/' + getters.accountData._id, photo, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+        },
         async deleteUser({dispatch, getters}) {
             await api.delete('/users/'+ getters.accountData._id)
             dispatch('logout')
-        }
+        },
+        
     },
     mutations: {
         updateUsers(state, users) {
@@ -42,14 +52,23 @@ export default {
         },
         updateUserByID(state, user) {
             state.userByID = user
+        },
+        updateTotalUsers(state, total) {
+            state.usersPagination.total = total
         }
     },
     state: {
         users: [],
-        userByID: {}
+        userByID: {},
+        usersPagination: {
+            total: null,
+            limit: 5,
+        }
     },
     getters: {
         users: state => state.users,
-        userByID: state => state.userByID
+        userByID: state => state.userByID,
+        usersPagination: state => state.usersPagination,
+        usersPages: state => Math.ceil(state.usersPagination.total / state.usersPagination.limit)
     }
 }
