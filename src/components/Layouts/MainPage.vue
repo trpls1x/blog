@@ -14,12 +14,11 @@
                         </template>
                         <v-list>
                             <router-link :to="'../users/' + accountData._id" @click="pushUserID" >
-                                <v-list-item @click="getUserByID(accountData._id)">
+                                <v-list-item @click="fetchData">
                                     <v-list-item-title>Profile</v-list-item-title>
                                 </v-list-item>
                             </router-link>
                             <v-list-item @click="logout"><v-list-item-title>Logout</v-list-item-title></v-list-item>
-                            <v-list-item @click="$router.go()"><v-list-item-title>test</v-list-item-title></v-list-item>
                         </v-list>
                     </v-menu>
                 </div>
@@ -44,9 +43,13 @@ export default {
     },
     computed: mapGetters(['accountData', 'isAuthenticated']),
     methods: {
-        ...mapActions(['getUserByID','logout']),
+        ...mapActions(['getUserByID', 'fetchPosts', 'logout']),
         async pushUserID() {
             await this.$router.push({ name: 'user', params: { userID: this.accountData._id } }).catch(() => {});
+        },
+        fetchData() {
+            this.getUserByID(this.accountData._id),
+            this.fetchPosts({postedBy: this.accountData._id, limit: 0})
         }
     }
 }

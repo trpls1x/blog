@@ -8,7 +8,7 @@
         ><v-icon>mdi-camera</v-icon></v-btn>
         <input type="file" accept="image/*" ref="imageInput" @change="uploadPhoto" hidden>
         
-        <UpdateProfile :user="user"/>
+        <EditProfile :user="user"/>
         
         <v-dialog max-width="400">
             <template v-slot:activator="{ on, attrs }">
@@ -30,7 +30,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import UpdateProfile from '@/components/ProfileComponents/UpdateProfile'
+import EditProfile from '@/components/ProfileComponents/EditProfile'
 
 export default {
     props: {
@@ -39,7 +39,7 @@ export default {
         }
     },
     components: {
-        UpdateProfile
+        EditProfile
     },
     methods: {
         ...mapActions(['deleteUser', 'editUserPhoto', 'getUserByID']),

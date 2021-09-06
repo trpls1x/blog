@@ -7,12 +7,13 @@
                         <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                     </router-link>
                 </v-col>
-                <v-col class="col-10">
-                    <router-link :to="'/users/' + author._id" @click="pushUserID">
-                        <h2>{{ author.name }}</h2>
-                    </router-link>
+                <v-col class="col-9">
+                    <h2><router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name }}</router-link></h2>
                     <h1>{{ postByID.title }}</h1>
-                    <p>{{ date }}</p>
+                    <span class="text--secondary">{{ date }}</span>
+                </v-col>
+                <v-col v-if="accountData && author._id == accountData._id" class="col-1 d-flex justify-end">
+                    <PostMenu/>
                 </v-col>
             </v-row>
             <v-row class="post-image">
@@ -29,9 +30,12 @@
                     <h3>{{ postByID.description }}</h3>
                     <p>{{ postByID.fullText }}</p>
                 </v-col>
-                <v-col class="col-1 d-flex flex-column justify-center align-center">
-                    <v-icon x-large>mdi-heart-outline</v-icon>
-                    <span>{{ postByID.likes && postByID.likes.length }}</span>
+                <v-col class="col-1 d-flex justify-center align-center">
+                    <v-badge :value="hover" color="#39BEA1" :content="postByID.likes && postByID.likes.length">
+                        <v-hover v-model="hover">
+                            <v-icon @click="putLike" large>{{Liked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                        </v-hover>
+                    </v-badge>
                 </v-col>
             </v-row>
         </div>
@@ -39,7 +43,8 @@
         <div class="comments">
             <v-row>
                 <v-col class="col-12"><h2>Comment section: {{ comments.length }}</h2></v-col>
-                <Comment v-for="comment in comments" :key="comment._id" :comment="comment"/>
+                <CreateComment v-if="accountData"/>
+                <Comment v-for="(comment, index) in comments" :key="comment._id" :comment="comment" :index="index"/>
             </v-row>
         </div>
     </v-container>
@@ -49,31 +54,43 @@
 import { mapActions, mapGetters } from 'vuex'
 import timeDifference from '@/services/timeDifference.service.js'
 import Picture from '@/components/Picture'
+import PostMenu from '@/components/PostComponents/PostMenu'
+import CreateComment from '@/components/CommentComponents/CreateComment'
 import Comment from '@/components/Comment'
 
 export default {
     components: {
         Picture,
+        PostMenu,
+        CreateComment,
         Comment
     },
     data: () => ({
         author: {},
         date: '',
+        Liked: false,
+        hover: false,
     }),
-    computed: mapGetters(['postByID', 'userByID', 'comments']),
+    computed: mapGetters(['postByID', 'userByID', 'comments', 'isLiked', 'isAuthenticated', 'accountData']),
     methods: {
-        ...mapActions(['getPostByID', 'getUserByID', 'getComments']),
+        ...mapActions(['getPostByID', 'getUserByID', 'getComments', 'likePost']),
         pushUserID() {
             this.$router.push({ name: 'user', params: { userID: this.author._id } }).catch(() => {});
         },
+        async putLike() {
+            await this.likePost();
+            await this.getPostByID(this.$route.params.id)
+            this.Liked = this.isLiked;
+        }
     },
     async mounted() {
         await this.getPostByID(this.$route.params.id);
+        this.Liked = this.isLiked;
         await this.getUserByID(this.postByID.postedBy);
         this.author = this.userByID;
         await this.getComments(this.postByID._id);
         this.date = timeDifference(this.postByID.dateCreated); 
-    }
+    },
 }
 </script>
 

@@ -12,23 +12,37 @@ export default {
             commit('updateTotalPosts', response.pagination.total)
             commit('updatePosts', response.data);
         },
-        async getPostByID({commit}, postID) {
+        async getPostByID({commit, getters}, postID) {
             const response = await api.get('/posts/' + postID);
             commit('updatePostByID', response);
+            commit('updateIsLiked', false)
+            if(getters.isAuthenticated) {
+                response.likes.forEach(element => {
+                    if(element == getters.accountData._id) {
+                        commit('updateIsLiked', true)
+                    }
+                });
+            }
         },
         async createPost(ctx, payload) {
             await api.post('/posts', payload)
         },
-        async putLike(ctx, postID) {
-            await api.put('/posts/like/' + postID)
+        async editPost({getters}, payload) {
+            await api.patch('/posts/' + getters.postByID._id, payload);
         },
-        // checkLike({commit, getters}, post) {
-        //     post.likes.forEach((element) => {
-        //         if(element == getters.accountData._id) {
-
-        //         }
-        //     })
-        // }
+        async editPostImage({getters}, photo) {
+            await api.put('/posts/upload/' + getters.postByID._id, photo, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+        },
+        async deletePost({getters}) {
+            await api.delete('/posts/' + getters.postByID._id)
+        },
+        async likePost({getters}) {
+            await api.put('/posts/like/' + getters.postByID._id)
+        }
     },
     mutations: {
         updatePosts(state, posts) {
@@ -40,14 +54,9 @@ export default {
         updateTotalPosts(state, total) {
             state.postsPagination.total = total
         },
-        // updateIsLiked(state) {
-
-        // }
-        // checkLike(state, post) {
-        //     post.likes.forEach((element) => {
-        //         if(element==)
-        //     })
-        // }
+        updateIsLiked(state, value) {
+            state.isLiked = value
+        }
     },
     state: {
         posts: [],
@@ -62,6 +71,7 @@ export default {
         posts: state => state.posts,
         postByID: state => state.postByID,
         postsPagination: state => state.postsPagination,
-        postsPages: state => Math.ceil(state.postsPagination.total / state.postsPagination.limit)
+        postsPages: state => Math.ceil(state.postsPagination.total / state.postsPagination.limit),
+        isLiked: state => state.isLiked
     }
 }
