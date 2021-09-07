@@ -9,6 +9,14 @@ export default ({
         async postComment({getters}, payload) {
             await api.post('/comments/post/' + getters.postByID._id, payload)
         },
+        async editComment({dispatch, getters}, payload) {
+            await api.patch('/comments/' + payload.commentID, payload.comment);
+            dispatch('getComments', getters.postByID._id)
+        },
+        async deleteComment({dispatch, getters}, commentID) {
+            await api.delete('/comments/' + commentID)
+            dispatch('getComments', getters.postByID._id)
+        },
         async likeComment(ctx, commentID) {
             await api.put('/comments/like/' + commentID)
         }

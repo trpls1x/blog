@@ -3,6 +3,7 @@
         <header>
             <v-container class="d-flex align-center justify-space-between">
                 <router-link :to="'/'"><v-img src="@/assets/logo.svg" alt="logo"/></router-link>
+                <!-- <v-btn @click="test">TEST</v-btn> -->
                 <div v-if="isAuthenticated" class="profile">
                     <v-menu v-if="accountData" offset-y>
                         <template v-slot:activator="{ on, attrs }">
@@ -41,7 +42,7 @@ export default {
     components: {
         Picture
     },
-    computed: mapGetters(['accountData', 'isAuthenticated']),
+    computed: mapGetters(['accountData', 'isAuthenticated', 'usersMap']),
     methods: {
         ...mapActions(['getUserByID', 'fetchPosts', 'logout']),
         async pushUserID() {
@@ -50,7 +51,12 @@ export default {
         fetchData() {
             this.getUserByID(this.accountData._id),
             this.fetchPosts({postedBy: this.accountData._id, limit: 0})
-        }
+        },
+        // test() {
+        //     console.log(this.usersMap.hasOwnProperty(this.accountData._id)); 
+            
+        //     console.log(this.usersMap);
+        // }
     }
 }
 </script>

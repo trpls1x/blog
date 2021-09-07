@@ -1,5 +1,5 @@
 <template>
-    <v-container v-if="fetched">
+    <v-container v-if="contentLoaded">
         <v-row class="user-info">
             <v-col class="col-4 avatar">
                 <Picture :image="userByID.avatar" :ratio="1" :type="'avatar'"/>
@@ -43,7 +43,7 @@ export default {
     },
     data: () => ({
         placeholder: 'Not specified',
-        fetched: false
+        contentLoaded: false
     }),
     computed: mapGetters(['userByID', 'posts', 'isAuthenticated', 'accountData']),
     methods: {
@@ -55,7 +55,7 @@ export default {
             postedBy: this.$route.params.id,
             limit: 0
         });
-        this.fetched = true
+        this.contentLoaded = true
     }
 }
 </script>

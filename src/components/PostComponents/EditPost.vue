@@ -105,7 +105,6 @@ export default {
                 description: this.description,
                 fullText: this.fullText
             })
-            this.getPostByID(this.postByID._id)
         }
     },
     mounted() {
@@ -113,7 +112,6 @@ export default {
         this.description = this.postByID.description;
         this.fullText = this.postByID.fullText;
     }
-
 }
 </script>
 
@@ -131,5 +129,4 @@ export default {
     .v-input {
         padding: 0;
     }
-
 </style>

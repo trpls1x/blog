@@ -27,8 +27,9 @@ export default {
         async createPost(ctx, payload) {
             await api.post('/posts', payload)
         },
-        async editPost({getters}, payload) {
+        async editPost({dispatch, getters}, payload) {
             await api.patch('/posts/' + getters.postByID._id, payload);
+            dispatch('getPostByID', getters.postByID._id)
         },
         async editPostImage({getters}, photo) {
             await api.put('/posts/upload/' + getters.postByID._id, photo, {

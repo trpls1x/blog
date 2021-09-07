@@ -1,6 +1,6 @@
 <template>
     <router-link :to="'../posts/' + post._id" @click="pushPostID(post._id)">
-        <div class="post">
+        <div v-if="contentLoaded" class="post">
             <v-row>
                 <v-col class="col-1">
                     <v-avatar>
@@ -25,6 +25,11 @@
                 <v-col class="col-6 d-flex justify-end">{{date}}</v-col>
             </v-row>
         </div>
+        <v-skeleton-loader 
+            v-else
+            class="skeleton"
+            type="list-item-avatar-two-line, image, table-heading"
+        ></v-skeleton-loader>
     </router-link>
 </template>
 
@@ -45,12 +50,11 @@ export default {
     },
     data: () => ({
         date: null,
-        author: {
-            name: ''
-        },
-        commentsLength: 0
+        author: {},
+        commentsLength: 0,
+        contentLoaded: false,
     }),
-    computed: mapGetters(['userByID', 'comments']),
+    computed: mapGetters(['userByID', 'comments', 'usersMap']),
     methods: {
         ...mapActions(['getUserByID', 'getComments']),
         pushPostID(id) {
@@ -59,23 +63,36 @@ export default {
     },
     async mounted() {
         this.date = timeDifference(this.post.dateCreated);
-        await this.getUserByID(this.post.postedBy);
-        this.author = this.userByID;
+        // if(this.usersMap[this.post.postedBy]) { 
+        //     console.log('from map');
+        //     this.author = this.usersMap[this.post.postedBy];
+        // } else {
+        //     console.log('from request');
+            await this.getUserByID(this.post.postedBy);
+            this.author = this.userByID;
+        // }
         await this.getComments(this.post._id);
         this.commentsLength = this.comments.length
+
+        this.contentLoaded = true
     }
 }
 </script>
 
 <style scoped>
-    .post {
-        background: #f7f7f7;
+    .post, .skeleton {
+        background: #fff;
         padding: 20px 0;
         border-radius: 15px;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
         margin-bottom: 15px;
+    }
+
+    .post {
+        background: #f7f7f7;
         transition: .1s ease-in-out;
     }
+    
     .post:hover {
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 50%), 0px 5px 8px 0px rgb(0 0 0 / 34%), 0px 1px 14px 0px rgb(0 0 0 / 22%);
         transition: .2s ease-in-out;

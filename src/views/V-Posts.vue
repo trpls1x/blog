@@ -3,7 +3,7 @@
         <v-row>
             <v-col class="posts col-9">
                 <CreatePost v-if="isAuthenticated" />
-                <div v-if="fetched">
+                <div v-if="contentLoaded">
                     <Post v-for="post in posts" :key="post._id" :post="post" />
                     <div class="pagination d-flex justify-center">
                         <v-pagination
@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <v-skeleton-loader 
-                    v-for="i in 5"
+                    v-for="i in postsPagination.limit"
                     :key="i"
                     v-else
                     class="skeleton"
@@ -44,17 +44,21 @@ export default {
         Navigation
     },
     data: () => ({
-        fetched: false,
+        contentLoaded: false,
         currentPage: 1
     }),
     computed: mapGetters(['posts', 'isAuthenticated', 'postsPages', 'postsPagination']),
     watch: {
         async currentPage() {
-            this.fetched = false;
+            this.contentLoaded = false;
             await this.fetchPosts({
                 skip: (this.currentPage - 1) * this.postsPagination.limit 
             });
-            this.fetched = true
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+            this.contentLoaded = true
         }
     },
     methods: {
@@ -62,7 +66,7 @@ export default {
     },
     async mounted() {
         await this.fetchPosts();
-        this.fetched = true
+        this.contentLoaded = true
     }
 }
 </script>

@@ -52,7 +52,7 @@ export default {
         },
         async deleteClick() {
             await this.deletePost();
-            this.$router.push({path: '/'})
+            this.$router.go(-1)
         }
     }
     

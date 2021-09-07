@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength, alpha } from 'vuelidate/lib/validators'
 
@@ -104,6 +104,7 @@ export default ({
         name: { required, alpha }
     },
     computed: {
+        ...mapGetters(['isAuthenticated']),
         emailErrors () {
             const errors = [];
             if (!this.$v.email.$dirty) return errors;
@@ -154,6 +155,11 @@ export default ({
             this.skills = null;
             this.profession = null;
             this.details = null;
+        }
+    },
+    created() {
+        if(this.isAuthenticated) {
+            this.$router.push({path:'/'})
         }
     }
 })

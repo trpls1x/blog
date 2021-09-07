@@ -1,15 +1,15 @@
 <template>
     <router-link :to="'/users/' + user._id" @click="pushUserID">
-        <div class="user d-flex">
-            <v-col class="col-2 avatar d-flex justify-center align-center">
-                <v-avatar size="70">
-                    <Picture :image="user.avatar" :type="'avatar'"/>
-                </v-avatar>
-            </v-col>
-            <v-col>
-                <h3>{{ user.name }}</h3>
-                <span>{{ user.email }}</span>
-            </v-col>
+        <div class="user">
+            <v-row>
+                <v-col class="col-2 avatar">
+                    <Picture :image="user.avatar" :ratio="1" :type="'avatar'"/>
+                </v-col>
+                <v-col class="col-7 d-flex flex-column justify-center">
+                    <h3>{{ user.name }}</h3>
+                    <span>{{ user.email }}</span>
+                </v-col>
+            </v-row>
         </div>
     </router-link>
 </template>
@@ -45,7 +45,10 @@ export default {
         transition: .1s ease-in-out;
     }
     .user:hover {
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
+        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 50%), 0px 5px 8px 0px rgb(0 0 0 / 34%), 0px 1px 14px 0px rgb(0 0 0 / 22%);
         transition: .2s ease-in-out;
+    }
+    .avatar .v-image{
+        border-radius: 50%;
     }
 </style>

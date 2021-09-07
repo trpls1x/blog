@@ -88,13 +88,18 @@ export default ({
                         email: this.email,
                         password: this.password
                     })
-                    this.$router.push({path:'/'})
+                    this.$router.go(-1)
                 } catch {
                     this.dialog = true;
                     this.email = this.password = '';
                     this.$v.$touch()
                 }
             }
+        }
+    },
+    created() {
+        if(this.isAuthenticated) {
+            this.$router.push({path:'/'})
         }
     }
 })

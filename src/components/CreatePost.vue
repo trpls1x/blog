@@ -95,6 +95,7 @@ export default {
                     fullText: this.fullText
                 })
                 this.title = this.description = this.fullText = ''
+                this.$v.$reset();
                 this.fetchPosts()
             }
         }

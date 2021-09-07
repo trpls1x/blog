@@ -15,11 +15,11 @@ export default {
         async getUserByID({commit}, userID) {
             try {
                 const response = await api.get('/users/' + userID);
-                commit('updateUserByID',response)
+                commit('updateUserByID', response)
             } catch {
                 commit('updateUserByID', {
                     name: 'DELETED',
-                    id: 'deleted',
+                    _id: null,
                 })
             }
         },
@@ -52,6 +52,7 @@ export default {
         },
         updateUserByID(state, user) {
             state.userByID = user
+            // state.usersMap[user._id] = user
         },
         updateTotalUsers(state, total) {
             state.usersPagination.total = total
@@ -59,14 +60,16 @@ export default {
     },
     state: {
         users: [],
+        // usersMap: {},
         userByID: {},
         usersPagination: {
             total: null,
-            limit: 5,
+            limit: 7,
         }
     },
     getters: {
         users: state => state.users,
+        // usersMap: state => state.usersMap,
         userByID: state => state.userByID,
         usersPagination: state => state.usersPagination,
         usersPages: state => Math.ceil(state.usersPagination.total / state.usersPagination.limit)
