@@ -51,7 +51,7 @@ export default {
             this.getPostByID(this.postByID._id)
         },
         async deleteClick() {
-            await this.deletePost();
+            await this.deletePost(this.postByID._id);
             this.$router.go(-1)
         }
     }

@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <v-col class="posts col-9">
+            <v-col class="posts col-12 col-md-9 order-last order-md-first">
                 <CreatePost v-if="isAuthenticated" />
                 <div v-if="contentLoaded">
                     <Post v-for="post in posts" :key="post._id" :post="post" />
@@ -23,8 +23,24 @@
                     type="list-item-avatar-two-line, image, table-heading"
                 ></v-skeleton-loader>
             </v-col>
-            <v-col class="nav col-3">
-                <Navigation />
+            <v-col class="col-12 col-md-3 order-first order-md-last pb-0">
+                <div class="nav">
+                    <Navigation/>
+                    <v-text-field 
+                        v-model="searchText"
+                        class="search"
+                        color="#39BEA1"
+                        placeholder="Search for post..."
+                        append-icon="mdi-magnify"
+                        hide-details="auto"
+                        @keydown="typing()"
+                        @keyup="finishedTyping()"
+                        @click:clear="finishedTyping()"
+                        solo
+                        clearable
+                    >
+                    </v-text-field>
+                </div>
             </v-col>
         </v-row>
     </v-container>
@@ -45,14 +61,17 @@ export default {
     },
     data: () => ({
         contentLoaded: false,
-        currentPage: 1
+        currentPage: 1,
+        typingTimer: null,
+        searchText: ''
     }),
     computed: mapGetters(['posts', 'isAuthenticated', 'postsPages', 'postsPagination']),
     watch: {
         async currentPage() {
             this.contentLoaded = false;
             await this.fetchPosts({
-                skip: (this.currentPage - 1) * this.postsPagination.limit 
+                skip: (this.currentPage - 1) * this.postsPagination.limit ,
+                search: this.searchText
             });
             window.scrollTo({
                 top: 0,
@@ -63,6 +82,20 @@ export default {
     },
     methods: {
         ...mapActions(['fetchPosts']),
+        typing() {
+            clearTimeout(this.typingTimer)
+        },
+        finishedTyping() {
+            clearTimeout(this.typingTimer);
+            this.typingTimer = setTimeout(() => this.search(), 500);
+        },
+        async search() {
+            this.contentLoaded = false;
+            await this.fetchPosts({
+                search: this.searchText
+            });
+            this.contentLoaded = true
+        }
     },
     async mounted() {
         await this.fetchPosts();
@@ -72,11 +105,15 @@ export default {
 </script>
 
 <style scoped>
+    .nav {
+        position: sticky;
+        top: 12px
+    }
     .posts a {
-        color: #000;
+        color: rgba(0, 0, 0, 0.87);
         text-decoration: none;
     }
-    .skeleton {
+    .skeleton{
         background: #FFF;
         padding: 20px 0;
         border-radius: 15px;        
@@ -88,6 +125,10 @@ export default {
         padding: 10px;
         border-radius: 15px;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        margin-bottom: 15px;
+    }
+    .search {
+        border-radius: 15px;
+        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
+        padding-bottom: 0;
     }
 </style>

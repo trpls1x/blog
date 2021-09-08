@@ -25,5 +25,6 @@ export default {
 <style scoped>
   #app {
     background: #39BEA1;
+    overflow: hidden;
   }
 </style>

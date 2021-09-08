@@ -68,6 +68,10 @@ export default {
 </script>
 
 <style scoped>
+    .nav {
+        position: sticky;
+        top: 12px
+    }
     .users a {
         color: #000;
         text-decoration: none;

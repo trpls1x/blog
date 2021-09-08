@@ -4,12 +4,12 @@
             <div class="post">
                 <v-row>
                     <v-col class="col-2 col-lg-2 avatar">
-                        <router-link :to="'/users/' + author._id" @click="pushUserID">
+                        <router-link :to="author._id ? '/users/' + author._id : '/deleted'" @click="pushUserID">
                             <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                         </router-link>
                     </v-col>
-                    <v-col class="col-9">
-                        <h2><router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name }}</router-link></h2>
+                    <v-col class="col-9 d-flex flex-column justify-center">
+                        <h2><router-link :to="author._id ? '/users/' + author._id : '/deleted'" @click="pushUserID">{{ author.name }}</router-link></h2>
                         <h1>{{ postByID.title }}</h1>
                         <span class="text--secondary">{{ date }}</span>
                     </v-col>
@@ -89,7 +89,7 @@ export default {
         hover: false,
         contentLoaded: false
     }),
-    computed: mapGetters(['postByID', 'userByID', 'comments', 'isLiked', 'isAuthenticated', 'accountData', 'usersMap']),
+    computed: mapGetters(['postByID', 'userByID', 'comments', 'isAuthenticated', 'accountData']),
     methods: {
         ...mapActions(['getPostByID', 'getUserByID', 'getComments', 'likePost']),
         ...mapMutations(['updateFollowedComment']),
@@ -99,13 +99,19 @@ export default {
         async putLike() {
             await this.likePost();
             await this.getPostByID(this.$route.params.id)
-            this.Liked = this.isLiked;
+            this.Liked = !this.Liked;
         }
     },
     async mounted() {
         this.updateFollowedComment({comment: null});
         await this.getPostByID(this.$route.params.id);
-        this.Liked = this.isLiked;
+        if(this.isAuthenticated) {
+            this.postByID.likes.forEach(element => {
+                if(element == this.accountData._id) {
+                    this.Liked = true;
+                }
+            });
+        }
         await this.getUserByID(this.postByID.postedBy);
         this.author = this.userByID;
         await this.getComments(this.postByID._id);

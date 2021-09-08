@@ -12,17 +12,9 @@ export default {
             commit('updateTotalPosts', response.pagination.total)
             commit('updatePosts', response.data);
         },
-        async getPostByID({commit, getters}, postID) {
+        async getPostByID({commit}, postID) {
             const response = await api.get('/posts/' + postID);
             commit('updatePostByID', response);
-            commit('updateIsLiked', false)
-            if(getters.isAuthenticated) {
-                response.likes.forEach(element => {
-                    if(element == getters.accountData._id) {
-                        commit('updateIsLiked', true)
-                    }
-                });
-            }
         },
         async createPost(ctx, payload) {
             await api.post('/posts', payload)
@@ -38,8 +30,8 @@ export default {
                 }
             })
         },
-        async deletePost({getters}) {
-            await api.delete('/posts/' + getters.postByID._id)
+        async deletePost(ctx, postID) {
+            await api.delete('/posts/' + postID)
         },
         async likePost({getters}) {
             await api.put('/posts/like/' + getters.postByID._id)
@@ -54,15 +46,11 @@ export default {
         },
         updateTotalPosts(state, total) {
             state.postsPagination.total = total
-        },
-        updateIsLiked(state, value) {
-            state.isLiked = value
         }
     },
     state: {
         posts: [],
         postByID: {},
-        isLiked: false,
         postsPagination: {
             total: null,
             limit: 5,
@@ -72,7 +60,6 @@ export default {
         posts: state => state.posts,
         postByID: state => state.postByID,
         postsPagination: state => state.postsPagination,
-        postsPages: state => Math.ceil(state.postsPagination.total / state.postsPagination.limit),
-        isLiked: state => state.isLiked
+        postsPages: state => Math.ceil(state.postsPagination.total / state.postsPagination.limit)
     }
 }

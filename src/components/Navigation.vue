@@ -1,5 +1,5 @@
 <template>
-    <div class="nav d-flex flex-column align-stretch text-center">
+    <div class="nav d-none d-md-flex flex-column align-stretch text-center">
         <router-link :to="'/posts'">Posts</router-link>
         <router-link :to="'/users'">Users</router-link>
     </div>
@@ -13,12 +13,10 @@
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
         margin-bottom: 10px;
         font-size: 1.2rem;
-        position: sticky;
-        top: 12px
     }
     .nav a {
         text-decoration: none;
-        color: #000;
+        color: rgba(0, 0, 0, 0.87);
         padding: 10px;
         transition: .1s ease-in-out;
     }

@@ -1,13 +1,11 @@
 <template>
     <router-link :to="'../posts/' + post._id" @click="pushPostID(post._id)">
         <div v-if="contentLoaded" class="post">
-            <v-row>
-                <v-col class="col-1">
-                    <v-avatar>
-                        <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
-                    </v-avatar>
+            <v-row class="d-flex align-center">
+                <v-col class="col-3 col-sm-2 col-md-2 col-lg-1 avatar">
+                    <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                 </v-col>
-                <v-col class="col-11 head">
+                <v-col class="col-9 col-md-10 col-lg-11 head">
                     <h4>{{author.name}}</h4>
                     <h3>{{post.title}}</h3>
                 </v-col>
@@ -54,7 +52,7 @@ export default {
         commentsLength: 0,
         contentLoaded: false,
     }),
-    computed: mapGetters(['userByID', 'comments', 'usersMap']),
+    computed: mapGetters(['userByID', 'comments']),
     methods: {
         ...mapActions(['getUserByID', 'getComments']),
         pushPostID(id) {
@@ -87,12 +85,10 @@ export default {
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
         margin-bottom: 15px;
     }
-
     .post {
         background: #f7f7f7;
         transition: .1s ease-in-out;
     }
-    
     .post:hover {
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 50%), 0px 5px 8px 0px rgb(0 0 0 / 34%), 0px 1px 14px 0px rgb(0 0 0 / 22%);
         transition: .2s ease-in-out;
@@ -100,8 +96,14 @@ export default {
     .row {
         padding: 0 20px;
     }
+    .avatar .v-image {
+        border-radius: 50%;
+    }
     .head {
-        padding-left:25px;
+        padding-left:15px;
+        text-overflow: ellipsis;
+        overflow: hidden; 
+        white-space: nowrap;
     }
     .post-image {
         padding: 0;

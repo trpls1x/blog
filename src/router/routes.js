@@ -1,7 +1,8 @@
 const routes = [
     { 
         path: '/', 
-        redirect: '/posts'},
+        redirect: '/posts'
+    },
     { 
         path: '/login', 
         component: () => import('@/components/Layouts/Card'), 
@@ -62,7 +63,7 @@ const routes = [
             component: () => import('@/views/V-UserProfile')
         }] 
     },
-    { 
+    {   
         path: '*', 
         component: () => import('@/components/Layouts/Card'), 
         children: [

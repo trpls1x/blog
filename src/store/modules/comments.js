@@ -25,9 +25,6 @@ export default ({
         updateComments(state, comments) {
             state.comments = comments;
         },
-        addAuthor(state, {index, author}) {
-            state.comments[index].author = author
-        },
         updateFollowedComment(state, {comment, author}) {
             state.followedComment = comment;
             if(comment) {

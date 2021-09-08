@@ -131,9 +131,7 @@ export default ({
         ...mapActions(['postUser']),
         async submit() {
             this.$v.$touch()
-            if(this.$v.$invalid) {
-                console.log('error')
-            } else { 
+            if(!this.$v.$invalid) {
                 await this.postUser({
                     email: this.email,
                     password: this.password,
@@ -147,14 +145,8 @@ export default ({
             }
         },
         clear() {
+            this.email = this.password = this.name = this.extra_details = this.skills = this.profession = this.details = null;
             this.$v.$reset();
-            this.email = null;
-            this.password = null;
-            this.name = null;
-            this.extra_details = null;
-            this.skills = null;
-            this.profession = null;
-            this.details = null;
         }
     },
     created() {
@@ -167,7 +159,7 @@ export default ({
 
 <style scoped>
     .v-input {
-        margin-bottom: 15px;
+        margin-bottom: 15px !important;
     } 
     .v-btn {
         margin: 6px 0;

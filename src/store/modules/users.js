@@ -41,7 +41,11 @@ export default {
             })
         },
         async deleteUser({dispatch, getters}) {
+            await getters.posts.forEach(element => {
+                dispatch('deletePost', element._id)
+            });
             await api.delete('/users/'+ getters.accountData._id)
+
             dispatch('logout')
         },
         

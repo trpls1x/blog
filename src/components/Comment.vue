@@ -15,7 +15,7 @@
                         <span class="text--disabled">{{ date }}</span> <br>
                         <div v-if="followedComment" class="followedComment text--secondary">
                             <v-icon>mdi-share</v-icon>
-                            <span class="font-weight-medium"> {{followedComment.author}}: </span>
+                            <span class="font-weight-medium"> {{ followedComment.author }}: </span>
                             <span>{{ followedComment.text }}</span>
                         </div>
                         <span v-if="!editMode">{{ comment.text }}</span>
@@ -67,7 +67,7 @@
                             @click="reply()"><v-icon>mdi-reply</v-icon>
                         </v-btn>
                     </div>
-                                    
+                                         
                     <v-badge :value="likeHover" color="#39BEA1" :content="likes || '0'">
                         <v-hover v-model="likeHover">
                             <v-icon @click="putLike()">{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
@@ -102,7 +102,7 @@ export default {
         likes: 0,
         isLiked: false,
         likeHover: false,
-        hover: false,
+        hover: true,
         editMode: false,
         author: {},
         followedComment: null
@@ -110,7 +110,7 @@ export default {
     computed: mapGetters(['userByID', 'isAuthenticated', 'accountData', 'comments']),
     methods: {
         ...mapActions(['getUserByID', 'likeComment', 'editComment', 'deleteComment']),
-        ...mapMutations(['updateFollowedComment', 'addAuthor']),
+        ...mapMutations(['updateFollowedComment']),
         async putLike() {
             await this.likeComment(this.comment._id);
             this.isLiked = !this.isLiked;
@@ -148,23 +148,20 @@ export default {
         if(this.accountData) {
             this.comment.likes.forEach(element => {
                 if(element == this.accountData._id) {
-                    this.isLiked = true
+                    this.isLiked = true;
                 }
             });
         }
         this.likes = this.comment.likes.length;
         this.date = timeDifference(this.comment.dateCreated);
-
-        await this.getUserByID(this.comment.commentedBy)
-        this.author = this.userByID
-        this.addAuthor({
-            index: this.index,
-            author: this.author.name || 'DELETED'
-        })
-        
+        await this.getUserByID(this.comment.commentedBy);
+        this.author = this.userByID;
         if(this.comment.followedCommentID) {
-            this.followedComment = this.comments.filter(comment => comment._id == this.comment.followedCommentID)[0]
+            this.followedComment = this.comments.filter(comment => comment._id == this.comment.followedCommentID)[0];
+            await this.getUserByID(this.followedComment.commentedBy);
+            this.followedComment.author = this.userByID.name;
         }
+        this.hover = false;
     }
 }
 </script>
