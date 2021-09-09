@@ -2,13 +2,13 @@
     <v-col class="col-12 comment">
         <v-hover v-slot:default="{ hover }" :value="hover">
             <v-row>
-                <v-col class="col-1 avatar">
+                <div class="d-none d-md-block avatar">
                     <router-link :to="'/users/' + author._id" @click="pushUserID">
                         <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                     </router-link>
-                </v-col>
-                <v-col class="col-9">
-                    <div>
+                </div>
+                <v-row class="comment-body">
+                    <v-col class="col-11 col-md-10">
                         <h3 class="d-inline mr-2">
                             <router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name }}</router-link>
                         </h3>
@@ -25,55 +25,56 @@
                                 <v-btn icon @click="editMode = !editMode"><v-icon>mdi-close</v-icon></v-btn>
                             </template>  
                         </v-text-field>
-                    </div>
-                </v-col>
-                <v-col class="col-2 d-flex justify-end align-center">
-                    <div v-if="accountData" class="d-flex justify-end align-center">
-                        <div v-if="author._id == accountData._id">
+                    </v-col>
+                    <v-col class="col-1 col-md-2 d-flex justify-end align-center">
+                        <div v-if="accountData" class="d-flex justify-end align-center">
+                            <div v-if="author._id == accountData._id">
+                                <v-btn 
+                                    icon
+                                    v-if="!editMode" 
+                                    :class="hover ? 'd-inline' : 'd-none'" 
+                                    class="mr-3"
+                                    @click="changeMode()"><v-icon small>mdi-pencil</v-icon>
+                                </v-btn>
+                                <v-dialog v-else max-width="400">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn 
+                                            v-bind="attrs" 
+                                            v-on="on"
+                                            icon
+                                            :class="hover ? 'd-inline' : 'd-none'" 
+                                            class="mr-3"
+                                        ><v-icon small>mdi-delete</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <template v-slot:default="dialog">
+                                        <v-card>
+                                            <v-toolbar color="#b70000" dark>Delete comment</v-toolbar>
+                                            <div class="text d-flex justify-center"><span class="text-center">Are you sure want to delete this comment?</span></div>
+                                            <v-card-actions class="justify-end">
+                                                <v-btn color="#b70000" text @click="deleteComment(comment._id); dialog.value = false">Delete</v-btn>
+                                                <v-btn text @click="dialog.value = false">Cancel</v-btn>
+                                            </v-card-actions>
+                                        </v-card>
+                                    </template>
+                                </v-dialog>              
+                            </div>
                             <v-btn 
                                 icon
-                                v-if="!editMode" 
                                 :class="hover ? 'd-inline' : 'd-none'" 
                                 class="mr-3"
-                                @click="changeMode()"><v-icon small>mdi-pencil</v-icon>
+                                @click="reply()"><v-icon>mdi-reply</v-icon>
                             </v-btn>
-                            <v-dialog v-else max-width="400">
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn 
-                                        v-bind="attrs" 
-                                        v-on="on"
-                                        icon
-                                        :class="hover ? 'd-inline' : 'd-none'" 
-                                        class="mr-3"
-                                    ><v-icon small>mdi-delete</v-icon>
-                                    </v-btn>
-                                </template>
-                                <template v-slot:default="dialog">
-                                    <v-card>
-                                        <v-toolbar color="#b70000" dark>Delete comment</v-toolbar>
-                                        <div class="text d-flex justify-center"><span class="text-center">Are you sure want to delete this comment?</span></div>
-                                        <v-card-actions class="justify-end">
-                                            <v-btn color="#b70000" text @click="deleteComment(comment._id); dialog.value = false">Delete</v-btn>
-                                            <v-btn text @click="dialog.value = false">Cancel</v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                </template>
-                            </v-dialog>              
                         </div>
-                        <v-btn 
-                            icon
-                            :class="hover ? 'd-inline' : 'd-none'" 
-                            class="mr-3"
-                            @click="reply()"><v-icon>mdi-reply</v-icon>
-                        </v-btn>
-                    </div>
-                                         
-                    <v-badge :value="likeHover" color="#39BEA1" :content="likes || '0'">
-                        <v-hover v-model="likeHover">
-                            <v-icon @click="putLike()">{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
-                        </v-hover>
-                    </v-badge>
-                </v-col>
+                                            
+                        <v-badge :value="likeHover" color="#39BEA1" :content="likes || '0'">
+                            <v-hover v-model="likeHover">
+                                <v-icon @click="putLike()">{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                            </v-hover>
+                        </v-badge>
+                    </v-col>
+                </v-row>
+                
             </v-row>
         </v-hover>
     </v-col>
@@ -167,9 +168,16 @@ export default {
 </script>
 
 <style scoped>
+    .comment {
+        margin-top: 12px;
+    }
     a {
         text-decoration: none;
         color: #000;
+    }
+    .avatar {
+        width: 55px;
+        margin-left: 12px;
     }
     .avatar .v-image {
         border-radius: 50%;
@@ -177,5 +185,13 @@ export default {
     .text {
         width: 100%;
         padding: 15px;
+    }
+    .followedComment {
+        text-overflow: ellipsis;
+        overflow: hidden; 
+        white-space: nowrap;
+    }
+    .comment-body {
+        padding: 0 12px !important;
     }
 </style>

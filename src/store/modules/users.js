@@ -68,7 +68,7 @@ export default {
         userByID: {},
         usersPagination: {
             total: null,
-            limit: 7,
+            limit: 14,
         }
     },
     getters: {

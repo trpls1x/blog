@@ -2,13 +2,13 @@
     <router-link :to="'../posts/' + post._id" @click="pushPostID(post._id)">
         <div v-if="contentLoaded" class="post">
             <v-row class="d-flex align-center">
-                <v-col class="col-3 col-sm-2 col-md-2 col-lg-1 avatar">
+                <div class="avatar">
                     <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
-                </v-col>
-                <v-col class="col-9 col-md-10 col-lg-11 head">
+                </div>
+                <div class="head d-flex flex-column justify-center align-start">
                     <h4>{{author.name}}</h4>
-                    <h3>{{post.title}}</h3>
-                </v-col>
+                    <span class="text--disabled">{{ date }}</span>
+                </div>
             </v-row>
             <v-row class="post-image">
                 <v-col class="col-12">
@@ -16,11 +16,17 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col class="col-6 d-flex justify-start">
-                    <span class="mr-3"><v-icon>mdi-heart-outline</v-icon> {{post.likes.length}} </span>
-                    <span><v-icon>mdi-chat-outline</v-icon> {{commentsLength}}</span>
-                </v-col>
-                <v-col class="col-6 d-flex justify-end">{{date}}</v-col>
+                <div class="bottom d-flex justify-space-between">
+                    <div class="text"><span>{{post.title}}</span></div>
+                    <div class="d-flex">
+                        <div class="d-flex align-center mr-2">
+                            <v-icon class="mr-1">mdi-heart-outline</v-icon><span>{{post.likes.length}}</span>
+                        </div>
+                        <div class="d-flex align-center">
+                            <v-icon class="mr-1">mdi-chat-outline</v-icon><span>{{commentsLength}}</span>
+                        </div>
+                    </div>
+                </div> 
             </v-row>
         </div>
         <v-skeleton-loader 
@@ -96,11 +102,17 @@ export default {
     .row {
         padding: 0 20px;
     }
+    
+    .avatar {
+        padding: 12px;
+        width: 80px;
+    }
     .avatar .v-image {
         border-radius: 50%;
     }
-    .head {
-        padding-left:15px;
+    .text {
+        font-size: 1.2rem;
+        font-weight: bold;
         text-overflow: ellipsis;
         overflow: hidden; 
         white-space: nowrap;
@@ -110,9 +122,35 @@ export default {
         margin-top: 0;
     }
     .v-icon {
-        color: #000;
+        color: rgba(0, 0, 0, 0.87);
     }
-    span {
-        vertical-align: bottom;
+    .bottom {
+        width: 100%;
+        padding: 12px;
+    }
+
+    @media screen and (max-width: 599px) {
+        .row {
+            padding: 0 12px;
+        }
+        .post-image {
+            padding: 0;
+            margin-top: 0;
+        }
+        .post-image > .col-12 {
+            padding-bottom: 0;
+        }
+        .avatar {
+            width: 70px;
+        }
+        h4 {
+            font-size: .9rem;
+        }
+        .head span {
+            font-size: .8rem;
+        }
+        .post, .skeleton {
+            padding: 12px 0;
+        }
     }
 </style>

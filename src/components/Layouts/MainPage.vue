@@ -2,7 +2,7 @@
     <v-app>
         <header>
             <v-container class="d-flex align-center justify-space-between">
-                <router-link :to="'/'"><v-img src="@/assets/logo.svg" alt="logo"/></router-link>
+                <router-link class="logo" :to="'/'"><v-img src="@/assets/logo.svg" alt="logo"/></router-link>
                 <div class="d-none d-md-block ml-auto">
                     <div v-if="isAuthenticated" class="profile">
                         <v-menu v-if="accountData" offset-y>
@@ -68,13 +68,15 @@ export default {
     header {
         font-family: 'Open Sans', sans-serif;
         font-size: 1.2rem;
-        padding: 5px 0;
         background: #f7f7f7;
         vertical-align: middle;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
     }
     a {
         text-decoration: none;
+    }
+    .logo {
+        width: 150px;
     }
     .links a {
         padding: 7px 12px;
@@ -93,7 +95,7 @@ export default {
         transition: .2s ease-in-out;
     }
     .v-image {
-        width: 50%;
+        width: 100%;
         align-self: center;
     }
     .profile span {

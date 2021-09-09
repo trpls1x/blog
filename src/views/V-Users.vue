@@ -1,9 +1,24 @@
 <template>
     <v-container>
         <v-row>
-            <v-col v-if="contentLoaded" class="users col-9">
-                <User  v-for="user in users" :key="user._id" :user="user"/>
-                
+            <v-col v-if="contentLoaded" class="users col-12 col-md-4">
+                <User v-for="user in users.slice(0, usersPagination.limit/2)" :key="user._id" :user="user"/>  
+            </v-col>
+            <v-col v-if="contentLoaded" class="users col-12 col-md-4">
+                <User v-for="user in users.slice(usersPagination.limit/2)" :key="user._id" :user="user"/>
+            </v-col>
+            <v-col v-else class="col-12 col-md-8">
+                <v-skeleton-loader 
+                    v-for="i in usersPagination.limit"
+                    :key="i"
+                    class="skeleton"
+                    type="list-item-avatar-two-line"
+                ></v-skeleton-loader>
+            </v-col>
+            <v-col class="nav col-md-4 d-none d-md-block">
+                <Navigation />
+            </v-col>
+            <v-col class="col-12 col-md-8">
                 <div class="pagination d-flex justify-center">
                     <v-pagination
                         v-model="currentPage"
@@ -13,17 +28,7 @@
                     ></v-pagination>
                 </div>
             </v-col>
-            <v-col v-else class="col-9">
-                <v-skeleton-loader 
-                    v-for="i in usersPagination.limit"
-                    :key="i"
-                    class="skeleton"
-                    type="list-item-avatar-two-line"
-                ></v-skeleton-loader>
-            </v-col>
-            <v-col class="nav col-3">
-                <Navigation />
-            </v-col>
+            
         </v-row>
     </v-container>
 </template>
@@ -71,6 +76,9 @@ export default {
     .nav {
         position: sticky;
         top: 12px
+    }
+    .users {
+        padding-bottom: 0 !important;
     }
     .users a {
         color: #000;

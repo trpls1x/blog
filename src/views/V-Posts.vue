@@ -1,8 +1,14 @@
 <template>
     <v-container>
         <v-row>
-            <v-col class="posts col-12 col-md-9 order-last order-md-first">
-                <CreatePost v-if="isAuthenticated" />
+            <v-col class="posts col-12 col-md-8 order-last order-md-first">
+                <div v-if="isAuthenticated">
+                    <CreatePost />
+                    <!-- <v-btn class="d-block d-md-none" fab dark large color="#39BEA1" fixed right bottom>
+                        <v-icon dark>mdi-plus</v-icon>
+                    </v-btn> -->
+                </div>
+                
                 <div v-if="contentLoaded">
                     <Post v-for="post in posts" :key="post._id" :post="post" />
                     <div class="pagination d-flex justify-center">
@@ -23,7 +29,7 @@
                     type="list-item-avatar-two-line, image, table-heading"
                 ></v-skeleton-loader>
             </v-col>
-            <v-col class="col-12 col-md-3 order-first order-md-last pb-0">
+            <v-col class="col-md-4 order-first order-md-last pb-0">
                 <div class="nav">
                     <Navigation/>
                     <v-text-field 

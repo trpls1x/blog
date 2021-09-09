@@ -3,19 +3,22 @@
         <div v-if="contentLoaded">
             <div class="post">
                 <v-row>
-                    <v-col class="col-2 col-lg-2 avatar">
+                    <div class="avatar">
                         <router-link :to="author._id ? '/users/' + author._id : '/deleted'" @click="pushUserID">
                             <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                         </router-link>
-                    </v-col>
-                    <v-col class="col-9 d-flex flex-column justify-center">
-                        <h2><router-link :to="author._id ? '/users/' + author._id : '/deleted'" @click="pushUserID">{{ author.name }}</router-link></h2>
-                        <h1>{{ postByID.title }}</h1>
-                        <span class="text--secondary">{{ date }}</span>
-                    </v-col>
-                    <v-col v-if="accountData && author._id == accountData._id" class="col-1 d-flex justify-end">
+                    </div>
+                    <div class="post-head d-flex flex-column justify-center">
+                        <div class="d-flex flex-column flex-md-row align-start align-md-center">
+                            <h2 class="mr-3"><router-link :to="author._id ? '/users/' + author._id : '/deleted'" @click="pushUserID">{{ author.name }}</router-link></h2>
+                            <span class="text--disabled">{{ date }}</span>
+                        </div>
+                        <h1 class="d-none d-md-block">{{ postByID.title }}</h1>
+                    </div>
+                    <div v-if="accountData && author._id == accountData._id" class="ml-auto d-flex align-center justify-end dots">
                         <PostMenu/>
-                    </v-col>
+                    </div>
+                    <div v-else class="ml-auto"></div>
                 </v-row>
                 <v-row class="post-image">
                     <v-col class="col-12" >
@@ -25,25 +28,33 @@
                             :type="'full-post'"
                         />
                     </v-col>
+                    <v-btn class="like d-block d-md-none" @click="putLike" fab small>
+                        <v-badge v-if="postByID.likes" color="#39BEA1" :content="postByID.likes.length || '0'">
+                            <v-icon>{{Liked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                        </v-badge>
+                    </v-btn>
                 </v-row>
                 <v-row>
-                    <v-col class="col-11">
-                        <h3>{{ postByID.description }}</h3>
-                        <p>{{ postByID.fullText }}</p>
+                    <v-col class="col-12 col-md-11">
+                        <h1 class="d-block d-md-none">{{ postByID.title }}</h1>
+                        <h2>{{ postByID.description }}</h2>
+                        <span>{{ postByID.fullText }}</span>
                     </v-col>
-                    <v-col class="col-1 d-flex justify-center align-center">
-                        <v-badge v-if="postByID.likes" :value="hover" color="#39BEA1" :content="postByID.likes.length || '0'">
-                            <v-hover v-model="hover">
-                                <v-icon @click="putLike" large>{{Liked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
-                            </v-hover>
-                        </v-badge>
+                    <v-col class="col-1 d-none d-md-flex justify-center align-center ">
+                        <v-hover v-model="hover">
+                            <v-btn @click="putLike" fab>
+                                <v-badge v-if="postByID.likes" :value="hover" color="#39BEA1" :content="postByID.likes.length || '0'">
+                                    <v-icon>{{Liked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                                </v-badge>
+                            </v-btn>
+                        </v-hover>
                     </v-col>
                 </v-row>
             </div>
 
             <div class="comments">
                 <v-row>
-                    <v-col class="col-12"><h2>Comment section: {{ comments.length }}</h2></v-col>
+                    <h2>Comment section: {{ comments.length }}</h2>
                     <CreateComment v-if="accountData"/>
                     <Comment v-for="(comment, index) in comments" :key="comment._id" :comment="comment" :index="index"/>
                 </v-row>
@@ -123,6 +134,9 @@ export default {
 </script>
 
 <style scoped>
+    .row {
+        padding: 0 30px;
+    }
     a {
         text-decoration: none;
         color: rgba(0, 0, 0, 0.87);;
@@ -132,21 +146,77 @@ export default {
         padding: 20px 0;
         border-radius: 15px;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        margin-top: 12px;
         word-break: break-word;
     }
-    .row {
-        padding: 0 30px;
+    .comments, .skeleton {
+        margin-top: 12px;
+    }
+    h1 {
+        text-overflow: ellipsis;
+        overflow: hidden; 
+        white-space: nowrap;
+    }
+    .comments h2 {
+        padding: 12px 12px 0;
+    }
+    .skeleton:first-child {
+        margin-top: 0;
+    }
+    .avatar {
+        padding: 12px;
+        width: 120px;
     }
     .avatar .v-image {
         border-radius: 50%;
     }
+    .post-head {
+        padding: 12px;
+    }
     .post-image {
         padding: 0;
         margin-top: 0;
+        position: relative;
     }
-
+    .like {
+        position: absolute;
+        bottom: -5px;
+        right: 22px
+    }
+    .dots {
+        padding: 12px 0;
+    }
     .skeleton {
         background: #fff;
+    }
+
+    @media screen and (max-width: 959px) {
+        .avatar {
+            width: 70px;
+        }
+        .row {
+            padding: 0 12px;
+        }
+        .post, .comments, .skeleton {
+            padding: 12px 0;
+        }
+        .post-image {
+            padding: 0;
+            margin-top: 0;
+        }
+        .post-image .col {
+            padding-bottom: 0;
+        }
+        h1 {
+            font-size: 1.3rem;
+        }
+        h2 {
+            font-size: 1rem;
+        }
+        .post-head span {
+            font-size: .8rem;
+        }
+        .post-head {
+            padding: 12px 0;
+        }
     }
 </style>

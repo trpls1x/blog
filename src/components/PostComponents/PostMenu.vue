@@ -1,8 +1,11 @@
 <template>
     <v-menu bottom left>
         <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-                <v-icon large>mdi-dots-horizontal</v-icon>
+            <v-btn class="d-none d-sm-block" icon v-bind="attrs" v-on="on" x-large>
+                <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+            <v-btn class="d-block d-sm-none mr-2" icon v-bind="attrs" v-on="on" small>
+                <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
         </template>
         <v-list>

@@ -1,35 +1,38 @@
 <template>
     <v-col class="col-12">
-        <v-row>
-            <v-col class="col-1 avatar"><Picture :image="accountData.avatar" :ratio="1" :type="'avatar'"/></v-col>
-            
-            <v-col class="col-10">
+        <div class="d-flex align-center comment">
+            <div class="avatar d-none d-sm-block"><Picture :image="accountData.avatar" :ratio="1" :type="'avatar'"/></div>
+            <div class="flex-grow-1">
                 <div class="reply d-flex text--secondary mb-2" v-if="followedComment">
                     <v-icon>mdi-share</v-icon>
                     <span class="font-weight-medium"> {{ followedComment.author }}: </span>
-                    <span>{{followedComment.text}}</span>
+                    <span class="d-block reply-text">{{followedComment.text}}</span>
                     <v-icon @click="clear" class="ml-auto">mdi-close</v-icon>
                 </div>
                 <v-text-field 
+                    class=" d-flex align-center"
                     v-model="text"
                     @blur="$v.text.$touch()"
+                    @input="$v.text.$touch()"
                     :error-messages="textErrors"
                     placeholder="Join discussion"
                     hide-details="auto" 
                     solo
                     required
-                ></v-text-field>
-            </v-col>
-            <v-col class="col-1 d-flex justify-center align-end">
-                <v-btn fab small @click="submitComment"><v-icon small>mdi-send</v-icon></v-btn>
-            </v-col>
-        </v-row>
+                > 
+                    <template v-slot:append-outer>
+                        <v-btn class="send" fab small @click="submitComment"><v-icon small>mdi-send</v-icon></v-btn>
+                    </template>
+                </v-text-field>
+                
+            </div>
+        </div>
     </v-col>
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import Picture from '@/components/Picture'
 
@@ -42,7 +45,7 @@ export default {
         text: null,
     }),
     validations: {
-        text: { required, minLength: minLength(3) },
+        text: { required, minLength: minLength(3), maxLength: maxLength(80) },
     },
     computed: {
         ...mapGetters(['accountData', 'postByID', 'followedComment']),
@@ -51,6 +54,7 @@ export default {
             if (!this.$v.text.$dirty) return errors;
             !this.$v.text.required && errors.push('Comment can\'t be empty');
             !this.$v.text.minLength && errors.push('Comment length must be at least 3 characters long');
+            !this.$v.text.maxLength && errors.push('Comment length can\'t be more than 80 characters long');
             return errors
         },
     },
@@ -80,13 +84,35 @@ export default {
 </script>
 
 <style scoped>
-    .v-btn {
-        margin-bottom: 4px;
-    }
     .reply * {
         margin-left: 5px;
     }
+    .reply {
+        margin: 0 !important;
+        padding-right: 50px;
+    }
+    .reply-text {
+        
+        text-overflow: ellipsis;
+        overflow: hidden; 
+        white-space: nowrap;
+    }
+    .avatar {
+        margin-right: 12px;
+        width: 55px;
+    }
     .avatar .v-image {
         border-radius: 50%;
+    }
+    .comment {
+        width: 100%;
+    }
+    .send {
+        top: -4px
+    }
+    @media screen and (max-width: 599px) {
+        .avatar {
+            width: 50px;
+        }
     }
 </style>
