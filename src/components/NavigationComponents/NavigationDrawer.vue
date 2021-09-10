@@ -18,6 +18,7 @@
                 <v-list-item-group class="d-flex flex-column align-center">
                     <router-link :to="'/posts'"><v-list-item>Posts</v-list-item></router-link>
                     <router-link :to="'/users'"><v-list-item>Users</v-list-item></router-link>
+                    <router-link :to="'/graphs'"><v-list-item>Graphs</v-list-item></router-link>
                 </v-list-item-group>
             </v-list>
         </v-navigation-drawer>

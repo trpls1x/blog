@@ -2,6 +2,7 @@
     <div class="nav d-none d-md-flex flex-column align-stretch text-center">
         <router-link :to="'/posts'">Posts</router-link>
         <router-link :to="'/users'">Users</router-link>
+        <router-link :to="'/graphs'">Graphs</router-link>
     </div>
 </template>
 

@@ -63,6 +63,16 @@ const routes = [
             component: () => import('@/views/V-UserProfile')
         }] 
     },
+    { 
+        path: '/graphs', 
+        component: () => import('@/components/Layouts/MainPage'), 
+        children: [
+        {
+            path: '', 
+            name: 'graphs', 
+            component: () => import('@/views/V-Graphs')
+        }] 
+    },
     {   
         path: '*', 
         component: () => import('@/components/Layouts/Card'), 
