@@ -1,16 +1,26 @@
 <template>
     <v-container>
         <v-row>
-            <v-col v-if="contentLoaded" class="users col-12 col-md-4">
-                <User v-for="user in users.slice(0, usersPagination.limit/2)" :key="user._id" :user="user"/>  
-            </v-col>
-            <v-col v-if="contentLoaded" class="users col-12 col-md-4">
-                <User v-for="user in users.slice(usersPagination.limit/2)" :key="user._id" :user="user"/>
-            </v-col>
-            <v-col v-else class="col-12 col-md-8">
+            <v-col class="users col-12 col-md-4">
+                <div v-if="contentLoaded">
+                    <User v-for="user in users.slice(0, usersPagination.limit/2)" :key="user._id" :user="user"/>  
+                </div>
                 <v-skeleton-loader 
-                    v-for="i in usersPagination.limit"
+                    v-for="i in usersPagination.limit/2"
                     :key="i"
+                    v-else
+                    class="skeleton"
+                    type="list-item-avatar-two-line"
+                ></v-skeleton-loader>
+            </v-col>
+            <v-col class="users col-12 col-md-4 pt-0 pt-md-3">
+                <div v-if="contentLoaded">
+                    <User v-for="user in users.slice(usersPagination.limit/2)" :key="user._id" :user="user"/>
+                </div>
+                <v-skeleton-loader 
+                    v-for="i in usersPagination.limit/2"
+                    :key="i"
+                    v-else
                     class="skeleton"
                     type="list-item-avatar-two-line"
                 ></v-skeleton-loader>
@@ -28,7 +38,6 @@
                     ></v-pagination>
                 </div>
             </v-col>
-            
         </v-row>
     </v-container>
 </template>
@@ -36,7 +45,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import User from '@/components/User'
-import Navigation from '@/components/Navigation'
+import Navigation from '@/components/NavigationComponents/Navigation'
 
 export default {
     name: "feed",
@@ -89,7 +98,7 @@ export default {
         padding: 20px 0;
         border-radius: 15px;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        margin-bottom: 15px;
+        margin-bottom: 12px;
     }
     .pagination {
         background: #F7F7F7;
@@ -97,5 +106,11 @@ export default {
         border-radius: 15px;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
         margin-bottom: 15px;
+    }
+
+    @media screen and (max-width: 599px) {
+        .skeleton {
+            padding: 6px 0;
+        }
     }
 </style>

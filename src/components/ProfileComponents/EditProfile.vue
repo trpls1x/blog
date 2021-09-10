@@ -122,4 +122,9 @@ export default {
     .v-input {
         padding: 0;
     }
+    @media screen and (max-width: 599px) {
+        td, td * {
+            font-size: .9rem;
+        }
+    }
 </style>

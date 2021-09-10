@@ -21,15 +21,18 @@
             color="#39BEA1" 
             prepend-icon="mdi-lock" 
             label="Password" 
+            hide-details="auto"
             required
         ></v-text-field>
         <v-row class="navigation">
-            <v-col class="col-12 col-md-5">
+            <v-col class="col-12 col-sm-6 col-md-7">
                 <v-btn elevation="5" @click="submit">Sing in</v-btn>
             </v-col>
-            <v-col class="col-md-7 d-flex justify-md-end align-center"><span class="vertical-center">or <a href="../register">Create an account</a></span></v-col>
+            <v-col class="col-sm-6 col-md-5 d-flex justify-center justify-sm-end align-center ">
+                <span class="vertical-center ">or <a href="../register">Create an account</a></span>
+            </v-col>
         </v-row>
-        <div class="d-flex justify-space-between"></div>
+        
         <v-dialog v-model="dialog" max-width="400"> 
             <v-card class="d-flex flex-column align-stretch">
                 <v-card-title class="text-h5 align-self-center">

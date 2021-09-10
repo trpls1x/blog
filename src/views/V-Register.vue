@@ -72,10 +72,8 @@
             outlined
         ></v-text-field>
         <v-row class="d-flex justify-space-between">
-            <v-col class="col-12 col-md-8"><v-btn class="submit" @click="submit">Continue</v-btn></v-col>
-            <v-col class="col-12 col-md-3"><v-btn class="clear" @click="clear">Clear</v-btn></v-col>
-            
-            
+            <v-col class="col-12 col-md-8 pb-0"><v-btn class="submit" @click="submit">Continue</v-btn></v-col>
+            <v-col class="col-12 col-md-3 pb-md-0 pt-0 pt-md-3"><v-btn class="clear" @click="clear">Clear</v-btn></v-col>   
         </v-row>
     </div>
 </template>
@@ -174,5 +172,11 @@ export default ({
     }
     .clear {
         background: #F7F7F7 !important; 
+    }
+
+    @media screen and (max-width: 599px) {
+        h1 {
+            font-size: 1.5rem;
+        }
     }
 </style>

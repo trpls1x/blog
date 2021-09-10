@@ -44,7 +44,6 @@
                         </tbody>
                     </table>
                 </div>
-                
                 <v-card-actions class="justify-end">
                     <v-btn color="#39BEA1" text @click="updatePost(); dialog.value = false">Edit</v-btn>
                     <v-btn text @click="dialog.value = false">Cancel</v-btn>

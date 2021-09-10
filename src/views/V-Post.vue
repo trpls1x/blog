@@ -3,25 +3,24 @@
         <div v-if="contentLoaded">
             <div class="post">
                 <v-row>
-                    <div class="avatar">
+                    <v-col class="col-2 col-sm-2 col-md-2 col-lg-1 avatar pr-0 pr-sm-3 ">
                         <router-link :to="author._id ? '/users/' + author._id : '/deleted'" @click="pushUserID">
                             <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                         </router-link>
-                    </div>
-                    <div class="post-head d-flex flex-column justify-center">
-                        <div class="d-flex flex-column flex-md-row align-start align-md-center">
-                            <h2 class="mr-3"><router-link :to="author._id ? '/users/' + author._id : '/deleted'" @click="pushUserID">{{ author.name }}</router-link></h2>
+                    </v-col>
+                    <v-col class="col-md-9 col-lg-10 post-head d-flex flex-column justify-center pl-3 pl-sm-0">
+                        <div class="d-flex flex-column flex-sm-row align-start align-sm-center">
+                            <h2 class="mr-3"><router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name || 'No name' }}</router-link></h2>
                             <span class="text--disabled">{{ date }}</span>
                         </div>
-                        <h1 class="d-none d-md-block">{{ postByID.title }}</h1>
-                    </div>
-                    <div v-if="accountData && author._id == accountData._id" class="ml-auto d-flex align-center justify-end dots">
+                        <h1 class="d-none d-sm-block">{{ postByID.title }}</h1>
+                    </v-col>
+                    <v-col v-if="accountData && author._id == accountData._id" class="col-1 d-flex align-center justify-center dots">
                         <PostMenu/>
-                    </div>
-                    <div v-else class="ml-auto"></div>
+                    </v-col>
                 </v-row>
                 <v-row class="post-image">
-                    <v-col class="col-12" >
+                    <v-col class="col-12 py-0 mt-3" @dblclick="putLike">
                         <Picture
                             :image="postByID.image"
                             :ratio="16/9"
@@ -36,37 +35,32 @@
                 </v-row>
                 <v-row>
                     <v-col class="col-12 col-md-11">
-                        <h1 class="d-block d-md-none">{{ postByID.title }}</h1>
+                        <h1 class="d-block d-sm-none">{{ postByID.title }}</h1>
                         <h2>{{ postByID.description }}</h2>
                         <span>{{ postByID.fullText }}</span>
                     </v-col>
                     <v-col class="col-1 d-none d-md-flex justify-center align-center ">
-                        <v-hover v-model="hover">
-                            <v-btn @click="putLike" fab>
-                                <v-badge v-if="postByID.likes" :value="hover" color="#39BEA1" :content="postByID.likes.length || '0'">
-                                    <v-icon>{{Liked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
-                                </v-badge>
-                            </v-btn>
-                        </v-hover>
+                        <v-btn @click="putLike" fab>
+                            <v-badge v-if="postByID.likes" color="#39BEA1" :content="postByID.likes.length || '0'">
+                                <v-icon>{{Liked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                            </v-badge>
+                        </v-btn>
                     </v-col>
                 </v-row>
             </div>
-
             <div class="comments">
                 <v-row>
                     <h2>Comment section: {{ comments.length }}</h2>
                     <CreateComment v-if="accountData"/>
-                    <Comment v-for="(comment, index) in comments" :key="comment._id" :comment="comment" :index="index"/>
+                    <Comment v-for="comment in comments" :key="comment._id" :comment="comment"/>
                 </v-row>
             </div>
         </div>
-
         <div v-else>
             <v-skeleton-loader 
                 class="skeleton"
                 type="list-item-avatar-three-line, image, list-item-three-line"
             ></v-skeleton-loader>
-
             <div class="skeleton">
                 <v-skeleton-loader 
                     v-for="i in 3"
@@ -84,7 +78,7 @@ import timeDifference from '@/services/timeDifference.service.js'
 import Picture from '@/components/Picture'
 import PostMenu from '@/components/PostComponents/PostMenu'
 import CreateComment from '@/components/CommentComponents/CreateComment'
-import Comment from '@/components/Comment'
+import Comment from '@/components/CommentComponents/Comment'
 
 export default {
     components: {
@@ -97,7 +91,6 @@ export default {
         author: {},
         date: '',
         Liked: false,
-        hover: false,
         contentLoaded: false
     }),
     computed: mapGetters(['postByID', 'userByID', 'comments', 'isAuthenticated', 'accountData']),
@@ -151,11 +144,6 @@ export default {
     .comments, .skeleton {
         margin-top: 12px;
     }
-    h1 {
-        text-overflow: ellipsis;
-        overflow: hidden; 
-        white-space: nowrap;
-    }
     .comments h2 {
         padding: 12px 12px 0;
     }
@@ -164,13 +152,17 @@ export default {
     }
     .avatar {
         padding: 12px;
-        width: 120px;
+        width: auto;
     }
     .avatar .v-image {
+        width: 120px;
         border-radius: 50%;
     }
     .post-head {
         padding: 12px;
+    }
+    .post-head h1 {
+        word-break: break-all;
     }
     .post-image {
         padding: 0;
@@ -189,9 +181,9 @@ export default {
         background: #fff;
     }
 
-    @media screen and (max-width: 959px) {
+    @media screen and (max-width: 599px) {
         .avatar {
-            width: 70px;
+            width: 70px !important;
         }
         .row {
             padding: 0 12px;
@@ -209,7 +201,7 @@ export default {
         h1 {
             font-size: 1.3rem;
         }
-        h2 {
+        .post h2 {
             font-size: 1rem;
         }
         .post-head span {

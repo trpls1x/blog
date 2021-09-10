@@ -8,7 +8,7 @@
                 </div>
             </v-col>
             <v-col class="col-12 col-sm-8 user-info">
-                <h1>{{userByID.name}}</h1>
+                <h1>{{userByID.name || 'No name'}}</h1>
                 <table>
                     <tbody>
                         <tr><td>E-mail:</td><td>{{userByID.email}}</td></tr>
@@ -50,12 +50,20 @@ export default {
         ...mapActions(['getUserByID', 'fetchPosts'])
     },
     async created() {
-        await this.getUserByID(this.$route.params.id);
-        await this.fetchPosts({ 
-            postedBy: this.$route.params.id,
-            limit: 0
-        });
-        this.contentLoaded = true
+        if(this.$route.params.id) {
+            await this.getUserByID(this.$route.params.id);
+            if(this.userByID._id == null) {
+                this.$router.push({path: '/user-not-found'})
+            }
+            await this.fetchPosts({ 
+                postedBy: this.$route.params.id,
+                limit: 0
+            });
+            this.contentLoaded = true
+        } else {
+            this.$router.push({path: '/user-not-found'})
+        }
+        
     }
 }
 </script>
@@ -115,7 +123,7 @@ export default {
             padding: 0
         }
         .user-info {
-            padding: 12px 0 0   ;
+            padding: 12px 0 0;
         }
     }
 </style>

@@ -3,10 +3,7 @@
         <v-row>
             <v-col class="posts col-12 col-md-8 order-last order-md-first">
                 <div v-if="isAuthenticated">
-                    <CreatePost />
-                    <!-- <v-btn class="d-block d-md-none" fab dark large color="#39BEA1" fixed right bottom>
-                        <v-icon dark>mdi-plus</v-icon>
-                    </v-btn> -->
+                    <CreatePost :page="currentPage" :limit="postsPagination.limit"/>
                 </div>
                 
                 <div v-if="contentLoaded">
@@ -55,8 +52,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Post from '@/components/Post'
-import CreatePost from '@/components/CreatePost'
-import Navigation from '@/components/Navigation'
+import CreatePost from '@/components/PostComponents/CreatePost'
+import Navigation from '@/components/NavigationComponents/Navigation'
 
 export default {
     name: "feed",
@@ -76,7 +73,7 @@ export default {
         async currentPage() {
             this.contentLoaded = false;
             await this.fetchPosts({
-                skip: (this.currentPage - 1) * this.postsPagination.limit ,
+                skip: (this.currentPage - 1) * this.postsPagination.limit,
                 search: this.searchText
             });
             window.scrollTo({
@@ -136,5 +133,11 @@ export default {
         border-radius: 15px;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
         padding-bottom: 0;
+    }
+
+    @media screen and (max-width: 599px) {
+        .skeleton {
+            padding: 0 0
+        }
     }
 </style>

@@ -41,7 +41,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Picture from '@/components/Picture'
-import NavigationDrawer from '@/components/NavigationDrawer'
+import NavigationDrawer from '@/components/NavigationComponents/NavigationDrawer'
 
 export default {
     name: "main-page",

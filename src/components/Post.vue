@@ -6,7 +6,7 @@
                     <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                 </div>
                 <div class="head d-flex flex-column justify-center align-start">
-                    <h4>{{author.name}}</h4>
+                    <h4>{{author.name || 'No name'}}</h4>
                     <span class="text--disabled">{{ date }}</span>
                 </div>
             </v-row>
@@ -102,7 +102,6 @@ export default {
     .row {
         padding: 0 20px;
     }
-    
     .avatar {
         padding: 12px;
         width: 80px;
@@ -149,8 +148,11 @@ export default {
         .head span {
             font-size: .8rem;
         }
-        .post, .skeleton {
+        .post {
             padding: 12px 0;
+        }
+        .skeleton {
+            padding: 0 0;
         }
     }
 </style>

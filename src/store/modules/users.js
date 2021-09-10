@@ -13,10 +13,17 @@ export default {
             commit('updateUsers', response.data)
         },
         async getUserByID({commit}, userID) {
-            try {
-                const response = await api.get('/users/' + userID);
-                commit('updateUserByID', response)
-            } catch {
+            if(userID) {
+                try {
+                    const response = await api.get('/users/' + userID);
+                    commit('updateUserByID', response)
+                } catch {
+                    commit('updateUserByID', {
+                        name: 'DELETED',
+                        _id: null,
+                    })
+                }
+            } else {
                 commit('updateUserByID', {
                     name: 'DELETED',
                     _id: null,

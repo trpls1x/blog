@@ -48,6 +48,14 @@ import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 
 export default {
     mixins: [validationMixin],
+    props: {
+        page: {
+            type: Number
+        },
+        limit: {
+            type: Number
+        }
+    },
     data: () => ({
         title: null,
         description: null,
@@ -96,7 +104,9 @@ export default {
                 })
                 this.title = this.description = this.fullText = ''
                 this.$v.$reset();
-                this.fetchPosts()
+                await this.fetchPosts({
+                    skip: (this.page - 1) * this.limit
+                });
             }
         }
     }
@@ -117,5 +127,14 @@ export default {
     }
     .v-text-field.v-text-field--enclosed {
         margin-bottom: 5px;
+    }
+    
+    @media screen and (max-width: 599px) {
+        .row {
+            padding: 0 12px;
+        }
+        .post {
+            padding: 12px 0;
+        }
     }
 </style>

@@ -1,8 +1,8 @@
 <template>
     <v-col class="col-12">
-        <div class="d-flex align-center comment">
-            <div class="avatar d-none d-sm-block"><Picture :image="accountData.avatar" :ratio="1" :type="'avatar'"/></div>
-            <div class="flex-grow-1">
+        <v-row class="comment pl-sm-3">
+            <v-col class="col-2 col-sm-1 avatar d-none d-sm-block pa-0 pt-3 pr-lg-3"><Picture :image="accountData.avatar" :ratio="1" :type="'avatar'"/></v-col>
+            <v-col class="col-12 col-sm-11 pl-lg-0">
                 <div class="reply d-flex text--secondary mb-2" v-if="followedComment">
                     <v-icon>mdi-share</v-icon>
                     <span class="font-weight-medium"> {{ followedComment.author }}: </span>
@@ -24,9 +24,8 @@
                         <v-btn class="send" fab small @click="submitComment"><v-icon small>mdi-send</v-icon></v-btn>
                     </template>
                 </v-text-field>
-                
-            </div>
-        </div>
+            </v-col>
+        </v-row>
     </v-col>
 </template>
 
@@ -92,20 +91,15 @@ export default {
         padding-right: 50px;
     }
     .reply-text {
-        
         text-overflow: ellipsis;
         overflow: hidden; 
         white-space: nowrap;
     }
     .avatar {
-        margin-right: 12px;
         width: 55px;
     }
     .avatar .v-image {
         border-radius: 50%;
-    }
-    .comment {
-        width: 100%;
     }
     .send {
         top: -4px
