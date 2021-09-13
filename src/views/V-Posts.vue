@@ -116,22 +116,21 @@ export default {
         color: rgba(0, 0, 0, 0.87);
         text-decoration: none;
     }
+    .skeleton, .pagination, .search {
+        border-radius: 5px;        
+        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
+    }
+
     .skeleton{
         background: #FFF;
         padding: 20px 0;
-        border-radius: 15px;        
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
         margin-bottom: 15px;
     }
     .pagination {
         background: #F7F7F7;
         padding: 10px;
-        border-radius: 15px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
     }
     .search {
-        border-radius: 15px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
         padding-bottom: 0;
     }
 
