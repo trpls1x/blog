@@ -1,5 +1,5 @@
 <template>
-    <v-col class="col-12 comment">
+    <v-col :id="comment._id" class="col-12 comment">
         <v-hover v-slot:default="{ hover }" :value="hover">
             <v-row class="pl-3">
                 <v-col class="avatar col-2 col-sm-1 d-none d-sm-block pa-0 pr-lg-3">
@@ -7,12 +7,13 @@
                         <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                     </router-link>
                 </v-col>
+
                 <v-col class="comment-body col-12 col-sm-11 col-md-8 pl-0 pl-sm-3 pl-lg-0">
                     <h3 class="d-inline mr-2">
                         <router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name }}</router-link>
                     </h3>
                     <span class="text--disabled">{{ date }}</span> <br>
-                    <div v-if="followedComment" class="followedComment text--secondary">
+                    <div v-if="followedComment" class="followedComment text--secondary" @click="goToFollowed()">
                         <v-icon>mdi-share</v-icon>
                         <span class="font-weight-medium"> {{ followedComment.author }}: </span>
                         <span>{{ followedComment.text }}</span>
@@ -25,6 +26,7 @@
                         </template>  
                     </v-text-field>
                 </v-col>
+                
                 <v-col class="col-12 col-md-3 d-flex justify-end align-center">
                     <div v-if="accountData" class="d-flex justify-end align-center">
                         <div v-if="author._id == accountData._id">
@@ -73,6 +75,26 @@
             </v-row>
         </v-hover>
         <hr class="d-md-none">
+        <v-snackbar
+            v-model="snackbar"
+            top
+            transition="slide-y-transition"
+            elevation="24"
+            color="#b70000"
+            >
+            Please sing in to complete this action
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                color="#f7f7f7"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+                >
+                Close
+                </v-btn>
+            </template>
+        </v-snackbar>
     </v-col>
 </template>
 
@@ -98,19 +120,30 @@ export default {
         hover: true,
         editMode: false,
         author: {},
-        followedComment: null
+        followedComment: null,
+        likeRequest: false,
+        snackbar: false
     }),
     computed: mapGetters(['userByID', 'isAuthenticated', 'accountData', 'comments']),
     methods: {
         ...mapActions(['getUserByID', 'likeComment', 'editComment', 'deleteComment']),
         ...mapMutations(['updateFollowedComment']),
         async putLike() {
-            await this.likeComment(this.comment._id);
-            this.isLiked = !this.isLiked;
-            if(this.isLiked) {
-                this.likes++
-            } else {
-                this.likes--
+            if(!this.likeRequest) {
+                this.likeRequest = true;
+                try {
+                    await this.likeComment(this.comment._id);
+                    this.isLiked = !this.isLiked;
+                    if(this.isLiked) {
+                        this.likes++
+                    } else {
+                        this.likes--
+                    }
+                } catch {
+                    this.snackbar = true
+                } finally {
+                    this.likeRequest = false
+                }
             }
         },
         changeMode() {
@@ -128,10 +161,22 @@ export default {
             }
         },
         reply() {
+            var element = document.getElementById("createComment");
+            element.scrollIntoView({block: "center", behavior: "smooth"})
             this.updateFollowedComment({
                 comment: this.comment,
                 author: this.author.name
             })
+        },
+        goToFollowed() {
+            var followed = document.getElementById(this.comment.followedCommentID);
+            followed.scrollIntoView({block: "center", behavior: "smooth"});
+            followed.style.backgroundColor = "#E7E7E7";
+            followed.style.transition = "0.5s";
+            setTimeout(function()
+            {
+                followed.style.backgroundColor = '#f7f7f7';
+            }, 1000);
         },
         pushUserID() {
             this.$router.push({ name: 'user', params: { userID: this.author._id } }).catch(() => {});

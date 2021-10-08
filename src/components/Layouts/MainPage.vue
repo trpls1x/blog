@@ -9,7 +9,7 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn v-bind="attrs" v-on="on">
                                     <v-avatar><Picture :image="accountData.avatar" :type="'avatar'"/></v-avatar>
-                                    <span>{{accountData.name}}</span>
+                                    <span>{{ accountData.name ? accountData.name : 'No name'}}</span>
                                     <v-icon>mdi-menu-down</v-icon>
                                 </v-btn>
                             </template>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div>
-                    <NavigationDrawer />
+                    <NavigationDrawer/>
                 </div>
             </v-container>
         </header>
@@ -97,6 +97,9 @@ export default {
     .v-image {
         width: 100%;
         align-self: center;
+    }
+    .profile .v-btn {
+        height: 100%;
     }
     .profile span {
         margin-left: 15px;

@@ -1,11 +1,11 @@
 <template>
     <v-container>
-        <div class="graph">
+        <div class="wrap">
             <v-row>
-                <v-col class="col-9 col-lg-5">
+                <v-col class="col-12 col-lg-5 pb-0">
                     <v-select
                         v-model="chartValue"
-                        :items="accountData ? ['Posts', 'Users', 'Posts by you'] : ['posts', 'users']"
+                        :items="accountData ? ['Posts', 'Users', 'Posts by you'] : ['Posts', 'Users']"
                         :menu-props="{offsetY: true }"
                         item-color="#39BEA1"
                         label="Select"
@@ -17,7 +17,7 @@
                     ></v-select>
                 </v-col>	
 
-                <v-col class="col-12 col-sm-6 col-lg-3">
+                <v-col class="col-12 col-sm-5 col-lg-3 pb-0">
                     <v-menu
                         v-model="menuFrom"
                         :close-on-content-click="false"
@@ -39,18 +39,18 @@
                             ></v-text-field>
                         </template>
                         <v-date-picker
+                            v-if="maxDate"
                             v-model="dateFrom"
                             :min="minDate"
-                            :max="maxDate ? maxDate.toISOString() : ''"
+                            :max="dateTo ? dateTo : maxDate.toISOString()"
                             color="#39BEA1"
                             elevation="2"
                             @input="menuFrom = false;"
                             @change="fillData()"
-
                         ></v-date-picker>
                     </v-menu>
                 </v-col>
-                <v-col class="col-12 col-sm-6 col-lg-3">
+                <v-col class="col-12 col-sm-5 col-lg-3 pb-0">
                     <v-menu
                         v-model="menuTo"
                         :close-on-content-click="false"
@@ -73,7 +73,7 @@
                         </template>
                         <v-date-picker
                             v-model="dateTo"
-                            :min="minDate"
+                            :min="dateFrom ? dateFrom : minDate"
                             :max="maxDate ? maxDate.toISOString() : ''"
                             color="#39BEA1"
                             elevation="2"
@@ -82,23 +82,27 @@
                         ></v-date-picker>
                     </v-menu>
                 </v-col>
-                <v-col class="col-3 col-lg-1 d-flex align-center">
-                    <v-btn outlined @click="clearFilters()"><v-icon>mdi-calendar-remove</v-icon></v-btn>
+                <v-col class="clear col-12 col-sm-2 col-lg-1 d-flex align-stretch">
+                    <v-btn outlined @click="clearFilters()">
+                        <v-icon>mdi-calendar-remove</v-icon>
+                    </v-btn>
                 </v-col>
             </v-row>
         </div>
 
-        <div class="graph">
+        <div class="wrap">
             <v-row>
                 <v-col class="col-12">
                     <div class="chart-wrap">
-                        <line-chart :chart-data="dataCollection" :options="chartOptions"></line-chart>
+                        <div class="chart" :style = "{ width: chartWidth + '%'}">
+                            <line-chart :chart-data="dataCollection" :options="chartOptions"></line-chart>
+                        </div>
                     </div>
                 </v-col>
             </v-row>
         </div>
 
-        <div class="graph">
+        <div class="wrap">
              <v-row>
                 <v-col class="col-6">
                     Total days: {{totalDates}}
@@ -109,7 +113,7 @@
             </v-row>
         </div>
 
-        <div class="graph">
+        <div class="wrap" v-if="accountData">
             <PostsGraph/>
         </div>
     </v-container>
@@ -138,6 +142,7 @@ export default {
         datesArray: [],
         chartData:[],
         chartOptions: {},
+        chartWidth: 100,
         dataCollection: {}
     }),
     computed: mapGetters(['posts', 'users', 'accountData']),
@@ -160,9 +165,9 @@ export default {
                 this.setMinDate(this.posts[0].dateCreated.split('T')[0]);
             }
             
-            this.getDateArray(this.minDate, this.maxDate)
-            this.getChartData()
-
+            this.getDateArray();
+            this.getChartData();
+            this.setChartWidth();
             this.dataCollection = {
                 labels: this.datesArray,
                 datasets: [{
@@ -175,14 +180,12 @@ export default {
             }
         },
         setMinDate(firstDate){
-            if(this.dateFrom) {
-                this.minDate = this.dateFrom
-            } else {
-                this.minDate = firstDate
-            }
+            this.minDate = firstDate
         },
-        getDateArray(start, end) {
-            this.datesArray = []
+        getDateArray() {
+            var start = this.dateFrom ? new Date(this.dateFrom) : this.minDate;
+            var end = this.dateTo ? new Date(this.dateTo) : this.maxDate;
+            this.datesArray = [];
             var dt = new Date(start);
             while (dt <= end) {
                 this.datesArray.push(new Date(dt).toISOString().split('T')[0]);
@@ -204,6 +207,9 @@ export default {
                 this.totalData += k;
             });
         },
+        setChartWidth() {
+            this.chartWidth = this.chartData.length * 5;
+        },
         clearFilters() {
             this.dateFrom = null;
             this.dateTo = null;
@@ -212,7 +218,7 @@ export default {
     mounted() {
         this.chartOptions = {
             maintainAspectRatio: false,
-            responsive: true, 
+            responsive: true
         }
         this.maxDate = new Date();
         this.fillData()
@@ -221,21 +227,46 @@ export default {
 </script>
 
 <style scoped>
-    .graph {
+    .wrap {
         background: #f7f7f7;
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
         margin-bottom: 12px;
     }
-    .v-btn {
+    .clear .v-btn {
+        color: rgb(133, 133, 133);
         width: 100%;
+        height: 56px;
+    }
+    .clear .v-btn:hover {
+        color: #000;
+    }
+    .clear .v-icon {
+        color: rgba(0, 0, 0, 0.54);
     }
     .chart-wrap {
         height: 60vh;
+        overflow: scroll;
+        overflow-y: hidden;
     }
     .chart-wrap * {
         height: 100%;
         width: 100%;
+    }
+    .chart {
+        position: relative;
+        min-width: 100%;
+    }
+    ::-webkit-scrollbar {
+        height: 5px;
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: #39BEA1;
+        opacity: .5;
     }
 </style>

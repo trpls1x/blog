@@ -25,11 +25,7 @@ api.interceptors.response.use(
   (response) => response.data, 
   (error) => {
     const response = error.response
-    if(response.status == 400 && response.data.error == 'Email must be uniq') {
-      alert('User with this email already exists')
-    } else if(response.status == 403 && response.data.error == 'Unauthorized') {
-      alert('Please sing in to complete this action')
-    } else if(response.status == 404 && response.data.error == 'No such post'){
+    if(response.status == 404 && response.data.error == 'No such post'){
       router.push('/post-not-found')
     }
     return Promise.reject(error);

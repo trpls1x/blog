@@ -20,7 +20,7 @@
                     <div class="text"><span>{{post.title}}</span></div>
                     <div class="d-flex">
                         <div class="d-flex align-center mr-2">
-                            <v-icon class="mr-1">mdi-heart-outline</v-icon><span>{{post.likes.length}}</span>
+                            <v-icon>{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon><span>{{post.likes.length}}</span>
                         </div>
                         <div class="d-flex align-center">
                             <v-icon class="mr-1">mdi-chat-outline</v-icon><span>{{commentsLength}}</span>
@@ -57,8 +57,9 @@ export default {
         author: {},
         commentsLength: 0,
         contentLoaded: false,
+        isLiked: false
     }),
-    computed: mapGetters(['userByID', 'comments']),
+    computed: mapGetters(['userByID', 'comments', 'accountData']),
     methods: {
         ...mapActions(['getUserByID', 'getComments']),
         pushPostID(id) {
@@ -67,17 +68,18 @@ export default {
     },
     async mounted() {
         this.date = timeDifference(this.post.dateCreated);
-        // if(this.usersMap[this.post.postedBy]) { 
-        //     console.log('from map');
-        //     this.author = this.usersMap[this.post.postedBy];
-        // } else {
-        //     console.log('from request');
-            await this.getUserByID(this.post.postedBy);
-            this.author = this.userByID;
-        // }
+        await this.getUserByID(this.post.postedBy);
+        this.author = this.userByID;
         await this.getComments(this.post._id);
-        this.commentsLength = this.comments.length
-
+        this.commentsLength = this.comments.length;
+        if(this.accountData) {
+            this.post.likes.forEach(element => {
+                if(element == this.accountData._id) {
+                    this.isLiked = true
+                }
+            });
+        }
+        
         this.contentLoaded = true
     }
 }

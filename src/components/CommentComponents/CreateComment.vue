@@ -1,5 +1,5 @@
 <template>
-    <v-col class="col-12">
+    <v-col id="createComment" class="col-12">
         <v-row class="comment pl-sm-3">
             <v-col class="col-2 col-sm-1 avatar d-none d-sm-block pa-0 pt-3 pr-lg-3"><Picture :image="accountData.avatar" :ratio="1" :type="'avatar'"/></v-col>
             <v-col class="col-12 col-sm-11 pl-lg-0">
@@ -69,8 +69,8 @@ export default {
                 });
                 this.text = this.followedCommentID = null;
                 this.clear();
-                await this.getComments(this.postByID._id);
                 this.$v.$reset()
+                await this.getComments(this.postByID._id);
             }
         },
         clear() {

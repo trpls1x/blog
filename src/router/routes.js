@@ -73,6 +73,16 @@ const routes = [
             component: () => import('@/views/V-Graphs')
         }] 
     },
+    { 
+        path: '/dnd', 
+        component: () => import('@/components/Layouts/MainPage'), 
+        children: [
+        {
+            path: '', 
+            name: 'dnd', 
+            component: () => import('@/views/V-DnD')
+        }] 
+    },
     {   
         path: '*', 
         component: () => import('@/components/Layouts/Card'), 

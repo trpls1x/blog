@@ -29,7 +29,7 @@
                     </v-col>
                     <v-btn class="like d-block d-md-none" @click="putLike" fab small>
                         <v-badge v-if="postByID.likes" color="#39BEA1" :content="postByID.likes.length || '0'">
-                            <v-icon>{{Liked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                            <v-icon>{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
                         </v-badge>
                     </v-btn>
                 </v-row>
@@ -42,7 +42,7 @@
                     <v-col class="col-1 d-none d-md-flex justify-center align-center ">
                         <v-btn @click="putLike" fab>
                             <v-badge v-if="postByID.likes" color="#39BEA1" :content="postByID.likes.length || '0'">
-                                <v-icon>{{Liked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                                <v-icon>{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
                             </v-badge>
                         </v-btn>
                     </v-col>
@@ -69,6 +69,26 @@
                 ></v-skeleton-loader>
             </div>
         </div>
+        <v-snackbar
+            v-model="snackbar"
+            top
+            transition="slide-y-transition"
+            elevation="24"
+            color="#b70000"
+            >
+            Please sing in to complete this action
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                color="#f7f7f7"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+                >
+                Close
+                </v-btn>
+            </template>
+        </v-snackbar>
     </v-container>
 </template>
 
@@ -90,8 +110,10 @@ export default {
     data: () => ({
         author: {},
         date: '',
-        Liked: false,
-        contentLoaded: false
+        isLiked: false,
+        likeRequest: false,
+        contentLoaded: false,
+        snackbar: false
     }),
     computed: mapGetters(['postByID', 'userByID', 'comments', 'isAuthenticated', 'accountData']),
     methods: {
@@ -101,9 +123,18 @@ export default {
             this.$router.push({ name: 'user', params: { userID: this.author._id } }).catch(() => {});
         },
         async putLike() {
-            await this.likePost();
-            await this.getPostByID(this.$route.params.id)
-            this.Liked = !this.Liked;
+            if(!this.likeRequest) {
+                this.likeRequest = true;
+                try {
+                    await this.likePost();
+                    await this.getPostByID(this.$route.params.id)
+                    this.isLiked = !this.isLiked;
+                } catch {
+                    this.snackbar = true;
+                } finally {
+                    this.likeRequest = false;
+                }
+            }
         }
     },
     async mounted() {
@@ -112,7 +143,7 @@ export default {
         if(this.isAuthenticated) {
             this.postByID.likes.forEach(element => {
                 if(element == this.accountData._id) {
-                    this.Liked = true;
+                    this.isLiked = true;
                 }
             });
         }

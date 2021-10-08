@@ -10,7 +10,7 @@
                 </v-list-item-group>
                 <v-list-item-group v-else>
                     <router-link v-if="accountData" :to="'../users/' + accountData._id" @click="pushUserID">
-                        <v-list-item @click="fetchData">{{accountData.name}}</v-list-item>
+                        <v-list-item @click="fetchData">{{ accountData.name ? accountData.name : 'No name'}}</v-list-item>
                     </router-link>
                     <v-list-item class="logout" @click="logout(); $router.go(0)">Logout</v-list-item>
                 </v-list-item-group>
@@ -19,6 +19,7 @@
                     <router-link :to="'/posts'"><v-list-item>Posts</v-list-item></router-link>
                     <router-link :to="'/users'"><v-list-item>Users</v-list-item></router-link>
                     <router-link :to="'/graphs'"><v-list-item>Graphs</v-list-item></router-link>
+                    <router-link :to="'/dnd'"><v-list-item>Drag and Drop</v-list-item></router-link>
                 </v-list-item-group>
             </v-list>
         </v-navigation-drawer>

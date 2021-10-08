@@ -3,6 +3,7 @@
         <router-link :to="'/posts'">Posts</router-link>
         <router-link :to="'/users'">Users</router-link>
         <router-link :to="'/graphs'">Graphs</router-link>
+        <router-link :to="'/dnd'">Drag and Drop</router-link>
     </div>
 </template>
 

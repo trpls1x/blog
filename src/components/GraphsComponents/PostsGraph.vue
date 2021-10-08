@@ -1,7 +1,7 @@
 <template>
     <v-row>
-        <v-col class="col-6">
-            <div class="d-flex justify-space-between align-center">  
+        <v-col class="col-12 col-md-6">
+            <div class="d-flex flex-column flex-sm-row justify-space-between align-center">  
                 <h2>Posts comparing:</h2>
                 <v-switch
                     v-model="switchValue"
@@ -13,7 +13,7 @@
             </div>
             <doughnut-chart :chart-data="datacollection" :options="chartOptions"></doughnut-chart>
         </v-col>
-        <v-col class="col-6">
+        <v-col class="col-12 col-md-6 ">
             <h2>Stats:</h2>
             <table>
                 <tbody>

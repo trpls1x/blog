@@ -33,6 +33,27 @@
                 ></v-textarea>
                 <v-btn class="mr-3" color="#39BEA1" dark @click="submit">Create post</v-btn>
                 <v-btn @click="full = false">Hide</v-btn>
+
+                <v-snackbar
+                    v-model="snackbar"
+                    top
+                    transition="slide-y-transition"
+                    elevation="24"
+                    color="#b70000"
+                    >
+                    Post with such title already exists
+
+                    <template v-slot:action="{ attrs }">
+                        <v-btn
+                        color="#f7f7f7"
+                        text
+                        v-bind="attrs"
+                        @click="snackbar = false"
+                        >
+                        Close
+                        </v-btn>
+                    </template>
+                </v-snackbar>
             </v-col>
             <v-col class="col-12" v-else>
                 <v-btn color="#39BEA1" dark @click="full = true">Create post</v-btn>
@@ -60,6 +81,7 @@ export default {
         title: null,
         description: null,
         fullText: null,
+        snackbar: false,
         full: false
     }),
     validations: {
@@ -97,16 +119,20 @@ export default {
         async submit() {
             this.$v.$touch();
             if(!this.$v.$invalid) {
-                await this.createPost({
-                    title: this.title,
-                    description: this.description,
-                    fullText: this.fullText
-                })
-                this.title = this.description = this.fullText = ''
-                this.$v.$reset();
-                await this.fetchPosts({
-                    skip: (this.page - 1) * this.limit
-                });
+                try {
+                    await this.createPost({
+                        title: this.title,
+                        description: this.description,
+                        fullText: this.fullText
+                    });
+                    this.title = this.description = this.fullText = ''
+                    this.$v.$reset();
+                    await this.fetchPosts({
+                        skip: (this.page - 1) * this.limit
+                    });
+                } catch {
+                    this.snackbar = true
+                }
             }
         }
     }

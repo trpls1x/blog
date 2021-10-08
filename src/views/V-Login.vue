@@ -35,11 +35,12 @@
         
         <v-dialog v-model="dialog" max-width="400"> 
             <v-card class="d-flex flex-column align-stretch">
+                <v-toolbar color="#b70000" dark>Error</v-toolbar>
                 <v-card-title class="text-h5 align-self-center">
-                    Wrong email or password
+                    <span class="text-center">Wrong email or password</span>
                 </v-card-title>
-                <v-card-actions>
-                <v-btn text @click="dialog = false">Close</v-btn>
+                <v-card-actions class="align-self-end">
+                    <v-btn text @click="dialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -109,7 +110,7 @@ export default ({
 </script>
 
 <style scoped>
-    .v-btn {
+    .navigation .v-btn {
         width: 100%;
         background: #39BEA1 !important; 
         color: #f7f7f7 !important;
@@ -122,8 +123,5 @@ export default ({
     }
     .v-application a {
         color:#39BEA1
-    }
-    .v-card {
-        padding: 10px;
     }
 </style>
