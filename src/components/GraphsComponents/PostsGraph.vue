@@ -5,6 +5,7 @@
                 <h2>Posts comparing:</h2>
                 <v-switch
                     v-model="switchValue"
+                    class="ma-0 pa-0"
                     color="#39BEA1"
                     inset
                     hide-details="auto"
@@ -114,18 +115,14 @@ export default {
 } 
 </script>
 
-<style scoped>
-    .v-input--selection-controls {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    table td:nth-child(2) {
-        padding-left: 15px;
-    }
-    table {
-        font-size: 1.2rem;
-    }
-    #doughnut-chart {
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-    }
+<style lang="sass" scoped>
+    table 
+        font-size: 1.2rem
+
+        td
+            &:nth-child(2) 
+                padding-left: 15px
+    
+    #doughnut-chart 
+        box-shadow: $default-shadow
 </style>

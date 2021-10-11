@@ -5,9 +5,8 @@
     </v-container>
 </template> 
 
-<style scoped>
-    a {
-        color: #39BEA1;
-        text-decoration: underline;
-    }
+<style lang="sass" scoped>
+    a 
+        color: $main-green
+        text-decoration: underline
 </style>

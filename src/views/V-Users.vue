@@ -81,36 +81,29 @@ export default {
 }
 </script>
 
-<style scoped>
-    .nav {
-        position: sticky;
+<style lang="sass" scoped>
+    .nav 
+        position: sticky
         top: 12px
-    }
-    .users {
-        padding-bottom: 0 !important;
-    }
-    .users a {
-        color: #000;
-        text-decoration: none;
-    }
-    .skeleton {
-        background: #fff;
-        padding: 20px 0;
-        border-radius: 5px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        margin-bottom: 12px;
-    }
-    .pagination {
-        background: #F7F7F7;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        margin-bottom: 15px;
-    }
+    
+    .users 
+        padding-bottom: 0 !important
 
-    @media screen and (max-width: 599px) {
-        .skeleton {
-            padding: 6px 0;
-        }
-    }
+        a 
+            color: #000
+            text-decoration: none
+    
+    .skeleton 
+        background: #fff
+        padding: 20px 0
+        margin-bottom: 12px
+        @extend %card
+        @media screen and (max-width: 599px) 
+            padding: 6px 0
+
+    .pagination 
+        background: $main-white
+        padding: 10px
+        margin-bottom: 15px
+        @extend %card
 </style>

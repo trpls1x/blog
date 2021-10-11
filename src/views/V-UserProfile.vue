@@ -68,62 +68,55 @@ export default {
 }
 </script>
 
-<style scoped>
-    .container {
-        padding-bottom: 0;
-    }
-    .user {
-        margin-top: 0;
-        margin-bottom: 12px;
-        margin: 0 0;
-        background: #f7f7f7;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-    }
-    .user-posts {
-        margin: 0 0;
-        padding-top: 12px;
-    }
-    h1 {
-        padding-left: 15px;
-    }
-    .avatar .v-image {
-        border-radius: 5px;
-    }
-    .user-posts a {
-        text-decoration: none;
-        color: #000;
-    }
-    table {
-        border-spacing: 15px;
-    }
-    table td{
-        vertical-align: top;
-    }
-    table tr td:first-child {
-        white-space: nowrap;
-    }
-    table tr td {
-        word-break: break-word;
-    }
-    .user-posts .col-12 {
-        padding: 0;
-    }
+<style lang="sass" scoped>
+    .container 
+        padding-bottom: 0
+    
+    .user 
+        margin-top: 0
+        margin-bottom: 12px
+        margin: 0 0
+        background: $main-white
+        padding: 20px
+        @extend %card
+        @media screen and (max-width: 599px)
+            padding: 12px
 
-    @media screen and (max-width: 599px) {
-        h1 {
-            padding: 0;
-            text-align: center ;
-        }
-        .user {
-            padding: 12px;
-        }
-        .avatar {
+    .user-info
+        @media screen and (max-width: 599px)
+            padding: 12px 0 0
+
+    .user-posts 
+        margin: 0 0
+        padding-top: 12px
+
+        a 
+            text-decoration: none
+            color: #000
+
+        .col-12
             padding: 0
-        }
-        .user-info {
-            padding: 12px 0 0;
-        }
-    }
+
+    h1
+        padding-left: 15px
+        @media screen and (max-width: 599px)
+            padding: 0
+            text-align: center 
+    
+    .avatar 
+        @media screen and (max-width: 599px)
+            padding: 0
+        .v-image 
+            border-radius: 5px
+    
+    table 
+        border-spacing: 15px
+
+        tr 
+            td 
+                word-break: break-word
+                vertical-align: top
+    
+                &:first-child
+                    white-space: nowrap
 </style>

@@ -1,14 +1,14 @@
 <template>
-    <v-col :id="comment._id" class="col-12 comment">
+    <v-col :id="comment._id" class="col-12 comment mt-3">
         <v-hover v-slot:default="{ hover }" :value="hover">
             <v-row class="pl-3">
-                <v-col class="avatar col-2 col-sm-1 d-none d-sm-block pa-0 pr-lg-3">
+                <v-col class="avatar col-2 col-sm-1 d-none d-sm-block p-auto pa-0 pr-lg-3">
                     <router-link :to="'/users/' + author._id" @click="pushUserID">
                         <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                     </router-link>
                 </v-col>
 
-                <v-col class="comment-body col-12 col-sm-11 col-md-8 pl-0 pl-sm-3 pl-lg-0">
+                <v-col class="comment-body col-12 col-sm-11 col-md-8 py-0 pl-0 pl-sm-3 pl-lg-0">
                     <h3 class="d-inline mr-2">
                         <router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name }}</router-link>
                     </h3>
@@ -86,7 +86,7 @@
 
             <template v-slot:action="{ attrs }">
                 <v-btn
-                color="#f7f7f7"
+                color="$main-white"
                 text
                 v-bind="attrs"
                 @click="snackbar = false"
@@ -204,35 +204,27 @@ export default {
 }
 </script>
 
-<style scoped>
-    .comment {
-        margin-top: 12px;
-    }
-    a {
-        text-decoration: none;
-        color: #000;
-    }
-    .avatar {
-        width: 55px;
-        padding: auto;
-    }
-    .avatar .v-image {
-        border-radius: 50%;
-    }
-    .text {
-        width: 100%;
-        padding: 15px;
-    }
-    .followedComment {
-        width: 100%;
-        text-overflow: ellipsis;
-        overflow: hidden; 
-        white-space: nowrap;
-    }
-    .comment-body {
-        padding: 0 12px;
-    }
-    .comment-text {
-        word-break: break-word;
-    }
+<style lang="sass" scoped>
+    a
+        text-decoration: none
+        color: $font-dark
+    
+    .avatar 
+        width: 55px
+        
+        .v-image 
+            border-radius: 50%
+    
+    .text 
+        width: 100%
+    
+    .followedComment 
+        width: 100%
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        cursor: pointer
+    
+    .comment-text 
+        word-break: break-word
 </style>

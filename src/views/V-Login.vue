@@ -24,7 +24,7 @@
             hide-details="auto"
             required
         ></v-text-field>
-        <v-row class="navigation">
+        <v-row class="navigation mt-3">
             <v-col class="col-12 col-sm-6 col-md-7">
                 <v-btn elevation="5" @click="submit">Sing in</v-btn>
             </v-col>
@@ -109,19 +109,16 @@ export default ({
 })
 </script>
 
-<style scoped>
-    .navigation .v-btn {
-        width: 100%;
-        background: #39BEA1 !important; 
-        color: #f7f7f7 !important;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-        font-weight: bold;
-    }
-    .navigation {
-        margin-top: 10px;
-    }
-    .v-application a {
-        color:#39BEA1
-    }
+<style lang="sass" scoped>
+    .v-btn 
+        width: 100%
+        background: $main-green !important
+        color: $main-white !important
+        border-top-left-radius: 15px
+        border-bottom-right-radius: 15px
+        font-weight: bold
+    
+    .v-application 
+        a 
+            color: $main-green
 </style>

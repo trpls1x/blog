@@ -22,9 +22,7 @@ export default {
 };
 </script>
 
-<style scoped>
-  #app {
-    background: #39BEA1;
-  }
-  
+<style lang="sass" scoped>
+  #app 
+    background: $main-green
 </style>

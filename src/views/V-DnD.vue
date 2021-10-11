@@ -2,17 +2,17 @@
     <v-container>
         <v-row>
             <v-col class="col-12 col-sm-6">
-                <div class="wrap">
+                <div class="wrap pa-5">
                     <h2>First list</h2>
                     <draggable 
-                    class="list-group" 
+                    class="list-group pa-4" 
                     :list="list1" 
                     ghost-class="ghost" 
                     group="people" 
                     :animation="200"
                     >
                         <div
-                        class="list-group-item d-flex align-center justify-space-between"
+                        class="list-group-item d-flex align-center justify-space-between pa-2 mb-1"
                         v-for="(element) in list1"
                         :key="element.name"
                         >
@@ -23,17 +23,17 @@
                 </div>
             </v-col>
             <v-col class="col-12 col-sm-6">
-                <div class="wrap">
+                <div class="wrap pa-5">
                     <h2>Second list</h2>
                     <draggable 
-                    class="list-group" 
+                    class="list-group pa-4" 
                     :list="list2" 
                     ghost-class="ghost" 
                     group="people"
                     :animation="200"
                     >
                         <div
-                        class="list-group-item d-flex align-center justify-space-between"
+                        class="list-group-item d-flex align-center justify-space-between pa-2 mb-1"
                         v-for="(element) in list2"
                         :key="element.name"
                         >
@@ -71,34 +71,29 @@ export default {
 }
 </script>
 
-<style scoped>
-    .wrap {
-        background: #f7f7f7;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-    }
+<style lang="sass" scoped>
+    $light-grey: #E7E7E7
 
-    .list-group {
-        border: 1px solid #E7E7E7;
-        padding: 15px;
-        min-height: 200px;
-    }
-
-    .list-group-item {
-        height: 50px;
-        border-left: 5px solid #E7E7E7;
-        border-bottom: 1px solid #E7E7E7;
-        margin-bottom: 4px;
-        padding: 10px;
-    }
-    .list-group-item:hover {
-        cursor: move;
-    }
-    .ghost {
-        border-left: 5px solid #39BEA1;
-        background: #E7E7E7;
-        box-shadow: 10px 10px 5px -1px rgba(0, 0, 0, 0.14);
-        opacity: 0.5;
-    }
+    .wrap 
+        background: $main-white
+        @extend %card
+    
+    .list-group 
+        border: 1px solid $light-grey
+        min-height: 200px
+    
+    .list-group-item 
+        height: 50px
+        border-left: 5px solid $light-grey
+        border-bottom: 1px solid $light-grey
+        
+        &:hover 
+            cursor: move
+    
+    .ghost 
+        border-left: 5px solid $main-green
+        background: $light-grey
+        box-shadow: 10px 10px 5px -1px rgba(0, 0, 0, 0.14)
+        opacity: 0.5
+    
 </style>

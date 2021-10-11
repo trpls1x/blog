@@ -114,18 +114,18 @@ export default {
 }
 </script>
 
-<style scoped>
-    .table-wrapper {
-        width: 100%;
-    }
-    table {
-        width: 95%;
-        border-spacing: 15px;
-    }
-    table tr td {
-        word-break: break-word;
-    }
-    .v-input {
-        padding: 0;
-    }
+<style lang="sass" scoped>
+    .table-wrapper 
+        width: 100%
+    
+    table 
+        width: 95%
+        border-spacing: 15px
+    
+        tr 
+            td 
+                word-break: break-word
+                
+    .v-input 
+        padding: 0
 </style>

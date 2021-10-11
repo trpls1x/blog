@@ -157,89 +157,87 @@ export default {
 }
 </script>
 
-<style scoped>
-    .row {
-        padding: 0 30px;
-    }
-    a {
-        text-decoration: none;
-        color: rgba(0, 0, 0, 0.87);;
-    }
-    .post, .comments, .skeleton {
-        background: #f7f7f7;
-        padding: 20px 0;
-        border-radius: 5px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        word-break: break-word;
-    }
-    .comments, .skeleton {
-        margin-top: 12px;
-    }
-    .comments h2 {
-        padding: 12px 12px 0;
-    }
-    .skeleton:first-child {
-        margin-top: 0;
-    }
-    .avatar {
-        padding: 12px;
-        width: auto;
-    }
-    .avatar .v-image {
-        width: 120px;
-        border-radius: 50%;
-    }
-    .post-head {
-        padding: 12px;
-    }
-    .post-head h1 {
-        word-break: break-all;
-    }
-    .post-image {
-        padding: 0;
-        margin-top: 0;
-        position: relative;
-    }
-    .like {
-        position: absolute;
-        bottom: -5px;
-        right: 22px
-    }
-    .dots {
-        padding: 12px 0;
-    }
-    .skeleton {
-        background: #fff;
-    }
+<style lang="sass" scoped>
+    .row 
+        padding: 0 30px
+        @media screen and (max-width: 599px) 
+            padding: 0 12px
+    
+    a 
+        text-decoration: none
+        color: $font-dark
+    
+    .post, 
+    .comments, 
+    .skeleton 
+        background: $main-white
+        padding: 20px 0
+        word-break: break-word
+        @extend %card
+        @media screen and (max-width: 599px) 
+            padding: 12px 0
+    
+    .comments, 
+    .skeleton 
+        margin-top: 12px
 
-    @media screen and (max-width: 599px) {
-        .avatar {
-            width: 70px !important;
-        }
-        .row {
-            padding: 0 12px;
-        }
-        .post, .comments, .skeleton {
-            padding: 12px 0;
-        }
-        .post-image {
-            padding: 0;
-            margin-top: 0;
-        }
-        .post-image .col {
-            padding-bottom: 0;
-        }
-        h1 {
-            font-size: 1.3rem;
-        }
-        .post h2 {
-            font-size: 1rem;
-        }
-        .post-head span {
-            font-size: .8rem;
-        }
-        .post-head {
-            padding: 12px 0;
-        }
-    }
+    .post 
+        h2 
+            @media screen and (max-width: 599px) 
+                font-size: 1rem
+
+    .comments 
+        h2 
+            padding: 12px 12px 0
+    
+    .avatar 
+        padding: 12px
+        width: auto
+        @media screen and (max-width: 599px)
+            width: 70px !important
+    
+        .v-image 
+            width: 120px
+            border-radius: 50%
+    
+    .post-head 
+        padding: 12px
+        @media screen and (max-width: 599px) 
+            padding: 12px 0
+
+    
+        h1 
+            word-break: break-all
+            @media screen and (max-width: 599px) 
+                font-size: 1.3rem
+
+        span
+            @media screen and (max-width: 599px) 
+                font-size: 0.8rem
+    
+    .post-image 
+        padding: 0
+        margin-top: 0
+        position: relative
+        @media screen and (max-width: 599px) 
+            padding: 0
+            margin-top: 0
+
+        .col
+            @media screen and (max-width: 599px)
+                padding-bottom: 0
+    
+    .like 
+        position: absolute
+        bottom: -5px
+        right: 22px
+    
+    .dots 
+        padding: 12px 0
+    
+    .skeleton 
+        background: #fff
+        
+        &:first-child 
+            margin-top: 0
 </style>

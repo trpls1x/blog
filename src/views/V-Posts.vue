@@ -107,36 +107,32 @@ export default {
 }
 </script>
 
-<style scoped>
-    .nav {
-        position: sticky;
+<style lang="sass" scoped>
+    .nav
+        position: sticky
         top: 12px
-    }
-    .posts a {
-        color: rgba(0, 0, 0, 0.87);
-        text-decoration: none;
-    }
-    .skeleton, .pagination, .search {
-        border-radius: 5px;        
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-    }
+    
+    .posts 
+        a
+            color: $font-dark
+            text-decoration: none
 
-    .skeleton{
-        background: #FFF;
-        padding: 20px 0;
-        margin-bottom: 15px;
-    }
-    .pagination {
-        background: #F7F7F7;
-        padding: 10px;
-    }
-    .search {
-        padding-bottom: 0;
-    }
+    .skeleton, 
+    .pagination, 
+    .search 
+        @extend %card
 
-    @media screen and (max-width: 599px) {
-        .skeleton {
+    .skeleton
+        background: #FFF
+        padding: 20px 0
+        margin-bottom: 15px
+        @media screen and (max-width: 599px)
             padding: 0 0
-        }
-    }
+
+    .pagination 
+        background: $main-white
+        padding: 10px
+    
+    .search
+        padding-bottom: 0
 </style>

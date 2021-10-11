@@ -103,28 +103,25 @@ export default {
 }
 </script>
 
-<style scoped>
-    .activator {
-        width: 100%;
-    }
-    table {
-        border-spacing: 15px;
-    }    
-    table tr td:first-child {
-        white-space: nowrap;
-    }
-    table tr td {
-        word-break: break-word;
-    }
-    .user-posts .col-12 {
-        padding: 0;
-    }
-    .v-input {
-        padding: 0;
-    }
-    @media screen and (max-width: 599px) {
-        td, td * {
-            font-size: .9rem;
-        }
-    }
+<style lang="sass" scoped>
+    .activator 
+        width: 100%
+    
+    table 
+        border-spacing: 15px
+        tr 
+            td 
+                word-break: break-word
+                @media screen and (max-width: $xs-breakpoint)
+                    font-size: 0.9rem
+
+                &:first-child 
+                    white-space: nowrap
+                
+                .v-input
+                    @media screen and (max-width: $xs-breakpoint)
+                        font-size: 0.9rem
+    
+    .v-input 
+        padding: 0
 </style>

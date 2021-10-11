@@ -161,31 +161,29 @@ export default ({
 })
 </script>
 
-<style scoped>
-    .v-input {
-        margin-bottom: 15px !important;
-    } 
-    .clear, .submit {
-        margin: 6px 0;
-        width: 100%;
-        border-top-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-        font-weight: bold;
-    }
-    .text-center {
-        word-break: normal;
-    }
-    .submit {
-        background: #39BEA1 !important; 
-        color: #f3f3f3 !important;
-    }
-    .clear {
-        background: #F7F7F7 !important; 
-    }
-
-    @media screen and (max-width: 599px) {
-        h1 {
-            font-size: 1.5rem;
-        }
-    }
+<style lang="sass" scoped>
+    .v-input 
+        margin-bottom: 15px !important
+    
+    .clear, 
+    .submit 
+        margin: 6px 0
+        width: 100%
+        border-top-left-radius: 15px
+        border-bottom-right-radius: 15px
+        font-weight: bold
+    
+    .text-center 
+        word-break: normal
+    
+    .submit 
+        background: $main-green !important
+        color: #f3f3f3 !important
+    
+    .clear 
+        background: $main-white !important
+    
+    h1 
+        @media screen and (max-width: 599px)
+            font-size: 1.5rem
 </style>

@@ -1,6 +1,6 @@
 <template>
-    <div class="post">
-        <v-row>
+    <div class="post py-3 py-sm-5 px-0 mb-3">
+        <v-row class="px-3 px-sm-5 py-0">
             <v-col class="col-12" v-if="full">
                 <v-text-field 
                     v-model="title"
@@ -139,28 +139,13 @@ export default {
 }
 </script>
 
-<style scoped>
-    .post {
-        background: #f7f7f7;
-        padding: 20px 0;
-        border-radius: 5px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        margin-bottom: 15px;
-        transition: .1s ease-in-out;
-    }
-    .row {
-        padding: 0 20px;
-    }
-    .v-text-field.v-text-field--enclosed {
-        margin-bottom: 5px;
-    }
+<style lang="sass" scoped>
+    .post 
+        background: $main-white
+        transition: .1s ease-in-out
+        @extend %card
     
-    @media screen and (max-width: 599px) {
-        .row {
-            padding: 0 12px;
-        }
-        .post {
-            padding: 12px 0;
-        }
-    }
+    .v-text-field
+        &--enclosed 
+            margin-bottom: 5px !important
 </style>

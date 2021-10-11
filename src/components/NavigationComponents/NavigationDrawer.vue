@@ -4,7 +4,7 @@
 
         <v-navigation-drawer class="navbar" v-model="navbar" right absolute @click="navbar = !navbar">
             <v-list>
-                <v-list-item-group v-if="!isAuthenticated">
+                <v-list-item-group v-if="!isAuthenticated"> 
                     <router-link :to="'/login'"><v-list-item>Sing in</v-list-item></router-link>
                     <router-link :to="'/register'"><v-list-item>Sing up</v-list-item></router-link>
                 </v-list-item-group>
@@ -15,7 +15,7 @@
                     <v-list-item class="logout" @click="logout(); $router.go(0)">Logout</v-list-item>
                 </v-list-item-group>
                 <v-divider/>
-                <v-list-item-group class="d-flex flex-column align-center">
+                <v-list-item-group>
                     <router-link :to="'/posts'"><v-list-item>Posts</v-list-item></router-link>
                     <router-link :to="'/users'"><v-list-item>Users</v-list-item></router-link>
                     <router-link :to="'/graphs'"><v-list-item>Graphs</v-list-item></router-link>
@@ -47,27 +47,28 @@ export default {
 }
 </script>
 
-<style scoped>
-    .v-navigation-drawer {
-        width: 100% !important;
-    }
-    .v-navigation-drawer--is-mobile {
-        height: auto !important; 
-        transform: translateY(0%) !important; 
-    }
-    .v-navigation-drawer--close {
-        transform: translateY(-100%) !important; 
-    }
-    .v-list-item-group * {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-    .navbar a {
-        color: rgba(0, 0, 0, 0.87);
-        text-decoration: none;
-    }
-    .logout {
+<style lang="sass" scoped>
+    .v-navigation-drawer 
+        width: 100% !important
+    
+    .v-navigation-drawer--is-mobile 
+        height: auto !important
+        transform: translateY(0%) !important
+    
+    .v-navigation-drawer--close 
+        transform: translateY(-100%) !important
+    
+    .v-list-item-group 
+        * 
+            display: flex
+            justify-content: center
+    
+    .navbar 
+        a 
+            color: $font-dark
+            text-decoration: none
+    
+    .logout 
         color: #b70000 !important
-    }
+    
 </style>

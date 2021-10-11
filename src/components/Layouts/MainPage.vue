@@ -9,7 +9,7 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn v-bind="attrs" v-on="on">
                                     <v-avatar><Picture :image="accountData.avatar" :type="'avatar'"/></v-avatar>
-                                    <span>{{ accountData.name ? accountData.name : 'No name'}}</span>
+                                    <span class="ml-3">{{ accountData.name ? accountData.name : 'No name'}}</span>
                                     <v-icon>mdi-menu-down</v-icon>
                                 </v-btn>
                             </template>
@@ -63,45 +63,44 @@ export default {
 }
 </script>
 
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
-    header {
-        font-family: 'Open Sans', sans-serif;
-        font-size: 1.2rem;
-        background: #f7f7f7;
-        vertical-align: middle;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-    }
-    a {
-        text-decoration: none;
-    }
-    .logo {
-        width: 150px;
-    }
-    .links a {
-        padding: 7px 12px;
-        margin-left: 5px;
-        color: #39BEA1;
-    }
-    .links a:first-of-type {
-        box-shadow: 0 0 1pt 2pt #39BEA1;
-        border-top-left-radius: 25px;
-        border-bottom-right-radius: 25px;
-        transition: .2s ease-in-out
-    }
-    .links a:first-of-type:hover {
-        background: #39BEA1;
-        color: #f7f7f7;
-        transition: .2s ease-in-out;
-    }
-    .v-image {
-        width: 100%;
-        align-self: center;
-    }
-    .profile .v-btn {
-        height: 100%;
-    }
-    .profile span {
-        margin-left: 15px;
-    }
+<style lang="sass" scoped>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap')
+   
+    header 
+        font-family: 'Open Sans', sans-serif
+        font-size: 1.2rem
+        background: $main-white
+        box-shadow: $default-shadow
+    
+    a 
+        text-decoration: none
+    
+    .logo 
+        width: 150px
+    
+    .links 
+        a 
+            padding: 8px 12px
+            margin-left: 5px
+            color: $main-green
+            
+            &:first-of-type 
+                box-shadow: 0 0 1pt 2pt $main-green
+                border-top-left-radius: 25px
+                border-bottom-right-radius: 25px
+                transition: .2s ease-in-out
+                
+                &:hover 
+                    background: $main-green
+                    color: $main-white
+                    transition: .2s ease-in-out
+    
+    .v-image 
+        width: 100%
+        align-self: center
+    
+    .profile 
+        .v-btn 
+            height: 100%
+    
 </style>

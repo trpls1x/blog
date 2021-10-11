@@ -1,6 +1,6 @@
 <template>
     <router-link :to="'/users/' + user._id" @click="pushUserID">
-        <div class="user">
+        <div class="user pa-3 mb-3">
             <v-row>
                 <v-col class="avatar col-3 col-sm-2 col-md-3 d-flex align-center">
                     <Picture :image="user.avatar" :ratio="1" :type="'avatar'"/>
@@ -35,31 +35,25 @@ export default {
 }
 </script>
 
-<style scoped>
-    .user {
-        background: #f7f7f7;
-        padding: 12px 12px;
-        border-radius: 5px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        margin-bottom: 10px;
-        transition: .1s ease-in-out;
-    }
-    .user:hover {
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 50%), 0px 5px 8px 0px rgb(0 0 0 / 34%), 0px 1px 14px 0px rgb(0 0 0 / 22%);
-        transition: .2s ease-in-out;
-    }
-    .avatar .v-image{
-        border-radius: 50%;
-    }
-    .mail {
-        text-overflow: ellipsis;
-        overflow: hidden; 
-        white-space: nowrap;
-    }
+<style lang="sass" scoped>
+    .user
+        background: $main-white
+        transition: .1s ease-in-out
+        @extend %card
+    
+        &:hover 
+            box-shadow: $hover-shadow
+            transition: .2s ease-in-out
+    
+    .avatar 
+        @media screen and (max-width: $xs-breakpoint)
+            width: 55px
 
-    @media screen and (max-width: 599px){
-        .avatar {
-            width: 55px;
-        }
-    }
+        .v-image
+            border-radius: 50%
+    
+    .mail 
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
 </style>

@@ -3,7 +3,7 @@
         <v-row class="comment pl-sm-3">
             <v-col class="col-2 col-sm-1 avatar d-none d-sm-block pa-0 pt-3 pr-lg-3"><Picture :image="accountData.avatar" :ratio="1" :type="'avatar'"/></v-col>
             <v-col class="col-12 col-sm-11 pl-lg-0">
-                <div class="reply d-flex text--secondary mb-2" v-if="followedComment">
+                <div class="reply d-flex text--secondary mb-2 pr-12" v-if="followedComment">
                     <v-icon>mdi-share</v-icon>
                     <span class="font-weight-medium"> {{ followedComment.author }}: </span>
                     <span class="d-block reply-text">{{followedComment.text}}</span>
@@ -82,31 +82,24 @@ export default {
 }
 </script>
 
-<style scoped>
-    .reply * {
-        margin-left: 5px;
-    }
-    .reply {
-        margin: 0 !important;
-        padding-right: 50px;
-    }
-    .reply-text {
-        text-overflow: ellipsis;
-        overflow: hidden; 
-        white-space: nowrap;
-    }
-    .avatar {
-        width: 55px;
-    }
-    .avatar .v-image {
-        border-radius: 50%;
-    }
-    .send {
+<style lang="sass" scoped>
+    .reply
+        * 
+            margin-left: 5px
+    
+    .reply-text 
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+    
+    .avatar 
+        width: 55px
+        @media screen and (max-width: $xs-breakpoint) 
+            width: 50px
+        
+        .v-image 
+            border-radius: 50%
+
+    .send 
         top: -4px
-    }
-    @media screen and (max-width: 599px) {
-        .avatar {
-            width: 50px;
-        }
-    }
 </style>

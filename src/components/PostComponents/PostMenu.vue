@@ -21,7 +21,7 @@
                 <template v-slot:default="dialog">
                     <v-card>
                         <v-toolbar color="#b70000" dark>Delete post</v-toolbar>
-                        <div class="text d-flex justify-center"><span class="text-center">Are you sure want to delete this post?</span></div>
+                        <div class="text d-flex justify-center pa-4"><span class="text-center">Are you sure want to delete this post?</span></div>
                         <v-card-actions class="justify-end">
                             <v-btn color="#b70000" text @click="deleteClick(); dialog.value = false">Delete</v-btn>
                             <v-btn text @click="dialog.value = false">Cancel</v-btn>
@@ -62,9 +62,7 @@ export default {
 }
 </script>
 
-<style scoped>
-    .text {
-        width: 100%;
-        padding: 15px;
-    }
+<style lang="sass" scoped>
+    .text 
+        width: 100%
 </style>

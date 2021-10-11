@@ -1,5 +1,5 @@
 <template>
-    <div class="button-group d-flex flex-column align-end">
+    <div class="button-group d-flex flex-column align-end mt-2">
         <v-btn 
             class="image-input" 
             elevation="5"
@@ -12,12 +12,12 @@
         
         <v-dialog max-width="400">
             <template v-slot:activator="{ on, attrs }">
-                <v-btn class="activator" color="#b70000" dark v-bind="attrs" v-on="on">Delete profile</v-btn>
+                <v-btn class="activator mt-2" color="#b70000" dark v-bind="attrs" v-on="on">Delete profile</v-btn>
             </template>
             <template v-slot:default="dialog">
                 <v-card>
                     <v-toolbar color="#b70000" dark>Delete profile</v-toolbar>
-                    <div class="text d-flex justify-center"><span class="text-center">Are you sure want to delete your profile?</span></div>
+                    <div class="text d-flex justify-center pa-4"><span class="text-center">Are you sure want to delete your profile?</span></div>
                     <v-card-actions class="justify-end">
                         <v-btn color="#b70000" text @click="deleteProfile(); dialog.value = false">Delete</v-btn>
                         <v-btn text @click="dialog.value = false">Cancel</v-btn>
@@ -25,6 +25,27 @@
                 </v-card>
             </template>
         </v-dialog>
+
+        <v-snackbar
+            v-model="snackbar"
+            top
+            transition="slide-y-transition"
+            elevation="24"
+            color="#b70000"
+            >
+            {{ message }}
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                color="#f7f7f7"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+                >
+                Close
+                </v-btn>
+            </template>
+        </v-snackbar>
     </div>
 </template>
 
@@ -41,39 +62,46 @@ export default {
     components: {
         EditProfile
     },
+    data: () => ({ 
+        snackbar: false,
+        message: ''
+    }),
     methods: {
-        ...mapActions(['deleteUser', 'editUserPhoto', 'getUserByID']),
+        ...mapActions(['deleteUser', 'editUserPhoto']),
         async deleteProfile() {
             await this.deleteUser();
-            this.$router.push({path: '/'})
+            this.$router.push({path: '/'});
         },
         triggerFileInput() {
-            this.$refs.imageInput.click()
+            this.$refs.imageInput.click();
         },
         async uploadPhoto(event) {
-            let formData = new FormData()
-            formData.append("avatar", event.target.files[0])
-            await this.editUserPhoto(formData)
-            this.getUserByID(this.user._id)
+            let formData = new FormData();
+            formData.append("avatar", event.target.files[0]);
+            try {
+                await this.editUserPhoto(formData);
+                this.$router.go();
+            } catch(e) {
+                this.message = e.response.data.error.message;
+                this.snackbar = true;
+            }
         }
     }
 }
 </script>
 
-<style scoped>
-    .text {
-        width: 100%;
-        padding: 15px;
-    }
-    .button-group, .activator {
-        position: relative;
-        width: 100%;
-        margin-top: 10px;
-    }
-    .image-input {
-        background: #F7F7F7;
-        position: absolute;
-        top: -55px;
-        margin: 5px;
-    }
+<style lang="sass" scoped>
+    .text 
+        width: 100%
+    
+    .button-group, 
+    .activator 
+        position: relative
+        width: 100%
+    
+    .image-input 
+        background: $main-white
+        position: absolute
+        top: -55px
+        margin: 6px 5px
 </style>

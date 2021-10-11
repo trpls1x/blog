@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <div class="wrap">
+        <div class="wrap pa-5 mb-3">
             <v-row>
                 <v-col class="col-12 col-lg-5 pb-0">
                     <v-select
@@ -90,7 +90,7 @@
             </v-row>
         </div>
 
-        <div class="wrap">
+        <div class="wrap pa-5 mb-3">
             <v-row>
                 <v-col class="col-12">
                     <div class="chart-wrap">
@@ -102,7 +102,7 @@
             </v-row>
         </div>
 
-        <div class="wrap">
+        <div class="wrap pa-5 mb-3">
              <v-row>
                 <v-col class="col-6">
                     Total days: {{totalDates}}
@@ -113,7 +113,7 @@
             </v-row>
         </div>
 
-        <div class="wrap" v-if="accountData">
+        <div class="wrap pa-5 mb-3" v-if="accountData">
             <PostsGraph/>
         </div>
     </v-container>
@@ -226,47 +226,45 @@ export default {
 }
 </script>
 
-<style scoped>
-    .wrap {
-        background: #f7f7f7;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 5px 8px 0px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%);
-        margin-bottom: 12px;
-    }
-    .clear .v-btn {
-        color: rgb(133, 133, 133);
-        width: 100%;
-        height: 56px;
-    }
-    .clear .v-btn:hover {
-        color: #000;
-    }
-    .clear .v-icon {
-        color: rgba(0, 0, 0, 0.54);
-    }
-    .chart-wrap {
-        height: 60vh;
-        overflow: scroll;
-        overflow-y: hidden;
-    }
-    .chart-wrap * {
-        height: 100%;
-        width: 100%;
-    }
-    .chart {
-        position: relative;
-        min-width: 100%;
-    }
-    ::-webkit-scrollbar {
-        height: 5px;
-        box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
-        border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background: #39BEA1;
-        opacity: .5;
-    }
+<style lang="sass" scoped>
+    .wrap 
+        background: $main-white
+        @extend %card
+    
+    .clear 
+        .v-btn 
+            color: rgb(133, 133, 133)
+            width: 100%
+            height: 56px
+    
+            &:hover 
+                color: #000
+
+        .v-icon 
+            color: rgba(0, 0, 0, 0.54)
+    
+    .chart-wrap 
+        height: 60vh
+        overflow: scroll
+        overflow-y: hidden
+    
+        * 
+            height: 100%
+            width: 100%
+
+    .chart 
+        position: relative
+        min-width: 100%
+    
+    ::-webkit-scrollbar 
+        height: 5px
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.1)
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1)
+        border-radius: 10px
+    
+    ::-webkit-scrollbar-thumb 
+        border-radius: 10px
+        background: $main-green
+        opacity: .5
+    
 </style>
