@@ -160,21 +160,21 @@ export default {
             }
         },
         reply() {
-            var element = document.getElementById("createComment");
-            element.scrollIntoView({block: "center", behavior: "smooth"})
+            var createForm = document.getElementById("createComment");
+            createForm.scrollIntoView({block: "center", behavior: "smooth"})
             this.updateFollowedComment({
                 comment: this.comment,
                 author: this.author.name
             })
         },
         goToFollowed() {
-            var followed = document.getElementById(this.comment.followedCommentID);
-            followed.scrollIntoView({block: "center", behavior: "smooth"});
-            followed.style.backgroundColor = "#E7E7E7";
-            followed.style.transition = "0.5s";
+            var followedComment = document.getElementById(this.comment.followedCommentID);
+            followedComment.scrollIntoView({block: "center", behavior: "smooth"});
+            followedComment.style.backgroundColor = "#E7E7E7";
+            followedComment.style.transition = "0.5s";
             setTimeout(function()
             {
-                followed.style.backgroundColor = '#f7f7f7';
+                followedComment.style.backgroundColor = '#f7f7f7';
             }, 1000);
         },
         pushUserID() {
@@ -183,8 +183,8 @@ export default {
     },
     async mounted() {
         if(this.accountData) {
-            this.comment.likes.forEach(element => {
-                if(element == this.accountData._id) {
+            this.comment.likes.forEach(like => {
+                if(like == this.accountData._id) {
                     this.isLiked = true;
                 }
             });

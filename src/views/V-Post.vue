@@ -113,7 +113,8 @@ export default {
         isLiked: false,
         likeRequest: false,
         contentLoaded: false,
-        snackbar: false
+        snackbar: false,
+        // commentTree: []
     }),
     computed: mapGetters(['postByID', 'userByID', 'comments', 'isAuthenticated', 'accountData']),
     methods: {
@@ -134,14 +135,33 @@ export default {
                 }
                 this.likeRequest = false;
             }
-        }
+        },
+        // getCommentsTree(comments) {
+        //     var map = {}, node, roots = [], i;
+            
+        //     for (i = 0; i < comments.length; i += 1) {
+        //         map[comments[i]._id] = i; // initialize the map
+        //         comments[i].children = []; // initialize the children
+        //     }
+            
+        //     for (i = 0; i < comments.length; i += 1) {
+        //         node = comments[i];
+        //         if (node.followedCommentID !== null) {
+        //             comments[map[node.followedCommentID]].children.push(node);
+        //         } else {
+        //             roots.push(node);
+        //         }
+        //     }
+        //     return roots;
+        // }
+        
     },
     async mounted() {
         this.updateFollowedComment({comment: null});
         await this.getPostByID(this.$route.params.id);
         if(this.isAuthenticated) {
-            this.postByID.likes.forEach(element => {
-                if(element == this.accountData._id) {
+            this.postByID.likes.forEach(like => {
+                if(like == this.accountData._id) {
                     this.isLiked = true;
                 }
             });
@@ -149,8 +169,11 @@ export default {
         await this.getUserByID(this.postByID.postedBy);
         this.author = this.userByID;
         await this.getComments(this.postByID._id);
-        this.date = timeDifference(this.postByID.dateCreated); 
 
+        // this.commentTree = this.comments;
+        // console.log(this.getCommentsTree(this.commentTree));
+    
+        this.date = timeDifference(this.postByID.dateCreated); 
         this.contentLoaded = true
     },
 }

@@ -6,7 +6,7 @@
                     <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                 </div>
                 <div class="head d-flex flex-column justify-center align-start">
-                    <h4>{{author.name || 'No name'}}</h4>
+                    <h4>{{ author.name || 'No name' }}</h4>
                     <span class="text--disabled">{{ date }}</span>
                 </div>
             </v-row>
@@ -20,7 +20,7 @@
                     <div class="text"><span>{{post.title}}</span></div>
                     <div class="d-flex">
                         <div class="d-flex align-center mr-2">
-                            <v-icon>{{accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon><span>{{post.likes.length}}</span>
+                            <v-icon>{{ accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon><span>{{post.likes.length}}</span>
                         </div>
                         <div class="d-flex align-center">
                             <v-icon class="mr-1">mdi-chat-outline</v-icon><span>{{commentsLength}}</span>
@@ -39,7 +39,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import timeDifference from '@/services/timeDifference.service.js'
 import Picture from '@/components/Picture'
 
 export default {
@@ -67,7 +66,7 @@ export default {
         },
     },
     async mounted() {
-        this.date = timeDifference(this.post.dateCreated);
+        this.date = this.$luxon(this.post.dateCreated.toString(), "relative");
         await this.getUserByID(this.post.postedBy);
         this.author = this.userByID;
         await this.getComments(this.post._id);

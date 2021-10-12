@@ -93,7 +93,7 @@
         <div class="wrap pa-5 mb-3">
             <v-row>
                 <v-col class="col-12">
-                    <div class="chart-wrap">
+                    <div class="chart-wrap" v-dragscroll="true">
                         <div class="chart" :style = "{ width: chartWidth + '%'}">
                             <line-chart :chart-data="dataCollection" :options="chartOptions"></line-chart>
                         </div>
@@ -121,10 +121,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { dragscroll } from 'vue-dragscroll'
 import LineChart from '@/LineChart.js'
 import PostsGraph from '@/components/GraphsComponents/PostsGraph'
 
 export default {
+    directives: {
+        dragscroll
+    },
     components: {
       LineChart,
       PostsGraph
@@ -155,13 +159,13 @@ export default {
         ...mapActions(['fetchPosts', 'fetchUsers']),
         async fillData() {
             if(this.chartValue == 'Posts') {
-                await this.fetchPosts({limit: 0});
+                await this.fetchPosts({ limit: 0 });
                 this.setMinDate(this.posts[0].dateCreated.split('T')[0]);
             } else if (this.chartValue == 'Users') {
-                await this.fetchUsers({limit: 0});
+                await this.fetchUsers({ limit: 0 });
                 this.setMinDate(this.users[0].dateCreated.split('T')[0]);
             } else {
-                await this.fetchPosts({limit: 0, postedBy: this.accountData._id});
+                await this.fetchPosts({ limit: 0, postedBy: this.accountData._id });
                 this.setMinDate(this.posts[0].dateCreated.split('T')[0]);
             }
             
@@ -199,9 +203,9 @@ export default {
             this.datesArray.forEach(date => {
                 var k = 0
                 if(this.chartValue == 'Posts' || this.chartValue == 'Posts by you') {
-                    k = this.posts.filter(element => element.dateCreated.split('T')[0] == date).length ;
+                    k = this.posts.filter(post => post.dateCreated.split('T')[0] == date).length ;
                 } else if (this.chartValue == 'Users') {
-                    k = this.users.filter(element => element.dateCreated.split('T')[0] == date).length ;
+                    k = this.users.filter(post => post.dateCreated.split('T')[0] == date).length ;
                 }
                 this.chartData.push(k)
                 this.totalData += k;
@@ -222,6 +226,8 @@ export default {
         }
         this.maxDate = new Date();
         this.fillData()
+
+        console.log(this.$luxon("2020-10-05T14:48:00.000Z"));
     }
 }
 </script>
@@ -247,7 +253,10 @@ export default {
         height: 60vh
         overflow: scroll
         overflow-y: hidden
-    
+
+        &:hover
+            cursor: w-resize
+
         * 
             height: 100%
             width: 100%
