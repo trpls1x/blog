@@ -1,14 +1,14 @@
 <template>
-    <v-container v-if="contentLoaded">
-        <v-row class="user">
-            <v-col class="col-12 col-sm-4 avatar">
+    <v-container v-if="contentLoaded" class="pb-0">
+        <v-row class="user ma-0 pa-3 pa-sm-5">
+            <v-col class="col-12 col-sm-4 avatar pa-0 pr-sm-3">
                 <Picture :image="userByID.avatar" :ratio="1" :type="'avatar'"/>
                 <div v-if="isAuthenticated && userByID._id == accountData._id" >
                     <ProfileButtons :user="accountData"/>
                 </div>
             </v-col>
-            <v-col class="col-12 col-sm-8 user-info">
-                <h1>{{userByID.name || 'No name'}}</h1>
+            <v-col class="col-12 col-sm-8 user-info pa-0 pt-3">
+                <h1 class="p-0 pl-sm-3 text-center text-sm-start">{{userByID.name || 'No name'}}</h1>
                 <table>
                     <tbody>
                         <tr><td>E-mail:</td><td>{{userByID.email}}</td></tr>
@@ -20,7 +20,7 @@
                 </table>
             </v-col>
         </v-row>
-        <v-row class="user-posts">
+        <v-row class="user-posts mt-0">
             <v-col class="col-12">
                 <Post v-for="post in posts" :key="post._id" :post="post"/>
             </v-col>
@@ -68,44 +68,17 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-    .container 
-        padding-bottom: 0
-    
-    .user 
-        margin-top: 0
-        margin-bottom: 12px
-        margin: 0 0
+<style lang="sass" scoped>    
+    .user
         background: $main-white
-        padding: 20px
         @extend %card
-        @media screen and (max-width: 599px)
-            padding: 12px
-
-    .user-info
-        @media screen and (max-width: 599px)
-            padding: 12px 0 0
 
     .user-posts 
-        margin: 0 0
-        padding-top: 12px
-
         a 
             text-decoration: none
-            color: #000
-
-        .col-12
-            padding: 0
-
-    h1
-        padding-left: 15px
-        @media screen and (max-width: 599px)
-            padding: 0
-            text-align: center 
+            color: $font-dark
     
     .avatar 
-        @media screen and (max-width: 599px)
-            padding: 0
         .v-image 
             border-radius: 5px
     

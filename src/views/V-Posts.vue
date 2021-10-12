@@ -8,7 +8,7 @@
                 
                 <div v-if="contentLoaded">
                     <Post v-for="post in posts" :key="post._id" :post="post" />
-                    <div class="pagination d-flex justify-center">
+                    <div class="pagination d-flex justify-center pa-2">
                         <v-pagination
                             v-model="currentPage"
                             :length="postsPages"
@@ -21,7 +21,7 @@
                     v-for="i in postsPagination.limit"
                     :key="i"
                     v-else
-                    class="skeleton"
+                    class="skeleton pa-0 py-sm-5 mb-3"
                     color="#f7f7f7"
                     type="list-item-avatar-two-line, image, table-heading"
                 ></v-skeleton-loader>
@@ -124,14 +124,9 @@ export default {
 
     .skeleton
         background: #FFF
-        padding: 20px 0
-        margin-bottom: 15px
-        @media screen and (max-width: 599px)
-            padding: 0 0
 
     .pagination 
         background: $main-white
-        padding: 10px
     
     .search
         padding-bottom: 0

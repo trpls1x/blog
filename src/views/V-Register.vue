@@ -6,6 +6,7 @@
             v-model="email"
             @blur="$v.email.$touch()"
             :error-messages="emailErrors"
+            class="mb-3"
             color="#39BEA1" 
             label="E-mail" 
             prepend-inner-icon="mdi-at" 
@@ -18,6 +19,7 @@
             @blur="$v.password.$touch()"
             @click:append="showPassword = !showPassword"
             :error-messages="passwordErrors"
+            class="mb-3"
             :type="showPassword ? 'text' : 'password'"
             hint="At least 6 characters"
             color="#39BEA1" 
@@ -30,6 +32,7 @@
         ></v-text-field>
         <v-text-field 
             v-model="name"
+            class="mb-3"
             color="#39BEA1" 
             label="Name" 
             prepend-inner-icon="mdi-account-circle" 
@@ -38,6 +41,7 @@
         ></v-text-field>
         <v-text-field 
             v-model="extra_details" 
+            class="mb-3"
             color="#39BEA1" 
             label="Extra details" 
             prepend-inner-icon="mdi-account-details" 
@@ -46,6 +50,7 @@
         ></v-text-field>
         <v-text-field 
             v-model="skills" 
+            class="mb-3"
             color="#39BEA1" 
             label="Skills" 
             prepend-inner-icon="mdi-book-open-variant" 
@@ -54,6 +59,7 @@
         ></v-text-field>
         <v-text-field 
             v-model="profession" 
+            class="mb-3"
             color="#39BEA1" 
             label="Profession" 
             prepend-inner-icon="mdi-briefcase" 
@@ -62,6 +68,7 @@
         ></v-text-field>
         <v-text-field 
             v-model="details" 
+            class="mb-3"
             color="#39BEA1" 
             label="Details" 
             prepend-inner-icon="mdi-dots-horizontal" 
@@ -69,8 +76,8 @@
             outlined
         ></v-text-field>
         <v-row class="d-flex justify-space-between">
-            <v-col class="col-12 col-md-8 pb-0"><v-btn class="submit" @click="submit">Continue</v-btn></v-col>
-            <v-col class="col-12 col-md-3 pb-md-0 pt-0 pt-md-3"><v-btn class="clear" @click="clear">Clear</v-btn></v-col>   
+            <v-col class="col-12 col-md-8 pb-0"><v-btn class="submit my-1 mx-0" @click="submit">Continue</v-btn></v-col>
+            <v-col class="col-12 col-md-3 pb-md-0 pt-0 pt-md-3"><v-btn class="clear my-1 mx-0" @click="clear">Clear</v-btn></v-col>   
         </v-row>
         <v-dialog v-model="dialog" max-width="400"> 
             <v-card class="d-flex flex-column align-stretch">
@@ -162,12 +169,8 @@ export default ({
 </script>
 
 <style lang="sass" scoped>
-    .v-input 
-        margin-bottom: 15px !important
-    
     .clear, 
     .submit 
-        margin: 6px 0
         width: 100%
         border-top-left-radius: 15px
         border-bottom-right-radius: 15px
@@ -178,12 +181,12 @@ export default ({
     
     .submit 
         background: $main-green !important
-        color: #f3f3f3 !important
+        color: $main-white !important
     
     .clear 
         background: $main-white !important
     
     h1 
-        @media screen and (max-width: 599px)
+        @media screen and (max-width: $xs-breakpoint)
             font-size: 1.5rem
 </style>

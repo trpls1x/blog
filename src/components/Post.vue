@@ -20,7 +20,7 @@
                     <div class="text"><span>{{post.title}}</span></div>
                     <div class="d-flex">
                         <div class="d-flex align-center mr-2">
-                            <v-icon>{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon><span>{{post.likes.length}}</span>
+                            <v-icon>{{accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon><span>{{post.likes.length}}</span>
                         </div>
                         <div class="d-flex align-center">
                             <v-icon class="mr-1">mdi-chat-outline</v-icon><span>{{commentsLength}}</span>
@@ -73,8 +73,8 @@ export default {
         await this.getComments(this.post._id);
         this.commentsLength = this.comments.length;
         if(this.accountData) {
-            this.post.likes.forEach(element => {
-                if(element == this.accountData._id) {
+            this.post.likes.forEach(like => {
+                if(like == this.accountData._id) {
                     this.isLiked = true
                 }
             });

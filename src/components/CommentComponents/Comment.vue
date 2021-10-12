@@ -69,7 +69,7 @@
                     </div>
                                         
                     <v-badge color="#39BEA1" :content="likes || '0'" class="mr-3">
-                        <v-icon @click="putLike()">{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                        <v-icon @click="putLike()">{{accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
                     </v-badge>
                 </v-col>
             </v-row>
@@ -131,7 +131,7 @@ export default {
         async putLike() {
             if(!this.likeRequest) {
                 this.likeRequest = true;
-                try {
+                if(this.accountData) {
                     await this.likeComment(this.comment._id);
                     this.isLiked = !this.isLiked;
                     if(this.isLiked) {
@@ -139,11 +139,10 @@ export default {
                     } else {
                         this.likes--
                     }
-                } catch {
-                    this.snackbar = true
-                } finally {
-                    this.likeRequest = false
+                } else {
+                    this.snackbar = true 
                 }
+                this.likeRequest = false 
             }
         },
         changeMode() {

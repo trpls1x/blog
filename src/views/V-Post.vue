@@ -1,25 +1,25 @@
 <template>
     <v-container>
         <div v-if="contentLoaded">
-            <div class="post">
-                <v-row>
-                    <v-col class="col-2 col-sm-2 col-md-2 col-lg-1 avatar pr-0 pr-sm-3 ">
+            <div class="post px-0 py-3 py-sm-5">
+                <v-row class="py-0 px-3 px-sm-7">
+                    <v-col class="avatar col-2 col-sm-2 col-md-2 col-lg-1 p-3">
                         <router-link :to="author._id ? '/users/' + author._id : '/deleted'" @click="pushUserID">
                             <Picture :image="author.avatar" :ratio="1" :type="'avatar'"/>
                         </router-link>
                     </v-col>
-                    <v-col class="col-md-9 col-lg-10 post-head d-flex flex-column justify-center pl-3 pl-sm-0">
+                    <v-col class="col-md-9 col-lg-10 post-head d-flex flex-column justify-center px-0 py-3 pa-sm-3">
                         <div class="d-flex flex-column flex-sm-row align-start align-sm-center">
                             <h2 class="mr-3"><router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name || 'No name' }}</router-link></h2>
                             <span class="text--disabled">{{ date }}</span>
                         </div>
                         <h1 class="d-none d-sm-block">{{ postByID.title }}</h1>
                     </v-col>
-                    <v-col v-if="accountData && author._id == accountData._id" class="col-1 d-flex align-center justify-center dots">
+                    <v-col v-if="accountData && author._id == accountData._id" class="col-1 d-flex align-center justify-center py-3 px-0">
                         <PostMenu/>
                     </v-col>
                 </v-row>
-                <v-row class="post-image">
+                <v-row class="post-image pa-0 mt-0">
                     <v-col class="col-12 py-0 mt-3" @dblclick="putLike">
                         <Picture
                             :image="postByID.image"
@@ -27,30 +27,30 @@
                             :type="'full-post'"
                         />
                     </v-col>
-                    <v-btn class="like d-block d-md-none" @click="putLike" fab small>
+                    <v-btn class="like d-block d-md-none" @click="putLike()" fab small>
                         <v-badge v-if="postByID.likes" color="#39BEA1" :content="postByID.likes.length || '0'">
-                            <v-icon>{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                            <v-icon>{{accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
                         </v-badge>
                     </v-btn>
                 </v-row>
-                <v-row>
+                <v-row class="py-0 px-3 px-sm-7">
                     <v-col class="col-12 col-md-11">
                         <h1 class="d-block d-sm-none">{{ postByID.title }}</h1>
                         <h2>{{ postByID.description }}</h2>
                         <span>{{ postByID.fullText }}</span>
                     </v-col>
-                    <v-col class="col-1 d-none d-md-flex justify-center align-center ">
+                    <v-col class="col-1 d-none d-md-flex justify-center align-center">
                         <v-btn @click="putLike" fab>
                             <v-badge v-if="postByID.likes" color="#39BEA1" :content="postByID.likes.length || '0'">
-                                <v-icon>{{isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                                <v-icon>{{accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
                             </v-badge>
                         </v-btn>
                     </v-col>
                 </v-row>
             </div>
-            <div class="comments">
-                <v-row>
-                    <h2>Comment section: {{ comments.length }}</h2>
+            <div class="comments px-0 py-3 py-sm-5 mt-3">
+                <v-row class="py-0 px-3 px-sm-7">
+                    <h2 class="pt-3 pb-0 px-3">Comment section: {{ comments.length }}</h2>
                     <CreateComment v-if="accountData"/>
                     <Comment v-for="comment in comments" :key="comment._id" :comment="comment"/>
                 </v-row>
@@ -58,10 +58,10 @@
         </div>
         <div v-else>
             <v-skeleton-loader 
-                class="skeleton"
+                class="skeleton px-0 py-3 py-sm-5 mt-0"
                 type="list-item-avatar-three-line, image, list-item-three-line"
             ></v-skeleton-loader>
-            <div class="skeleton">
+            <div class="skeleton px-0 py-3 py-sm-5 mt-3">
                 <v-skeleton-loader 
                     v-for="i in 3"
                     :key="i"
@@ -125,15 +125,14 @@ export default {
         async putLike() {
             if(!this.likeRequest) {
                 this.likeRequest = true;
-                try {
+                if(this.accountData) {
                     await this.likePost();
-                    await this.getPostByID(this.$route.params.id)
+                    await this.getPostByID(this.$route.params.id);
                     this.isLiked = !this.isLiked;
-                } catch {
+                } else {
                     this.snackbar = true;
-                } finally {
-                    this.likeRequest = false;
                 }
+                this.likeRequest = false;
             }
         }
     },
@@ -158,11 +157,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-    .row 
-        padding: 0 30px
-        @media screen and (max-width: 599px) 
-            padding: 0 12px
-    
     a 
         text-decoration: none
         color: $font-dark
@@ -171,29 +165,17 @@ export default {
     .comments, 
     .skeleton 
         background: $main-white
-        padding: 20px 0
         word-break: break-word
         @extend %card
-        @media screen and (max-width: 599px) 
-            padding: 12px 0
-    
-    .comments, 
-    .skeleton 
-        margin-top: 12px
 
     .post 
         h2 
-            @media screen and (max-width: 599px) 
+            @media screen and (max-width: $xs-breakpoint) 
                 font-size: 1rem
-
-    .comments 
-        h2 
-            padding: 12px 12px 0
     
-    .avatar 
-        padding: 12px
+    .avatar
         width: auto
-        @media screen and (max-width: 599px)
+        @media screen and (max-width: $xs-breakpoint)
             width: 70px !important
     
         .v-image 
@@ -201,43 +183,23 @@ export default {
             border-radius: 50%
     
     .post-head 
-        padding: 12px
-        @media screen and (max-width: 599px) 
-            padding: 12px 0
-
-    
         h1 
             word-break: break-all
-            @media screen and (max-width: 599px) 
+            @media screen and (max-width: $xs-breakpoint) 
                 font-size: 1.3rem
 
         span
-            @media screen and (max-width: 599px) 
+            @media screen and (max-width: $xs-breakpoint) 
                 font-size: 0.8rem
     
-    .post-image 
-        padding: 0
-        margin-top: 0
+    .post-image
         position: relative
-        @media screen and (max-width: 599px) 
-            padding: 0
-            margin-top: 0
-
-        .col
-            @media screen and (max-width: 599px)
-                padding-bottom: 0
     
     .like 
         position: absolute
         bottom: -5px
         right: 22px
     
-    .dots 
-        padding: 12px 0
-    
     .skeleton 
         background: #fff
-        
-        &:first-child 
-            margin-top: 0
 </style>

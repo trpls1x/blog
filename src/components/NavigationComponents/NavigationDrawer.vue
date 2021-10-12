@@ -12,7 +12,7 @@
                     <router-link v-if="accountData" :to="'../users/' + accountData._id" @click="pushUserID">
                         <v-list-item @click="fetchData">{{ accountData.name ? accountData.name : 'No name'}}</v-list-item>
                     </router-link>
-                    <v-list-item class="logout" @click="logout(); $router.go(0)">Logout</v-list-item>
+                    <v-list-item class="logout" @click="logout()">Logout</v-list-item>
                 </v-list-item-group>
                 <v-divider/>
                 <v-list-item-group>

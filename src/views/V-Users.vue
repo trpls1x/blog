@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <v-col class="users col-12 col-md-4">
+            <v-col class="users col-12 col-md-4 pb-0">
                 <div v-if="contentLoaded">
                     <User v-for="user in users.slice(0, usersPagination.limit/2)" :key="user._id" :user="user"/>  
                 </div>
@@ -9,11 +9,11 @@
                     v-for="i in usersPagination.limit/2"
                     :key="i"
                     v-else
-                    class="skeleton"
+                    class="skeleton px-0 py-2 mb-3"
                     type="list-item-avatar-two-line"
                 ></v-skeleton-loader>
             </v-col>
-            <v-col class="users col-12 col-md-4 pt-0 pt-md-3">
+            <v-col class="users col-12 col-md-4 py-0 pt-md-3">
                 <div v-if="contentLoaded">
                     <User v-for="user in users.slice(usersPagination.limit/2)" :key="user._id" :user="user"/>
                 </div>
@@ -21,15 +21,15 @@
                     v-for="i in usersPagination.limit/2"
                     :key="i"
                     v-else
-                    class="skeleton"
+                    class="skeleton px-0 py-2 mb-3"
                     type="list-item-avatar-two-line"
                 ></v-skeleton-loader>
             </v-col>
             <v-col class="nav col-md-4 d-none d-md-block">
                 <Navigation />
             </v-col>
-            <v-col class="col-12 col-md-8">
-                <div class="pagination d-flex justify-center">
+            <v-col class="col-12 col-md-8 pt-0">
+                <div class="pagination d-flex justify-center pa-2">
                     <v-pagination
                         v-model="currentPage"
                         :length="usersPages"
@@ -87,23 +87,17 @@ export default {
         top: 12px
     
     .users 
-        padding-bottom: 0 !important
-
         a 
-            color: #000
+            color: $font-dark
             text-decoration: none
+    
+    .skeleton,
+    .pagination 
+        @extend %card
     
     .skeleton 
         background: #fff
-        padding: 20px 0
-        margin-bottom: 12px
-        @extend %card
-        @media screen and (max-width: 599px) 
-            padding: 6px 0
 
     .pagination 
         background: $main-white
-        padding: 10px
-        margin-bottom: 15px
-        @extend %card
 </style>
