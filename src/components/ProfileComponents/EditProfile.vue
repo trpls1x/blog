@@ -1,7 +1,7 @@
 <template>
     <v-dialog max-width="600">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn class="activator" color="#39BEA1" dark v-bind="attrs" v-on="on">Edit profile</v-btn>
+            <v-btn class="activator" color="#39BEA1" dark v-bind="attrs" v-on="on" @click="reset()">Edit profile</v-btn>
         </template>
         <template v-slot:default="dialog">
             <v-card>
@@ -14,7 +14,7 @@
                                 <td><v-text-field 
                                     :placeholder="user.name" 
                                     hide-details="auto" 
-                                    v-model="name"
+                                    v-model="tempUser.name"
                                 ></v-text-field></td>
                             </tr>
                             <tr>
@@ -22,7 +22,7 @@
                                 <td><v-text-field 
                                     :placeholder="user.extra_details || placeholder" 
                                     hide-details="auto" 
-                                    v-model="extra_details"
+                                    v-model="tempUser.extra_details"
                                 ></v-text-field></td>
                             </tr>
                             <tr>
@@ -30,7 +30,7 @@
                                 <td><v-text-field 
                                     :placeholder="user.skills || placeholder" 
                                     hide-details="auto" 
-                                    v-model="skills"
+                                    v-model="tempUser.skills"
                                 ></v-text-field></td>
                             </tr>
                             <tr>
@@ -38,7 +38,7 @@
                                 <td><v-text-field 
                                     :placeholder="user.profession || placeholder" 
                                     hide-details="auto" 
-                                    v-model="profession"
+                                    v-model="tempUser.profession"
                                 ></v-text-field></td>
                             </tr>
                             <tr>
@@ -46,7 +46,7 @@
                                 <td><v-text-field 
                                     :placeholder="user.details || placeholder" 
                                     hide-details="auto" 
-                                    v-model="details"
+                                    v-model="tempUser.details"
                                 ></v-text-field></td>
                             </tr>
                         </tbody>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     props: {
@@ -72,34 +72,27 @@ export default {
         }
     },
     data: () => ({
-        name: null,
-        extra_details: null,
-        skills: null,
-        profession: null,
-        details: null,
+        tempUser: {},
         placeholder: 'Not specified'
     }),
+    computed: mapGetters(['userByID']),
     methods: {
         ...mapActions(['editUser', 'getUserByID']),
         async updateUser() {
             await this.editUser({
-                name: this.name,
-                extra_details: this.extra_details,
-                skills: this.skills,
-                profession: this.profession,
-                details: this.details,
-            })
-            this.getUserByID(this.user._id)
+                name: this.tempUser.name,
+                extra_details: this.tempUser.extra_details,
+                skills: this.tempUser.skills,
+                profession: this.tempUser.profession,
+                details: this.tempUser.details,
+            });
+            this.getUserByID(this.user._id);
+        },
+        reset() {
+            this.getUserByID(this.user._id);
+            this.tempUser = this.userByID;
         }
     },
-    mounted() {
-        this.name = this.user.name;
-        this.email = this.user.email;
-        this.extra_details = this.user.extra_details;
-        this.skills = this.user.skills;
-        this.profession = this.user.profession;
-        this.details = this.user.details;
-    }
 }
 </script>
 

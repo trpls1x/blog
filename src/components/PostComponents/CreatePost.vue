@@ -103,7 +103,7 @@ export default {
             if (!this.$v.description.$dirty) return errors;
             !this.$v.description.maxLength && errors.push('Description can\'t be longer than 80 characters');
             !this.$v.description.required && errors.push('Description is required');
-            return errors
+            return errors;
         },
         fullTextErrors () {
             const errors = [];
@@ -111,7 +111,7 @@ export default {
             !this.$v.fullText.maxLength && errors.push('Post text can\'t be longer than 400 characters');
             !this.$v.fullText.minLength && errors.push('Post text must be at least 20 characters');
             !this.$v.fullText.required && errors.push('Post text is required');
-            return errors
+            return errors;
         }
     },
     methods: {
@@ -125,13 +125,13 @@ export default {
                         description: this.description,
                         fullText: this.fullText
                     });
-                    this.title = this.description = this.fullText = ''
+                    this.title = this.description = this.fullText = '';
                     this.$v.$reset();
                     await this.fetchPosts({
                         skip: (this.page - 1) * this.limit
                     });
                 } catch {
-                    this.snackbar = true
+                    this.snackbar = true;
                 }
             }
         }

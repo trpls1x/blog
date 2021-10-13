@@ -6,7 +6,7 @@
                 <div class="reply d-flex text--secondary mb-2 pr-12" v-if="followedComment">
                     <v-icon>mdi-share</v-icon>
                     <span class="font-weight-medium"> {{ followedComment.author }}: </span>
-                    <span class="d-block reply-text">{{followedComment.text}}</span>
+                    <span class="d-block reply-text">{{ followedComment.text }}</span>
                     <v-icon @click="clear" class="ml-auto">mdi-close</v-icon>
                 </div>
                 <v-text-field 
@@ -41,10 +41,10 @@ export default {
         Picture
     },
     data: () => ({
-        text: null,
+        text: null
     }),
     validations: {
-        text: { required, minLength: minLength(3), maxLength: maxLength(80) },
+        text: { required, minLength: minLength(3), maxLength: maxLength(80) }
     },
     computed: {
         ...mapGetters(['accountData', 'postByID', 'followedComment']),
@@ -54,14 +54,14 @@ export default {
             !this.$v.text.required && errors.push('Comment can\'t be empty');
             !this.$v.text.minLength && errors.push('Comment length must be at least 3 characters long');
             !this.$v.text.maxLength && errors.push('Comment length can\'t be more than 80 characters long');
-            return errors
+            return errors;
         },
     },
     methods: {
         ...mapActions(['postComment', 'getComments']),
         ...mapMutations(['updateFollowedComment']),
         async submitComment() {
-            this.$v.$touch()
+            this.$v.$touch();
             if(!this.$v.$invalid) {
                 await this.postComment({
                     text: this.text,
@@ -69,14 +69,14 @@ export default {
                 });
                 this.text = this.followedCommentID = null;
                 this.clear();
-                this.$v.$reset()
+                this.$v.$reset();
                 await this.getComments(this.postByID._id);
             }
         },
         clear() {
             this.updateFollowedComment({
                 comment: null
-            })
+            });
         }
     }
 }

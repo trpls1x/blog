@@ -4,12 +4,12 @@
             <v-container class="d-flex align-center justify-space-between">
                 <router-link class="logo" :to="'/'"><v-img src="@/assets/logo.svg" alt="logo"/></router-link>
                 <div class="d-none d-md-block ml-auto">
-                    <div v-if="isAuthenticated" class="profile">
+                    <div v-if="accountData" class="profile">
                         <v-menu v-if="accountData" offset-y>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn v-bind="attrs" v-on="on">
                                     <v-avatar><Picture :image="accountData.avatar" :type="'avatar'"/></v-avatar>
-                                    <span class="ml-3">{{ accountData.name ? accountData.name : 'No name'}}</span>
+                                    <span class="ml-3">{{ accountData.name ? accountData.name : 'No name' }}</span>
                                     <v-icon>mdi-menu-down</v-icon>
                                 </v-btn>
                             </template>
@@ -44,20 +44,19 @@ import Picture from '@/components/Picture'
 import NavigationDrawer from '@/components/NavigationComponents/NavigationDrawer'
 
 export default {
-    name: "main-page",
     components: {
         Picture,
         NavigationDrawer
     },
-    computed: mapGetters(['accountData', 'isAuthenticated']),
+    computed: mapGetters(['accountData']),
     methods: {
         ...mapActions(['getUserByID', 'fetchPosts', 'logout']),
         async pushUserID() {
             await this.$router.push({ name: 'user', params: { userID: this.accountData._id } }).catch(() => {});
         },
         fetchData() {
-            this.getUserByID(this.accountData._id),
-            this.fetchPosts({postedBy: this.accountData._id, limit: 0})
+            this.getUserByID(this.accountData._id);
+            this.fetchPosts({ postedBy: this.accountData._id, limit: 0 });
         }
     }
 }

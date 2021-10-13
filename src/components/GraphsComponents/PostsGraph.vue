@@ -18,10 +18,10 @@
             <h2>Stats:</h2>
             <table>
                 <tbody>
-                    <tr><td>Total posts:</td><td>{{postsByUser}}</td></tr>
-                    <tr><td>Total likes:</td><td>{{likesData.total}}</td></tr>
-                    <tr><td>Unique likes:</td><td>{{likesData.unique}}</td></tr>
-                    <tr><td>Average likes:</td><td>{{likesData.average}}</td></tr>
+                    <tr><td>Total posts:</td><td>{{ postsByUser }}</td></tr>
+                    <tr><td>Total likes:</td><td>{{ likesData.total }}</td></tr>
+                    <tr><td>Unique likes:</td><td>{{ likesData.unique }}</td></tr>
+                    <tr><td>Average likes:</td><td>{{ likesData.average }}</td></tr>
                 </tbody>
             </table>
         </v-col>
@@ -40,7 +40,7 @@ export default {
         switchValue: false,
         totalPosts: 0,
         postsByUser: 0,
-        data: [],
+        chartData: [],
         percentageData: [],
         chartOptions: {},
         datacollection: {},
@@ -55,12 +55,21 @@ export default {
     computed: mapGetters(['postsPagination', 'accountData', 'posts']),
     watch: {
         switchValue(value) {
-            if(value) {
-                this.fillData(this.percentageData)
-            } else {
-                this.fillData(this.data)
-            }
+            this.fillData(value ? this.percentageData : this.chartData);
         }
+    },
+    async mounted () {
+        await this.fetchPosts({limit: 1});
+        this.totalPosts = this.postsPagination.total;
+        await this.fetchPosts({limit: 0, postedBy: this.accountData._id});
+        this.postsByUser = this.postsPagination.total;
+
+        this.chartData = [this.postsByUser, this.totalPosts - this.postsByUser];
+        this.percentageData[0] =((this.postsByUser * 100) / this.totalPosts).toFixed(2);
+        this.percentageData[1] = (100 - this.percentageData[0]).toFixed(2);
+        
+        this.countLikes();
+        this.fillData(this.chartData);
     },
     methods: {
         ...mapActions(['fetchPosts']),
@@ -77,41 +86,15 @@ export default {
         countLikes() {
             this.posts.forEach(post => {
                 post.likes.forEach(like => {
-                    if(this.likes[like]) {
-                        this.likes[like]++
-                    } else {
-                        this.likes[like] = 1
-                    }
-                })
+                    this.likes[like] ? this.likes[like]++ : this.likes[like] = 1;
+                });
             });
 
             this.likesData.total = Object.values(this.likes).reduce((a, b) => a + b);
             this.likesData.unique = Object.keys(this.likes).length;
-            this.likesData.average = (this.likesData.total / this.postsByUser).toFixed(2)
+            this.likesData.average = (this.likesData.total / this.postsByUser).toFixed(2);
         }
-    },
-    async mounted () {
-        await this.fetchPosts({limit: 1});
-        this.totalPosts = this.postsPagination.total
-        await this.fetchPosts({limit: 0, postedBy: this.accountData._id})
-        this.postsByUser = this.postsPagination.total
-
-        this.data = [this.postsByUser, this.totalPosts - this.postsByUser]
-        this.percentageData[0] =((this.postsByUser * 100) / this.totalPosts).toFixed(2)
-        this.percentageData[1] = (100 - this.percentageData[0]).toFixed(2)
-        
-        // this.chartOptions = {
-        //     tooltips: {
-        //         callbacks: {
-        //             label: function(tooltipItem, data) {
-        //                 return data.labels[tooltipItem.index] + ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] + '%';
-        //             }
-        //         }
-        //     }   
-        // }
-        this.countLikes()
-        this.fillData(this.data) 
-    },
+    }
 } 
 </script>
 

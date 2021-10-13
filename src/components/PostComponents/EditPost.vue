@@ -96,6 +96,11 @@ export default {
             return errors
         }
     },
+    mounted() {
+        this.title = this.postByID.title;
+        this.description = this.postByID.description;
+        this.fullText = this.postByID.fullText;
+    },
     methods: {
         ...mapActions(['getPostByID', 'editPost']),
         async updatePost() {
@@ -103,13 +108,8 @@ export default {
                 title: this.title,
                 description: this.description,
                 fullText: this.fullText
-            })
+            });
         }
-    },
-    mounted() {
-        this.title = this.postByID.title;
-        this.description = this.postByID.description;
-        this.fullText = this.postByID.fullText;
     }
 }
 </script>

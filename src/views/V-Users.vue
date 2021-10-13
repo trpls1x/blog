@@ -48,7 +48,6 @@ import User from '@/components/User'
 import Navigation from '@/components/NavigationComponents/Navigation'
 
 export default {
-    name: "feed",
     components: {
         User,
         Navigation
@@ -60,7 +59,7 @@ export default {
     computed: mapGetters(['users', 'usersPages', 'usersPagination']),
     watch: {
         async currentPage() {
-            this.contentLoaded = false
+            this.contentLoaded = false;
             await this.fetchUsers({
                 skip: (this.currentPage - 1) * this.usersPagination.limit 
             });
@@ -68,16 +67,14 @@ export default {
                 top: 0,
                 behavior: "smooth"
             });
-            this.contentLoaded = true
+            this.contentLoaded = true;
         }
-    },
-    methods: {
-        ...mapActions(['fetchUsers'])
     },
     async mounted() {
         await this.fetchUsers();
-        this.contentLoaded = true
-    }
+        this.contentLoaded = true;
+    },
+    methods: mapActions(['fetchUsers'])
 }
 </script>
 

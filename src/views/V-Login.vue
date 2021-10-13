@@ -54,7 +54,6 @@ import { required, email, minLength } from 'vuelidate/lib/validators'
 
 export default ({
     mixins: [validationMixin],
-    name: "login",
     data: () => ({
         email: '',
         password: '',
@@ -66,44 +65,43 @@ export default ({
         password: { required, minLength: minLength(6) },
     },
     computed: {
-        ...mapGetters(['isAuthenticated']),
+        ...mapGetters(['accountData']),
         emailErrors () {
             const errors = [];
             if (!this.$v.email.$dirty) return errors;
             !this.$v.email.email && errors.push('Must be valid e-mail');
             !this.$v.email.required && errors.push('E-mail is required');
-            return errors
+            return errors;
         },
         passwordErrors () {
             const errors = [];
             if (!this.$v.password.$dirty) return errors;
             !this.$v.password.minLength && errors.push('Password must be at least 6 characters');
             !this.$v.password.required && errors.push('Password is required');
-            return errors
-        },
+            return errors;
+        }
+    },
+    created() {
+        if(this.accountData)
+            this.$router.push({path:'/'});
     },
     methods: {
         ...mapActions(['userAuthorization']),
         async submit() {
-            this.$v.$touch()
+            this.$v.$touch();
             if(!this.$v.$invalid) {
                 try {
                     await this.userAuthorization({
                         email: this.email,
                         password: this.password
-                    })
-                    this.$router.go(-1)
+                    });
+                    this.$router.go(-1);
                 } catch {
                     this.dialog = true;
                     this.email = this.password = '';
-                    this.$v.$touch()
+                    this.$v.$touch();
                 }
             }
-        }
-    },
-    created() {
-        if(this.isAuthenticated) {
-            this.$router.push({path:'/'})
         }
     }
 })

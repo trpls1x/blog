@@ -5,10 +5,9 @@
                 <v-col class="col-12 col-lg-5 pb-0">
                     <v-select
                         v-model="chartValue"
-                        :items="accountData ? ['Posts', 'Users', 'Posts by you'] : ['Posts', 'Users']"
+                        :items="accountData ? ['Posts', 'Users', 'Your Posts'] : ['Posts', 'Users']"
                         :menu-props="{offsetY: true }"
                         item-color="#39BEA1"
-                        label="Select"
                         color="#39BEA1"
                         hide-details="auto"
                         outlined
@@ -105,10 +104,10 @@
         <div class="wrap pa-5 mb-3">
              <v-row>
                 <v-col class="col-6">
-                    Total days: {{totalDates}}
+                    Total days: {{ totalDates }}
                 </v-col>
                 <v-col class="col-6">
-                    Total {{chartValue.toLowerCase()}}: {{totalData}}
+                    Total {{ chartValue.toLowerCase() }}: {{ totalData }}
                 </v-col>
             </v-row>
         </div>
@@ -135,43 +134,50 @@ export default {
     },
     data: () => ({
         chartValue: 'Posts',
-        menuFrom: false,
-        menuTo: false,
+        // items: [
+        //     { text: 'Posts', value: 'posts'},
+        //     { text: 'Users', value: 'users'},
+        //     { text: 'Your Posts', value: 'posts'},
+        // ],
+        datesArray: [],
+        chartData:[],
+        chartOptions: {},
+        dataCollection: {},
+        chartWidth: 100,
+        totalDates: 0,
+        totalData: 0,
+        dateFormat: 'dd-MM-yyyy',
         dateFrom: null,
         dateTo: null,
         minDate: null,
         maxDate: null,
-        totalDates: 0,
-        totalData: 0,
-        datesArray: [],
-        chartData:[],
-        chartOptions: {},
-        chartWidth: 100,
-        dataCollection: {}
+        menuFrom: false,
+        menuTo: false,
     }),
     computed: mapGetters(['posts', 'users', 'accountData']),
-    watch: {
-        dateFrom() {
-            this.fillData()
-        }
+    mounted() {
+        this.chartOptions = {
+            maintainAspectRatio: false,
+            responsive: true
+        };
+        this.maxDate = new Date();
+        this.fillData();
     },
     methods: {
         ...mapActions(['fetchPosts', 'fetchUsers']),
         async fillData() {
-            if(this.chartValue == 'Posts') {
-                await this.fetchPosts({ limit: 0 });
-                this.setMinDate(this.posts[0].dateCreated.split('T')[0]);
-            } else if (this.chartValue == 'Users') {
-                await this.fetchUsers({ limit: 0 });
-                this.setMinDate(this.users[0].dateCreated.split('T')[0]);
-            } else {
-                await this.fetchPosts({ limit: 0, postedBy: this.accountData._id });
-                this.setMinDate(this.posts[0].dateCreated.split('T')[0]);
-            }
+            let conf = { limit: 0 };
+            conf.postedBy = this.chartValue === 'Your Posts' ? this.accountData._id : '';
+
+            let arrayType = this.chartValue === 'Users' ? 'users' : 'posts';
+
+            this.chartValue === 'Users' ? await this.fetchUsers(conf) : await this.fetchPosts(conf);
+            this.minDate = this[arrayType][0].dateCreated;
             
-            this.getDateArray();
-            this.getChartData();
-            this.setChartWidth();
+            this.getDatesArray();
+            this.getChartData(arrayType);
+            this.chartWidth = this.chartData.length * 5;
+
             this.dataCollection = {
                 labels: this.datesArray,
                 datasets: [{
@@ -181,53 +187,36 @@ export default {
                         data: this.chartData
                     }
                 ]
-            }
+            };
         },
-        setMinDate(firstDate){
-            this.minDate = firstDate
-        },
-        getDateArray() {
-            var start = this.dateFrom ? new Date(this.dateFrom) : this.minDate;
-            var end = this.dateTo ? new Date(this.dateTo) : this.maxDate;
+        getDatesArray() {
+            const start = this.dateFrom ? this.dateFrom : this.minDate;
+            const end = this.dateTo ? new Date(this.dateTo) : this.maxDate;
             this.datesArray = [];
-            var dt = new Date(start);
+            let dt = new Date(start);
+            dt.setHours(0,0,0,0);
             while (dt <= end) {
-                this.datesArray.push(new Date(dt).toISOString().split('T')[0]);
+                this.datesArray.push(this.$luxon(dt.toISOString(), this.dateFormat));
                 dt.setDate(dt.getDate() + 1);
             }
-            this.totalDates = this.datesArray.length
+            this.totalDates = this.datesArray.length;
         },
-        getChartData() {
+        getChartData(arrayType) {
             this.chartData = [];
             this.totalData = 0;
+
             this.datesArray.forEach(date => {
-                var k = 0
-                if(this.chartValue == 'Posts' || this.chartValue == 'Posts by you') {
-                    k = this.posts.filter(post => post.dateCreated.split('T')[0] == date).length ;
-                } else if (this.chartValue == 'Users') {
-                    k = this.users.filter(post => post.dateCreated.split('T')[0] == date).length ;
-                }
-                this.chartData.push(k)
+                let k = 0;
+                k = this[arrayType].filter(item => this.$luxon(item.dateCreated, this.dateFormat) === date).length;
+                this.chartData.push(k);
                 this.totalData += k;
             });
-        },
-        setChartWidth() {
-            this.chartWidth = this.chartData.length * 5;
         },
         clearFilters() {
             this.dateFrom = null;
             this.dateTo = null;
+            this.fillData();
         }
-    },
-    mounted() {
-        this.chartOptions = {
-            maintainAspectRatio: false,
-            responsive: true
-        }
-        this.maxDate = new Date();
-        this.fillData()
-
-        console.log(this.$luxon("2020-10-05T14:48:00.000Z"));
     }
 }
 </script>

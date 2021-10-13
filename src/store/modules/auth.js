@@ -31,7 +31,6 @@ export default {
         accountData: null
     },
     getters: {
-        isAuthenticated: state => !!state.token,
         accountData: state => state.accountData
     }
 }

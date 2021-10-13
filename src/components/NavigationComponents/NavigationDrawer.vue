@@ -4,13 +4,13 @@
 
         <v-navigation-drawer class="navbar" v-model="navbar" right absolute @click="navbar = !navbar">
             <v-list>
-                <v-list-item-group v-if="!isAuthenticated"> 
+                <v-list-item-group v-if="!accountData"> 
                     <router-link :to="'/login'"><v-list-item>Sing in</v-list-item></router-link>
                     <router-link :to="'/register'"><v-list-item>Sing up</v-list-item></router-link>
                 </v-list-item-group>
                 <v-list-item-group v-else>
                     <router-link v-if="accountData" :to="'../users/' + accountData._id" @click="pushUserID">
-                        <v-list-item @click="fetchData">{{ accountData.name ? accountData.name : 'No name'}}</v-list-item>
+                        <v-list-item @click="fetchData">{{ accountData.name ? accountData.name : 'No name' }}</v-list-item>
                     </router-link>
                     <v-list-item class="logout" @click="logout()">Logout</v-list-item>
                 </v-list-item-group>
@@ -33,15 +33,15 @@ export default {
     data: () => ({
         navbar: false
     }),
-    computed: mapGetters(['accountData', 'isAuthenticated']),
+    computed: mapGetters(['accountData']),
     methods: {
         ...mapActions(['getUserByID', 'fetchPosts', 'logout']),
         async pushUserID() {
             await this.$router.push({ name: 'user', params: { userID: this.accountData._id } }).catch(() => {});
         },
         fetchData() {
-            this.getUserByID(this.accountData._id),
-            this.fetchPosts({postedBy: this.accountData._id, limit: 0})
+            this.getUserByID(this.accountData._id);
+            this.fetchPosts({postedBy: this.accountData._id, limit: 0});
         }
     }
 }

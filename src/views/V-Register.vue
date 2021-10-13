@@ -101,7 +101,6 @@ import { required, email, minLength } from 'vuelidate/lib/validators'
 
 export default ({
     mixins: [validationMixin],
-    name: 'register',
     data: () => ({
         email: null,
         password: null,
@@ -118,26 +117,30 @@ export default ({
         password: { required, minLength: minLength(6) }
     },
     computed: {
-        ...mapGetters(['isAuthenticated']),
+        ...mapGetters(['accountData']),
         emailErrors () {
             const errors = [];
             if (!this.$v.email.$dirty) return errors;
             !this.$v.email.email && errors.push('Must be valid e-mail');
             !this.$v.email.required && errors.push('E-mail is required');
-            return errors
+            return errors;
         },
         passwordErrors () {
             const errors = [];
             if (!this.$v.password.$dirty) return errors;
             !this.$v.password.minLength && errors.push('Password must be at least 6 characters');
             !this.$v.password.required && errors.push('Password is required');
-            return errors
+            return errors;
         }
+    },
+    created() {
+        if(this.accountData)
+            this.$router.push({path:'/'});
     },
     methods: {
         ...mapActions(['postUser']),
         async submit() {
-            this.$v.$touch()
+            this.$v.$touch();
             if(!this.$v.$invalid) {
                 try {
                     await this.postUser({
@@ -148,21 +151,16 @@ export default ({
                         skills: this.skills,
                         profession: this.profession,
                         details: this.details,
-                    })
-                    this.$router.push({path:'/'})
+                    });
+                    this.$router.push({path:'/'});
                 } catch {
-                    this.dialog = true
+                    this.dialog = true;
                 }
             }
         },
         clear() {
             this.email = this.password = this.name = this.extra_details = this.skills = this.profession = this.details = null;
             this.$v.$reset();
-        }
-    },
-    created() {
-        if(this.isAuthenticated) {
-            this.$router.push({path:'/'})
         }
     }
 })

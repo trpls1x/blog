@@ -29,7 +29,7 @@
                     </v-col>
                     <v-btn class="like d-block d-md-none" @click="putLike()" fab small>
                         <v-badge v-if="postByID.likes" color="#39BEA1" :content="postByID.likes.length || '0'">
-                            <v-icon>{{accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                            <v-icon>{{ accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
                         </v-badge>
                     </v-btn>
                 </v-row>
@@ -42,7 +42,7 @@
                     <v-col class="col-1 d-none d-md-flex justify-center align-center">
                         <v-btn @click="putLike" fab>
                             <v-badge v-if="postByID.likes" color="#39BEA1" :content="postByID.likes.length || '0'">
-                                <v-icon>{{accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline'}}</v-icon>
+                                <v-icon>{{ accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
                             </v-badge>
                         </v-btn>
                     </v-col>
@@ -94,7 +94,6 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import timeDifference from '@/services/timeDifference.service.js'
 import Picture from '@/components/Picture'
 import PostMenu from '@/components/PostComponents/PostMenu'
 import CreateComment from '@/components/CommentComponents/CreateComment'
@@ -116,7 +115,21 @@ export default {
         snackbar: false,
         // commentTree: []
     }),
-    computed: mapGetters(['postByID', 'userByID', 'comments', 'isAuthenticated', 'accountData']),
+    computed: mapGetters(['postByID', 'userByID', 'comments', 'accountData']),
+    async mounted() {
+        this.updateFollowedComment({comment: null});
+        await this.getPostByID(this.$route.params.id);
+        this.date = this.$luxon(this.postByID.dateCreated.toString(), "relative"); 
+        if(this.accountData)
+            this.isLiked = this.postByID.likes.includes(this.accountData._id);
+        await this.getUserByID(this.postByID.postedBy);
+        this.author = this.userByID;
+        await this.getComments(this.postByID._id);
+
+        // this.commentTree = this.comments;
+        // console.log(this.getCommentsTree(this.commentTree));
+        this.contentLoaded = true;
+    },
     methods: {
         ...mapActions(['getPostByID', 'getUserByID', 'getComments', 'likePost']),
         ...mapMutations(['updateFollowedComment']),
@@ -137,11 +150,11 @@ export default {
             }
         },
         // getCommentsTree(comments) {
-        //     var map = {}, node, roots = [], i;
+        //     let map = {}, node, roots = [], i;
             
         //     for (i = 0; i < comments.length; i += 1) {
-        //         map[comments[i]._id] = i; // initialize the map
-        //         comments[i].children = []; // initialize the children
+        //         map[comments[i]._id] = i; 
+        //         comments[i].children = [];
         //     }
             
         //     for (i = 0; i < comments.length; i += 1) {
@@ -154,28 +167,7 @@ export default {
         //     }
         //     return roots;
         // }
-        
-    },
-    async mounted() {
-        this.updateFollowedComment({comment: null});
-        await this.getPostByID(this.$route.params.id);
-        if(this.isAuthenticated) {
-            this.postByID.likes.forEach(like => {
-                if(like == this.accountData._id) {
-                    this.isLiked = true;
-                }
-            });
-        }
-        await this.getUserByID(this.postByID.postedBy);
-        this.author = this.userByID;
-        await this.getComments(this.postByID._id);
-
-        // this.commentTree = this.comments;
-        // console.log(this.getCommentsTree(this.commentTree));
-    
-        this.date = timeDifference(this.postByID.dateCreated); 
-        this.contentLoaded = true
-    },
+    }    
 }
 </script>
 

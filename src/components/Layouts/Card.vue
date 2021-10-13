@@ -13,13 +13,6 @@
     </v-app>
 </template>
 
-<script>
-    export default ({
-        name: 'card',
-    })
-</script>
-
-
 <style lang="sass" scoped>
     .row 
         min-height: 100vh

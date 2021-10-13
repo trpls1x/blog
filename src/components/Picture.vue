@@ -1,6 +1,6 @@
 <template>
     <v-img 
-        :aspect-ratio="type != 'full-post' ? aspectRatio : ''" 
+        :aspect-ratio="type != 'full-post' ? ratio : ''" 
         :lazy-src="type == 'avatar' ? avatarPlaceholder : postPlaceholder" 
         :src="setImage()" 
         alt="avatar"
@@ -36,17 +36,13 @@ export default {
         }
     },
     data: () => ({
-        aspectRatio: null,
         avatarPlaceholder: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
         postPlaceholder: 'https://nenow.in/wp-content/uploads/2020/04/cat-image-2.jpg'
     }),
     methods: {
         setImage() {
-            return imageSrc(this.image, this.type)
+            return imageSrc(this.image, this.type);
         },
-    },
-    mounted() {
-        this.aspectRatio = this.ratio;
     }
 }
 </script>

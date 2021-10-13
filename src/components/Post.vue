@@ -7,7 +7,7 @@
                 </div>
                 <div class="head d-flex flex-column justify-center align-start">
                     <h4>{{ author.name || 'No name' }}</h4>
-                    <span class="text--disabled">{{ date }}</span>
+                    <span class="text--disabled">{{ post.dateCreated | luxonRelative }}</span>
                 </div>
             </v-row>
             <v-row class="post-image py-0 mt-0">
@@ -17,13 +17,13 @@
             </v-row>
             <v-row class="py-0 px-3 px-sm-5">
                 <div class="bottom d-flex justify-space-between pa-3">
-                    <div class="text"><span>{{post.title}}</span></div>
+                    <div class="text"><span>{{ post.title }}</span></div>
                     <div class="d-flex">
                         <div class="d-flex align-center mr-2">
-                            <v-icon>{{ accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon><span>{{post.likes.length}}</span>
+                            <v-icon>{{ accountData && isLiked ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon><span>{{ post.likes.length }}</span>
                         </div>
                         <div class="d-flex align-center">
-                            <v-icon class="mr-1">mdi-chat-outline</v-icon><span>{{commentsLength}}</span>
+                            <v-icon class="mr-1">mdi-chat-outline</v-icon><span>{{ commentsLength }}</span>
                         </div>
                     </div>
                 </div> 
@@ -52,34 +52,27 @@ export default {
         Picture
     },
     data: () => ({
-        date: null,
         author: {},
         commentsLength: 0,
         contentLoaded: false,
         isLiked: false
     }),
     computed: mapGetters(['userByID', 'comments', 'accountData']),
+    async mounted() {
+        await this.getUserByID(this.post.postedBy);
+        this.author = this.userByID;
+        await this.getComments(this.post._id);
+        this.commentsLength = this.comments.length;
+        if(this.accountData)
+            this.isLiked = this.post.likes.includes(this.accountData._id);
+        
+        this.contentLoaded = true;
+    },
     methods: {
         ...mapActions(['getUserByID', 'getComments']),
         pushPostID(id) {
             this.$router.push({ name: 'post', params: { postID: id } }).catch(() => {});
         },
-    },
-    async mounted() {
-        this.date = this.$luxon(this.post.dateCreated.toString(), "relative");
-        await this.getUserByID(this.post.postedBy);
-        this.author = this.userByID;
-        await this.getComments(this.post._id);
-        this.commentsLength = this.comments.length;
-        if(this.accountData) {
-            this.post.likes.forEach(like => {
-                if(like == this.accountData._id) {
-                    this.isLiked = true
-                }
-            });
-        }
-        
-        this.contentLoaded = true
     }
 }
 </script>

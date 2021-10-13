@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col class="posts col-12 col-md-8 order-last order-md-first">
-                <div v-if="isAuthenticated">
+                <div v-if="accountData">
                     <CreatePost :page="currentPage" :limit="postsPagination.limit"/>
                 </div>
                 
@@ -56,7 +56,6 @@ import CreatePost from '@/components/PostComponents/CreatePost'
 import Navigation from '@/components/NavigationComponents/Navigation'
 
 export default {
-    name: "feed",
     components: {
         Post,
         CreatePost,
@@ -68,7 +67,7 @@ export default {
         typingTimer: null,
         searchText: ''
     }),
-    computed: mapGetters(['posts', 'isAuthenticated', 'postsPages', 'postsPagination']),
+    computed: mapGetters(['posts', 'accountData', 'postsPages', 'postsPagination']),
     watch: {
         async currentPage() {
             this.contentLoaded = false;
@@ -80,13 +79,17 @@ export default {
                 top: 0,
                 behavior: "smooth"
             });
-            this.contentLoaded = true
+            this.contentLoaded = true;
         }
+    },
+    async mounted() {
+        await this.fetchPosts();
+        this.contentLoaded = true;
     },
     methods: {
         ...mapActions(['fetchPosts']),
         typing() {
-            clearTimeout(this.typingTimer)
+            clearTimeout(this.typingTimer);
         },
         finishedTyping() {
             clearTimeout(this.typingTimer);
@@ -97,12 +100,8 @@ export default {
             await this.fetchPosts({
                 search: this.searchText
             });
-            this.contentLoaded = true
+            this.contentLoaded = true;
         }
-    },
-    async mounted() {
-        await this.fetchPosts();
-        this.contentLoaded = true
     }
 }
 </script>
