@@ -77,7 +77,7 @@ export default {
     }),
     computed: mapGetters(['userByID']),
     methods: {
-        ...mapActions(['editUser', 'getUserByID']),
+        ...mapActions(['editUser', 'getUserByID', 'getAccountData']),
         async updateUser() {
             await this.editUser({
                 name: this.tempUser.name,
@@ -87,6 +87,7 @@ export default {
                 details: this.tempUser.details,
             });
             this.getUserByID(this.user._id);
+            this.getAccountData();
         },
         reset() {
             this.getUserByID(this.user._id);

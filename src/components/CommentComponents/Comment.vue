@@ -1,5 +1,5 @@
 <template>
-    <v-col :id="comment._id" class="col-12 comment mt-3">
+    <v-col :id="comment._id" class="col-12 mt-3">
         <v-hover v-slot:default="{ hover }" :value="hover">
             <v-row class="pl-3">
                 <v-col class="avatar col-2 col-sm-1 d-none d-sm-block p-auto pa-0 pr-lg-3">
@@ -52,7 +52,7 @@
                                 <template v-slot:default="dialog">
                                     <v-card>
                                         <v-toolbar color="#b70000" dark>Delete comment</v-toolbar>
-                                        <div class="text d-flex justify-center">
+                                        <div class="text d-flex justify-center pa-4">
                                             <span class="text-center">Are you sure want to delete this comment?</span>
                                         </div>
                                         <v-card-actions class="justify-end">
@@ -106,6 +106,7 @@ import { mapActions, mapMutations, mapGetters } from 'vuex'
 import Picture from '@/components/Picture'
 
 export default {
+    name: 'Comment',
     props: {
         comment: {
             type: Object
@@ -119,7 +120,7 @@ export default {
         text: '',
         likes: 0,
         isLiked: false,
-        hover: false,
+        hover: true,
         editMode: false,
         followedComment: null,
         likeRequest: false,
@@ -133,10 +134,15 @@ export default {
         await this.getUserByID(this.comment.commentedBy);
         this.author = this.userByID;
         if(this.comment.followedCommentID) {
-            this.followedComment = this.comments.find(comment => comment._id === this.comment.followedCommentID);
-            await this.getUserByID(this.followedComment.commentedBy);
-            this.followedComment.author = this.userByID.name;
+            try {
+                this.followedComment = this.comments.find(comment => comment._id === this.comment.followedCommentID);
+                await this.getUserByID(this.followedComment.commentedBy);
+                this.followedComment.author = this.userByID.name;
+            } catch {
+                return;
+            }
         }
+        this.hover = false;
     },
     methods: {
         ...mapActions(['getUserByID', 'likeComment', 'editComment', 'deleteComment']),

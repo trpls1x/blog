@@ -10,7 +10,9 @@
                     </v-col>
                     <v-col class="col-md-9 col-lg-10 post-head d-flex flex-column justify-center px-0 py-3 pa-sm-3">
                         <div class="d-flex flex-column flex-sm-row align-start align-sm-center">
-                            <h2 class="mr-3"><router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name || 'No name' }}</router-link></h2>
+                            <h2 class="mr-3">
+                                <router-link :to="'/users/' + author._id" @click="pushUserID">{{ author.name || 'No name' }}</router-link>
+                            </h2>
                             <span class="text--disabled">{{ date }}</span>
                         </div>
                         <h1 class="d-none d-sm-block">{{ postByID.title }}</h1>
@@ -48,10 +50,25 @@
                     </v-col>
                 </v-row>
             </div>
-            <div class="comments px-0 py-3 py-sm-5 mt-3">
-                <v-row class="py-0 px-3 px-sm-7">
-                    <h2 class="pt-3 pb-0 px-3">Comment section: {{ comments.length }}</h2>
+            <div class="comments px-3 py-3 py-sm-5 mt-3">
+                <v-row class="px-sm-3">
+                    <div class="comments-head pt-3 px-3 d-flex justify-space-between align-center">
+                        <h2>Comment section: {{ comments.length }}</h2>
+                        <v-switch
+                            v-model="switchValue"
+                            class="ma-0 pa-0"
+                            color="#39BEA1"
+                            inset
+                            hide-details="auto"
+                            label="Comments tree"
+                        ></v-switch>
+                    </div>
                     <CreateComment v-if="accountData"/>
+                </v-row>
+                <v-row class="px-sm-3" v-if="switchValue">
+                    <TreeNode v-for="node in commentTree" :key="node._id" :node="node" />    
+                </v-row> 
+                <v-row class="px-sm-3" v-else>
                     <Comment v-for="comment in comments" :key="comment._id" :comment="comment"/>
                 </v-row>
             </div>
@@ -98,13 +115,15 @@ import Picture from '@/components/Picture'
 import PostMenu from '@/components/PostComponents/PostMenu'
 import CreateComment from '@/components/CommentComponents/CreateComment'
 import Comment from '@/components/CommentComponents/Comment'
+import TreeNode from '@/components/CommentComponents/TreeNode'
 
 export default {
     components: {
         Picture,
         PostMenu,
         CreateComment,
-        Comment
+        Comment,
+        TreeNode
     },
     data: () => ({
         author: {},
@@ -113,11 +132,12 @@ export default {
         likeRequest: false,
         contentLoaded: false,
         snackbar: false,
-        // commentTree: []
+        switchValue: false,
+        commentTree: []
     }),
     computed: mapGetters(['postByID', 'userByID', 'comments', 'accountData']),
     async mounted() {
-        this.updateFollowedComment({comment: null});
+        this.updateFollowedComment({ comment: null });
         await this.getPostByID(this.$route.params.id);
         this.date = this.$luxon(this.postByID.dateCreated.toString(), "relative"); 
         if(this.accountData)
@@ -126,8 +146,7 @@ export default {
         this.author = this.userByID;
         await this.getComments(this.postByID._id);
 
-        // this.commentTree = this.comments;
-        // console.log(this.getCommentsTree(this.commentTree));
+        this.getCommentsTree(this.comments);
         this.contentLoaded = true;
     },
     methods: {
@@ -149,24 +168,24 @@ export default {
                 this.likeRequest = false;
             }
         },
-        // getCommentsTree(comments) {
-        //     let map = {}, node, roots = [], i;
+        getCommentsTree(comments) {
+            let map = {}, node, roots = [], i;
             
-        //     for (i = 0; i < comments.length; i += 1) {
-        //         map[comments[i]._id] = i; 
-        //         comments[i].children = [];
-        //     }
+            for (i = 0; i < comments.length; i += 1) {
+                map[comments[i]._id] = i; 
+                comments[i].children = [];
+            }
             
-        //     for (i = 0; i < comments.length; i += 1) {
-        //         node = comments[i];
-        //         if (node.followedCommentID !== null) {
-        //             comments[map[node.followedCommentID]].children.push(node);
-        //         } else {
-        //             roots.push(node);
-        //         }
-        //     }
-        //     return roots;
-        // }
+            for (i = 0; i < comments.length; i += 1) {
+                node = comments[i];
+                if (node.followedCommentID && comments[map[node.followedCommentID]]) {
+                    comments[map[node.followedCommentID]].children.push(node);
+                } else {
+                    roots.push(node);
+                }
+            }
+            this.commentTree = roots;
+        }
     }    
 }
 </script>
@@ -215,6 +234,9 @@ export default {
         bottom: -5px
         right: 22px
     
+    .comments-head 
+        width: 100%
+
     .skeleton 
         background: #fff
 </style>

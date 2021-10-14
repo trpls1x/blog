@@ -67,7 +67,7 @@ export default {
         message: ''
     }),
     methods: {
-        ...mapActions(['deleteUser', 'editUserPhoto']),
+        ...mapActions(['deleteUser', 'editUserPhoto', 'getUserByID', 'getAccountData']),
         async deleteProfile() {
             await this.deleteUser();
             this.$router.push({path: '/'});
@@ -80,7 +80,9 @@ export default {
             formData.append("avatar", event.target.files[0]);
             try {
                 await this.editUserPhoto(formData);
-                this.$router.go();
+                // this.$router.go();
+                this.getUserByID(this.user._id);
+                this.getAccountData();
             } catch(e) {
                 this.message = e.response.data.error.message;
                 this.snackbar = true;
